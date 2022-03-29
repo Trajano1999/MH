@@ -10,3 +10,16 @@
 //  Juan Manuel Mateos Pérez
 //-------------------------------------------------------------------------------------------------
 
+# include <iostream>
+
+void MostrarInicio(){
+    std::cout << "Hola" << std::endl;
+}
+
+void LecturaDatos(){
+
+}
+
+int main(int narg, char * arg[]){
+    MostrarInicio();
+}
