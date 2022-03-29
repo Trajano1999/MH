@@ -15,15 +15,18 @@ EJECUTABLE = practica1
 SOURCES = main.cpp prueba.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
-all: $(OBJECTS)
-	$(CC) $(CFLAGS) -o $(EJECUTABLE) $(OBJ)/*
+all: $(EJECUTABLE)
+
+
+$(EJECUTABLE): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $(OBJ)/*
 
 $(OBJECTS):
 	$(CC) $(CFLAGS) -c $(SRC)/*
 	mv *.o $(OBJ)/
 
-exec:
-	./$(EJECUTABLE)
-
 clear:
 	rm $(OBJ)/*.o $(EJECUTABLE)
+
+exec: $(EJECUTABLE)
+	./$<
