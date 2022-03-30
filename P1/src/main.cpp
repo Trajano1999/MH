@@ -16,7 +16,7 @@
 using namespace std;
 
 void MostrarInicio(){
-    cout << "Hola" << endl;
+    cout << "\n" << endl;
 }
 
 int main(int narg, char * arg[]){
@@ -27,18 +27,17 @@ int main(int narg, char * arg[]){
     ifstream fichero(dir_fich);
     if(!fichero.is_open()){
         cout << "Error al abrir" << dir_fich << endl;
-        exit(EXIT_FAILURE);
+        exit 1;
     }
 
     // variables del fichero
-    string num_elem_total, num_elem_selec;
+    int num_elem_total, num_elem_selec;
 
-    cout << "archivo : " << dir_fich << endl;
+    /*cout << "archivo : " << dir_fich << endl;
     fichero >> num_elem_total;
-    cout << "Num     : " << num_elem_total << endl;
-
+    cout << "Num_tot : " << num_elem_total << endl;
     fichero >> num_elem_selec;
-    cout << "Num_sel : " << num_elem_selec << endl;
+    cout << "Num_sel : " << num_elem_selec << endl;*/
 }
 
 // cout << narg << " " << arg[0] << arg[1] << endl;

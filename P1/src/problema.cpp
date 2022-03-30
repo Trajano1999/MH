@@ -9,3 +9,13 @@
 //
 //  Juan Manuel Mateos Pérez
 //-------------------------------------------------------------------------------------------------
+
+# include "problema.h"
+
+Problema::Problema(const int & num_filas, const int & num_columnas){
+    matriz = new int*[num_filas];
+    for(int i=0; i<num_filas; ++i){
+        matriz[i] = new int*[num_columnas];
+    }
+
+}
