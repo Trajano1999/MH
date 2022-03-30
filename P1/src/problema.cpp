@@ -10,12 +10,29 @@
 //  Juan Manuel Mateos Pérez
 //-------------------------------------------------------------------------------------------------
 
+# include <iostream>
+
 # include "problema.h"
 
-Problema::Problema(const int & num_filas, const int & num_columnas){
-    matriz = new int*[num_filas];
-    for(int i=0; i<num_filas; ++i){
-        matriz[i] = new int*[num_columnas];
-    }
 
-}
+/*Problema::Problema(){
+    for(int i=0; i<vector.size(); ++i){
+        for(int j=0; j<vector[i].size(); ++j){
+            matriz[i][j] = 0;
+        }
+    }
+}*/
+
+/*Problema::Problema(ifstream dir_fich){
+    int num_elem_tot, num_elem_sel;
+    ifstream fichero(dir_fich);
+
+    // abrimos el fichero
+    if(!fichero.is_open())
+        cerr << "Error al abrir" << dir_fich << endl;
+
+    fichero >> num_elem_tot;
+    fichero >> num_elem_sel;
+
+    
+}*/

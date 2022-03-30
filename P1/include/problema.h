@@ -10,24 +10,22 @@
 //  Juan Manuel Mateos Pérez
 //-------------------------------------------------------------------------------------------------
 
-#ifndef PROBLEMA_HPP
-#define PROBLEMA_HPP
+# ifndef _PROBLEMA_HPP_
+# define _PROBLEMA_HPP_
 
 # include <iostream>
 # include <fstream>
+# include <vector>
+
+using namespace std;
 
 class Problema {
     private:
-        int num_filas, num_columnas;
-        int **matriz;
+        vector<vector<int> > matriz;
 
     public:
-        Problema(const int & num_filas, const int & num_columnas);
-        Problema(const ifstream & fichero);
-        ~Problema();
-        int** getMatriz();
-        int getNumFilas();
-        int getNumColumnas();
+        Problema(ifstream dir_fich);
+        vector<vector<int> > getMatriz();
 };
 
 # endif

@@ -13,6 +13,8 @@
 # include <iostream>
 # include <fstream>
 
+#include "problema.h"
+
 using namespace std;
 
 void MostrarInicio(){
@@ -21,23 +23,7 @@ void MostrarInicio(){
 
 int main(int narg, char * arg[]){
     MostrarInicio();
-    const char * dir_fich = arg[1];
-    
-    // abrimos el fichero
-    ifstream fichero(dir_fich);
-    if(!fichero.is_open()){
-        cout << "Error al abrir" << dir_fich << endl;
-        exit 1;
-    }
+    //const char * dir_fich = arg[1];
 
-    // variables del fichero
-    int num_elem_total, num_elem_selec;
-
-    /*cout << "archivo : " << dir_fich << endl;
-    fichero >> num_elem_total;
-    cout << "Num_tot : " << num_elem_total << endl;
-    fichero >> num_elem_selec;
-    cout << "Num_sel : " << num_elem_selec << endl;*/
+    //Problema problema(dir_fich);
 }
-
-// cout << narg << " " << arg[0] << arg[1] << endl;
