@@ -4,29 +4,29 @@ CC = g++
 # compiler flags:
 #  -g    : añade información de depuración al ejecutable
 #  -Wall : activa avisos en el compilador
-CFLAGS  = -g -Wall -O2
+CFLAGS  = -Wall -g -O2
 
 # carpetas
+BIN = bin
 SRC = src
 OBJ = obj
 
 # archivos
 EJECUTABLE = practica1
-SOURCES = main.cpp prueba.cpp
-OBJECTS = $(SOURCES:.cpp=.o)
+SOURCES = $(wildcard $(SRC)/*.cpp)
+OBJECTS = $(addprefix $(OBJ)/, $(notdir $(SOURCES:.cpp=.o)))
 
-all: $(EJECUTABLE)
+all: $(BIN)/$(EJECUTABLE)
 
 
-$(EJECUTABLE): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $(OBJ)/*
+$(BIN)/$(EJECUTABLE): $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@
 
-$(OBJECTS):
-	$(CC) $(CFLAGS) -c $(SRC)/*
-	mv *.o $(OBJ)/
+$(OBJ)/%.o: $(SRC)/%.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clear:
-	rm $(OBJ)/*.o $(EJECUTABLE)
+	rm $(OBJ)/* $(BIN)/*
 
-exec: $(EJECUTABLE)
+exec: $(BIN)/$(EJECUTABLE)
 	./$<
