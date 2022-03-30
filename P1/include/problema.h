@@ -24,7 +24,7 @@ class Problema {
         vector<vector<int> > matriz;
 
     public:
-        Problema(ifstream dir_fich);
+        Problema(const char * dir_fich);
         vector<vector<int> > getMatriz();
 };
 

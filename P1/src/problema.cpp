@@ -12,7 +12,6 @@
 
 # include "problema.h"
 
-
 /*Problema::Problema(){
     for(int i=0; i<vector.size(); ++i){
         for(int j=0; j<vector[i].size(); ++j){
@@ -21,16 +20,21 @@
     }
 }*/
 
-/*Problema::Problema(ifstream dir_fich){
-    int num_elem_tot, num_elem_sel;
-    ifstream fichero(dir_fich);
+Problema::Problema(const char * dir_fich){
+    int elem_tot, elem_sel;
 
     // abrimos el fichero
+    ifstream fichero(dir_fich);
     if(!fichero.is_open())
-        cerr << "Error al abrir" << dir_fich << endl;
+        cerr << "Error al abrir " << dir_fich << endl;
 
-    fichero >> num_elem_tot;
-    fichero >> num_elem_sel;
+    fichero >> elem_tot;
+    fichero >> elem_sel;
 
-    
-}*/
+    cout << "Elem tot : " << elem_tot << endl;
+    cout << "Elem sel : " << elem_sel << endl;
+}
+
+vector<vector<int> > Problema::getMatriz(){
+    return matriz;
+}

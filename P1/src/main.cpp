@@ -11,7 +11,6 @@
 //-------------------------------------------------------------------------------------------------
 
 # include <iostream>
-# include <fstream>
 
 # include "problema.h"
 
@@ -23,7 +22,7 @@ void MostrarInicio(){
 
 int main(int narg, char * arg[]){
     MostrarInicio();
-    //const char * dir_fich = arg[1];
+    const char * dir_fichero = arg[1];
 
-    //Problema problema(dir_fich);
+    Problema problema(dir_fichero);
 }
