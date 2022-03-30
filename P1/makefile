@@ -2,8 +2,9 @@
 CC = g++
 
 # compiler flags:
-#  -g    : añade información de depuración al ejecutable
-#  -Wall : activa avisos en el compilador
+#	-g    : añade información de depuración al ejecutable
+#	-Wall : activa avisos en el compilador
+#	-O2   : opción de compilación eficiente
 CFLAGS  = -Wall -g -O2
 
 # carpetas
@@ -18,7 +19,6 @@ OBJECTS = $(addprefix $(OBJ)/, $(notdir $(SOURCES:.cpp=.o)))
 
 all: $(BIN)/$(EJECUTABLE)
 
-
 $(BIN)/$(EJECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
 
@@ -29,4 +29,4 @@ clear:
 	rm $(OBJ)/* $(BIN)/*
 
 exec: $(BIN)/$(EJECUTABLE)
-	./$<
+	./$< /home/juanma/Escritorio/Uni/Segundo_Cuatri/MH/P1/datos_MDD/GKD-b_10_n25_m7.txt
