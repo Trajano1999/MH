@@ -17,7 +17,16 @@
 using namespace std;
 
 void MostrarInicio(){
-    cout << "\n" << endl;
+    cout << endl;
+}
+
+void MostrarMatriz(const vector<vector<int> > & m){
+    for(unsigned int i=0; i<m.size(); ++i){
+        for(unsigned int j=0; j<m[i].size(); ++j){
+            cout << m[i][j] << " ";
+        }
+        cout << endl;
+    }
 }
 
 int main(int narg, char * arg[]){
@@ -25,4 +34,12 @@ int main(int narg, char * arg[]){
     const char * dir_fichero = arg[1];
 
     Problema problema(dir_fichero);
+
+    vector<vector<int> > ma;
+
+    ma.push_back({ 0, 0, 0 });
+    ma.push_back({ 0, 0, 0 });
+    ma.push_back({ 0, 0, 0 });
+
+    MostrarMatriz(ma);
 }

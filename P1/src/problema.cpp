@@ -12,14 +12,6 @@
 
 # include "problema.h"
 
-/*Problema::Problema(){
-    for(int i=0; i<vector.size(); ++i){
-        for(int j=0; j<vector[i].size(); ++j){
-            matriz[i][j] = 0;
-        }
-    }
-}*/
-
 Problema::Problema(const char * dir_fich){
     int elem_tot, elem_sel;
 
