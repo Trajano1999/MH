@@ -20,13 +20,30 @@ Problema::Problema(const char * dir_fich){
     if(!fichero.is_open())
         cerr << "Error al abrir " << dir_fich << endl;
 
+    // leemos los primeros valores del fichero
     fichero >> elem_tot;
     fichero >> elem_sel;
-
     cout << "Elem tot : " << elem_tot << endl;
     cout << "Elem sel : " << elem_sel << endl;
+
+    // redimensionamos la matriz
+    vector<vector<double> > aux(elem_tot, vector<double>(elem_tot)); 
+    matriz = aux;
+
+    int num_lineas = (elem_tot * (elem_tot-1)) / 2;
+    double pueblo1,
+           pueblo2,
+           distancia;
+
+    // rellenamos la matriz con el resto de valores del fichero
+    for(int i=0; i<num_lineas; ++i){
+        fichero >> pueblo1;
+        fichero >> pueblo2;
+        fichero >> distancia;
+        matriz[pueblo1][pueblo2] = distancia;
+    }
 }
 
-vector<vector<int> > Problema::getMatriz(){
+vector<vector<double> > Problema::getMatriz(){
     return matriz;
 }

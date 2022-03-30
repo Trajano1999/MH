@@ -21,11 +21,11 @@ using namespace std;
 
 class Problema {
     private:
-        vector<vector<int> > matriz;
+        vector<vector<double> > matriz;
 
     public:
         Problema(const char * dir_fich);
-        vector<vector<int> > getMatriz();
+        vector<vector<double> > getMatriz();
 };
 
 # endif

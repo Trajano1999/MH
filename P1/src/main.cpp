@@ -16,30 +16,26 @@
 
 using namespace std;
 
-void MostrarInicio(){
-    cout << endl;
-}
-
-void MostrarMatriz(const vector<vector<int> > & m){
+// muestra una matriz
+void MostrarMatriz(const vector<vector<double> > & m){
     for(unsigned int i=0; i<m.size(); ++i){
+        cout << "( ";
         for(unsigned int j=0; j<m[i].size(); ++j){
             cout << m[i][j] << " ";
         }
-        cout << endl;
+        cout << ")" << endl;
     }
 }
 
 int main(int narg, char * arg[]){
-    MostrarInicio();
+    cout << endl;
+
     const char * dir_fichero = arg[1];
 
     Problema problema(dir_fichero);
 
-    vector<vector<int> > ma;
+    vector<vector<double> > mat_prob = problema.getMatriz();
+    MostrarMatriz(mat_prob);
 
-    ma.push_back({ 0, 0, 0 });
-    ma.push_back({ 0, 0, 0 });
-    ma.push_back({ 0, 0, 0 });
-
-    MostrarMatriz(ma);
+    cout << endl;
 }
