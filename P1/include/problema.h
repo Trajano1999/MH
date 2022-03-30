@@ -10,8 +10,8 @@
 //  Juan Manuel Mateos Pérez
 //-------------------------------------------------------------------------------------------------
 
-# ifndef _PROBLEMA_HPP_
-# define _PROBLEMA_HPP_
+# ifndef _PROBLEMA_H_
+# define _PROBLEMA_H_
 
 # include <iostream>
 # include <fstream>
