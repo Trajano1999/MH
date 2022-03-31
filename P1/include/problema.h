@@ -16,12 +16,15 @@
 # include <iostream>
 # include <fstream>
 # include <vector>
+# include <ctime>
 
 using namespace std;
 
 class Problema {
     private:
         vector<vector<double> > matriz;
+
+        int aleatorio(int min, int max);
 
     public:
         Problema(const char * dir_fich);

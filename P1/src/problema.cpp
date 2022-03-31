@@ -12,6 +12,14 @@
 
 # include "problema.h"
 
+// jjj
+int Problema::aleatorio(int min, int max){
+    // utilizamos srand() y time() para modificar la semilla cada vez,
+    // ya que time() devuelve los segundos trasncurridos desde el 1 Enero de 1970
+    srand(time(NULL));
+    return rand() % (max-min+1) + min;
+}
+
 Problema::Problema(const char * dir_fich){
     int elem_tot, elem_sel;
 
@@ -53,5 +61,10 @@ vector<vector<double> > Problema::getMatriz(){
 // jjj
 vector<int> Problema::greedysolution(){
     vector<int> res = { 1, 0, 0 };
+    
+    int n_pueblos = matriz.size(),
+        valor_aleatorio = aleatorio(1, n_pueblos);
+    
+    res = { valor_aleatorio, 0, 0 };
     return res;
 }
