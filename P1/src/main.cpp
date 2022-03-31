@@ -10,14 +10,12 @@
 //  Juan Manuel Mateos Pérez
 //-------------------------------------------------------------------------------------------------
 
-# include <iostream>
-
 # include "problema.h"
 
 using namespace std;
 
 // muestra una matriz
-void MostrarMatriz(const vector<vector<double> > & m){
+void mostrarMatriz(const vector<vector<double> > & m){
     for(unsigned int i=0; i<m.size(); ++i){
         cout << "( ";
         for(unsigned int j=0; j<m[i].size(); ++j){
@@ -27,15 +25,28 @@ void MostrarMatriz(const vector<vector<double> > & m){
     }
 }
 
+// muestra un vector
+void mostrarVector(const vector<int> & v){
+    cout << "( ";
+    for(unsigned int i=0; i<v.size(); ++i)
+        cout << v[i] << " ";
+    cout << ")"; 
+}
+
 int main(int narg, char * arg[]){
     cout << endl;
 
     const char * dir_fichero = arg[1];
 
-    Problema problema(dir_fichero);
+    // mensajes por pantalla
+    string solucion_greedy = "\nSolución por Greedy :\n";
 
-    vector<vector<double> > mat_prob = problema.getMatriz();
-    MostrarMatriz(mat_prob);
+    Problema problema(dir_fichero);
+    mostrarMatriz(problema.getMatriz());
+
+    // solución Greedy
+    cout << solucion_greedy;
+    mostrarVector(problema.greedysolution());
 
     cout << endl;
 }

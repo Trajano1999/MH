@@ -26,6 +26,9 @@ class Problema {
     public:
         Problema(const char * dir_fich);
         vector<vector<double> > getMatriz();
+
+        // métodos para resolver el problema
+        vector<int> greedysolution();
 };
 
 # endif

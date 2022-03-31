@@ -23,6 +23,8 @@ Problema::Problema(const char * dir_fich){
     // leemos los primeros valores del fichero
     fichero >> elem_tot;
     fichero >> elem_sel;
+    
+    // jjj
     cout << "Elem tot : " << elem_tot << endl;
     cout << "Elem sel : " << elem_sel << endl;
 
@@ -46,4 +48,10 @@ Problema::Problema(const char * dir_fich){
 
 vector<vector<double> > Problema::getMatriz(){
     return matriz;
+}
+
+// jjj
+vector<int> Problema::greedysolution(){
+    vector<int> res = { 1, 0, 0 };
+    return res;
 }
