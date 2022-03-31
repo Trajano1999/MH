@@ -21,7 +21,7 @@ int Problema::aleatorio(int min, int max){
 }
 
 Problema::Problema(const char * dir_fich){
-    int elem_tot, elem_sel;
+    int elem_totales;
 
     // abrimos el fichero
     ifstream fichero(dir_fich);
@@ -29,18 +29,18 @@ Problema::Problema(const char * dir_fich){
         cerr << "Error al abrir " << dir_fich << endl;
 
     // leemos los primeros valores del fichero
-    fichero >> elem_tot;
+    fichero >> elem_totales;
     fichero >> elem_sel;
-    
+
     // jjj
-    cout << "Elem tot : " << elem_tot << endl;
+    cout << "Elem tot : " << elem_totales << endl;
     cout << "Elem sel : " << elem_sel << endl;
 
     // redimensionamos la matriz
-    vector<vector<double> > aux(elem_tot, vector<double>(elem_tot)); 
+    vector<vector<double> > aux(elem_totales, vector<double>(elem_totales)); 
     matriz = aux;
 
-    int num_lineas = (elem_tot * (elem_tot-1)) / 2;
+    int num_lineas = (elem_totales * (elem_totales-1)) / 2;
     double pueblo1,
            pueblo2,
            distancia;
@@ -60,11 +60,16 @@ vector<vector<double> > Problema::getMatriz(){
 
 // jjj
 vector<int> Problema::greedysolution(){
-    vector<int> res = { 1, 0, 0 };
+    vector<int> sol;
     
     int n_pueblos = matriz.size(),
-        valor_aleatorio = aleatorio(1, n_pueblos);
+        candidato = aleatorio(1, n_pueblos);
+
+    sol.push_back(candidato);
+    while((int)sol.size() < elem_sel){
+        candidato = 0;
+        sol.push_back(candidato);
+    }
     
-    res = { valor_aleatorio, 0, 0 };
-    return res;
+    return sol;
 }

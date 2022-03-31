@@ -22,6 +22,7 @@ using namespace std;
 
 class Problema {
     private:
+        int elem_sel;
         vector<vector<double> > matriz;
 
         int aleatorio(int min, int max);
