@@ -14,14 +14,16 @@
 
 // jjj
 int Problema::aleatorio(int min, int max){
-    // utilizamos srand() y time() para modificar la semilla cada vez,
-    // ya que time() devuelve los segundos trasncurridos desde el 1 Enero de 1970
-    srand(time(NULL));
+    // utilizamos srand() para modificar la semilla
+    srand(semilla);
     return rand() % (max-min+1) + min;
 }
 
-Problema::Problema(const char * dir_fich){
+Problema::Problema(unsigned int sem, const char * dir_fich){
     int elem_totales;
+
+    // almacenamos la semilla
+    semilla = sem;
 
     // abrimos el fichero
     ifstream fichero(dir_fich);
@@ -33,8 +35,8 @@ Problema::Problema(const char * dir_fich){
     fichero >> elem_sel;
 
     // jjj
-    cout << "Elem tot : " << elem_totales << endl;
-    cout << "Elem sel : " << elem_sel << endl;
+    cout << "\nElem tot : " << elem_totales << endl;
+    cout << "Elem sel : " << elem_sel << endl << endl;
 
     // redimensionamos la matriz
     vector<vector<double> > aux(elem_totales, vector<double>(elem_totales)); 
@@ -66,7 +68,7 @@ vector<int> Problema::greedysolution(){
         candidato = aleatorio(1, n_pueblos);
 
     sol.push_back(candidato);
-    while((int)sol.size() < elem_sel){
+    while(sol.size() < elem_sel){
         candidato = 0;
         sol.push_back(candidato);
     }

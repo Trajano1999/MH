@@ -34,14 +34,18 @@ void mostrarVector(const vector<int> & v){
 }
 
 int main(int narg, char * arg[]){
-    cout << endl;
-
+    unsigned int random_semilla;
     const char * dir_fichero = arg[1];
 
     // mensajes por pantalla
     string solucion_greedy = "\nSolución por Greedy :\n";
+    string peticion_semilla = "\nIntroduzca la semilla :\n";
 
-    Problema problema(dir_fichero);
+    // lectura de semilla
+    cout << peticion_semilla; 
+    cin >> random_semilla;
+
+    Problema problema(random_semilla, dir_fichero);
     mostrarMatriz(problema.getMatriz());
 
     // solución Greedy

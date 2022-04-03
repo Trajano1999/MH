@@ -22,17 +22,19 @@ using namespace std;
 
 class Problema {
     private:
-        int elem_sel;
+        unsigned int elem_sel, 
+                     semilla;
         vector<vector<double> > matriz;
 
         int aleatorio(int min, int max);
 
     public:
-        Problema(const char * dir_fich);
+        Problema(unsigned int sem, const char * dir_fich);
         vector<vector<double> > getMatriz();
 
         // métodos para resolver el problema
         vector<int> greedysolution();
+        // void jjj
 };
 
 # endif
