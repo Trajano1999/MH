@@ -35,7 +35,8 @@ Problema::Problema(unsigned int sem, const char * dir_fich){
     fichero >> elem_sel;
 
     // jjj
-    cout << "\nElem tot : " << elem_totales << endl;
+    cout << endl;
+    cout << "Elem tot : " << elem_totales << endl;
     cout << "Elem sel : " << elem_sel << endl << endl;
 
     // redimensionamos la matriz
@@ -62,15 +63,45 @@ vector<vector<double> > Problema::getMatriz(){
 
 // jjj
 vector<int> Problema::greedysolution(){
-    vector<int> sol;
-    
     int n_pueblos = matriz.size(),
-        candidato = aleatorio(1, n_pueblos);
+        mejor_candidato = aleatorio(0, n_pueblos-1);
+    //double distancia, mejor_distancia;
+    vector<int> sol, candidatos;
+    
+    // rellenamos el vector de candidatos con todos los valores
+    for(int i=0; i<n_pueblos; ++i)
+        candidatos.push_back(i);
 
-    sol.push_back(candidato);
+    // mostramos el vector de candidatos
+    cout << "\tVector de candidatos : ";
+    cout << "( ";
+    for(int i=0; i<n_pueblos; ++i){
+        cout << candidatos[i] << " ";
+    }
+    cout << ")" << endl;
+
+    // añadimos el primer valor aleatorio
+    sol.push_back(mejor_candidato);
+    candidatos[mejor_candidato] = -1;
+
     while(sol.size() < elem_sel){
-        candidato = 0;
-        sol.push_back(candidato);
+        mejor_candidato = 1;
+        /*// valor inicial a mejor_distancia;
+        mejor_distancia = 100000000;
+
+        for(unsigned i=0; i<candidatos.size() && candidatos[i] != -1; ++i){ 
+            // calculo distancia
+            distancia = 10;
+        
+            // almaceno mejor distancia
+            if(distancia < mejor_distancia){
+                mejor_distancia = distancia;
+                mejor_candidato = i;
+            }
+        }*/
+
+        sol.push_back(mejor_candidato);
+        candidatos[mejor_candidato] = -1;
     }
     
     return sol;

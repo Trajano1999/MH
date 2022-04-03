@@ -22,8 +22,7 @@ using namespace std;
 
 class Problema {
     private:
-        unsigned int elem_sel, 
-                     semilla;
+        unsigned int elem_sel, semilla;
         vector<vector<double> > matriz;
 
         int aleatorio(int min, int max);

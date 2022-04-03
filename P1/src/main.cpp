@@ -39,7 +39,7 @@ int main(int narg, char * arg[]){
 
     // mensajes por pantalla
     string solucion_greedy = "\nSolución por Greedy :\n";
-    string peticion_semilla = "\nIntroduzca la semilla :\n";
+    string peticion_semilla = "\nIntroduzca la semilla : ";
 
     // lectura de semilla
     cout << peticion_semilla; 
