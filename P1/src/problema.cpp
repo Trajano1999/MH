@@ -19,6 +19,10 @@ int Problema::aleatorio(int min, int max){
     return rand() % (max-min+1) + min;
 }
 
+double Problema::dispersion(const vector<int> & sol, double anterior_dispersion, int elem){
+    return 1.0;
+}
+
 Problema::Problema(unsigned int sem, const char * dir_fich){
     int elem_totales;
 
@@ -61,18 +65,22 @@ vector<vector<double> > Problema::getMatriz(){
     return matriz;
 }
 
-// jjj
-vector<int> Problema::greedysolution(){
+// jjj se puede hacer un un list para que sea más eficiente al eliminar un elemento del vector, en vez de poner el elemento a -1
+vector<int> Problema::solucionGreedy(){
     int n_pueblos = matriz.size(),
         mejor_candidato = aleatorio(0, n_pueblos-1);
-    //double distancia, mejor_distancia;
     vector<int> sol, candidatos;
+
+    bool encontrado = false;
+    double anterior_dispersion = 0.0,
+           una_dispersion,
+           mejor_dispersion;
     
-    // rellenamos el vector de candidatos con todos los valores
+    // rellenamos el vector de candidatos
     for(int i=0; i<n_pueblos; ++i)
         candidatos.push_back(i);
 
-    // mostramos el vector de candidatos
+    // jjj mostramos el vector de candidatos
     cout << "\tVector de candidatos : ";
     cout << "( ";
     for(int i=0; i<n_pueblos; ++i){
@@ -84,25 +92,42 @@ vector<int> Problema::greedysolution(){
     sol.push_back(mejor_candidato);
     candidatos[mejor_candidato] = -1;
 
-    while(sol.size() < elem_sel){
-        mejor_candidato = 1;
-        /*// valor inicial a mejor_distancia;
-        mejor_distancia = 100000000;
-
-        for(unsigned i=0; i<candidatos.size() && candidatos[i] != -1; ++i){ 
-            // calculo distancia
-            distancia = 10;
-        
-            // almaceno mejor distancia
-            if(distancia < mejor_distancia){
-                mejor_distancia = distancia;
+    while(sol.size() < elem_sel){   
+        // inicializar los valores comparativos
+        encontrado = false;
+        for(unsigned i=0; i<candidatos.size() && !encontrado; ++i) 
+            if(candidatos[i] != -1){
                 mejor_candidato = i;
+                mejor_dispersion = dispersion(sol, anterior_dispersion, mejor_candidato);
+                encontrado = true;
             }
-        }*/
+          
+        // recorremos los pueblos aún no seleccionados
+        for(unsigned i=0; i<candidatos.size(); ++i){
+            if(candidatos[i] != -1){
+                // calculamos la dispersión de añadir el pueblo i
+                una_dispersion = dispersion(sol, anterior_dispersion, i);
 
+                // comparamos las dispersiones obtenidas
+                if( una_dispersion < mejor_dispersion){
+                    mejor_dispersion = una_dispersion;
+                    mejor_candidato = i;
+                }
+            }
+        }
+
+        // actualizamos los valores
         sol.push_back(mejor_candidato);
         candidatos[mejor_candidato] = -1;
+        anterior_dispersion = mejor_dispersion;
     }
+
+    cout << "\tVector de candidatos : ";
+    cout << "( ";
+    for(int i=0; i<n_pueblos; ++i){
+        cout << candidatos[i] << " ";
+    }
+    cout << ")" << endl;
     
     return sol;
 }

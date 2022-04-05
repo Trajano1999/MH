@@ -50,7 +50,7 @@ int main(int narg, char * arg[]){
 
     // solución Greedy
     cout << solucion_greedy;
-    mostrarVector(problema.greedysolution());
+    mostrarVector(problema.solucionGreedy());
 
     cout << endl;
 }

@@ -26,14 +26,14 @@ class Problema {
         vector<vector<double> > matriz;
 
         int aleatorio(int min, int max);
+        double dispersion(const vector<int> & sol, double anterior_dispersion, int elem);
 
     public:
         Problema(unsigned int sem, const char * dir_fich);
         vector<vector<double> > getMatriz();
 
         // métodos para resolver el problema
-        vector<int> greedysolution();
-        // void jjj
+        vector<int> solucionGreedy();
 };
 
 # endif
