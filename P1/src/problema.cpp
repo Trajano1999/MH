@@ -12,8 +12,16 @@
 
 # include "problema.h"
 
+//-------------------------------------------------------------------------------------------------
+// CONSTANTES GLOBALES
+//-------------------------------------------------------------------------------------------------
+
 // máximo valor de un double en c++
 const double VALOR_GRANDE = 1.7976931348623158e+308;
+
+//-------------------------------------------------------------------------------------------------
+// MÉTODOS PRIVADOS
+//-------------------------------------------------------------------------------------------------
 
 // jjj
 int Problema::aleatorio(int min, int max){
@@ -52,6 +60,10 @@ double Problema::dispersion(vector<int> & v, int elem){
     return v.size() > 2 ? valor_max - valor_min : valor_max;
 }
 
+//-------------------------------------------------------------------------------------------------
+// CONSTRUCTOR
+//-------------------------------------------------------------------------------------------------
+
 Problema::Problema(unsigned int sem, const char * dir_fich){
     int elem_totales;
 
@@ -84,6 +96,10 @@ Problema::Problema(unsigned int sem, const char * dir_fich){
         matriz[pueblo1][pueblo2] = distancia;
     }
 }
+
+//-------------------------------------------------------------------------------------------------
+// MÉTODOS PÚBLICOS
+//-------------------------------------------------------------------------------------------------
 
 vector<vector<double> > Problema::getMatriz(){
     return matriz;
@@ -129,4 +145,9 @@ vector<int> Problema::solucionGreedy(){
     }
     
     return sol;
+}
+
+vector<int> Problema::solucionBusquedaLocal(){
+    vector<int> res = {1};
+    return res;
 }

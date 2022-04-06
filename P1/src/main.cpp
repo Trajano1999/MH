@@ -14,6 +14,10 @@
 
 using namespace std;
 
+//-------------------------------------------------------------------------------------------------
+// FUNCIONES
+//-------------------------------------------------------------------------------------------------
+
 // muestra una matriz
 void mostrarMatriz(const vector<vector<double> > & m){
     for(unsigned int i=0; i<m.size(); ++i){
@@ -33,12 +37,16 @@ void mostrarVector(const vector<int> & v){
     cout << ")"; 
 }
 
+//-------------------------------------------------------------------------------------------------
+// MAIN
+//-------------------------------------------------------------------------------------------------
+
 int main(int narg, char * arg[]){
     unsigned int random_semilla;
     const char * dir_fichero = arg[1];
 
     // mensajes por pantalla
-    string solucion_greedy = "\nSolución por Greedy :\n";
+    string solucion_greedy = "\nSolución por Greedy : ";
     string peticion_semilla = "\nIntroduzca la semilla : ";
 
     // lectura de semilla
@@ -46,7 +54,7 @@ int main(int narg, char * arg[]){
     cin >> random_semilla;
 
     Problema problema(random_semilla, dir_fichero);
-    //jjj mostrarMatriz(problema.getMatriz());
+    // jjj mostrarMatriz(problema.getMatriz());
 
     // solución Greedy
     cout << solucion_greedy;

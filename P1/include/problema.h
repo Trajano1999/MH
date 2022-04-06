@@ -34,6 +34,7 @@ class Problema {
 
         // métodos para resolver el problema
         vector<int> solucionGreedy();
+        vector<int> solucionBusquedaLocal();
 };
 
 # endif
