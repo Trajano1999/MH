@@ -12,6 +12,9 @@
 
 # include "problema.h"
 
+// máximo valor de un double en c++
+const double VALOR_GRANDE = 1.7976931348623158e+308;
+
 // jjj
 int Problema::aleatorio(int min, int max){
     // utilizamos srand() para modificar la semilla
@@ -19,8 +22,34 @@ int Problema::aleatorio(int min, int max){
     return rand() % (max-min+1) + min;
 }
 
-double Problema::dispersion(const vector<int> & sol, double anterior_dispersion, int elem){
-    return 1.0;
+double Problema::dispersion(vector<int> & v, int elem){
+    double suma = 0, 
+           valor_max = 0, 
+           valor_min = VALOR_GRANDE;
+
+    // añadimos el elemento
+    v.push_back(elem);
+    
+    // calculamos la dispersión con el elemento añadido
+    for(unsigned i=0; i<v.size(); ++i){
+        suma = 0;
+
+        for(unsigned j=0; j<v.size(); ++j){
+            if(v[i] != v[j])
+                suma += matriz[v[i]][v[j]] == 0 ? matriz[v[j]][v[i]] : matriz[v[i]][v[j]];
+        }
+
+        if(suma > valor_max)
+            valor_max = suma;
+
+        if(suma < valor_min)
+            valor_min = suma;
+    }
+
+    // eliminamos el elemento
+    v.pop_back();
+
+    return v.size() > 2 ? valor_max - valor_min : valor_max;
 }
 
 Problema::Problema(unsigned int sem, const char * dir_fich){
@@ -38,19 +67,14 @@ Problema::Problema(unsigned int sem, const char * dir_fich){
     fichero >> elem_totales;
     fichero >> elem_sel;
 
-    // jjj
-    cout << endl;
-    cout << "Elem tot : " << elem_totales << endl;
-    cout << "Elem sel : " << elem_sel << endl << endl;
-
     // redimensionamos la matriz
     vector<vector<double> > aux(elem_totales, vector<double>(elem_totales)); 
     matriz = aux;
 
     int num_lineas = (elem_totales * (elem_totales-1)) / 2;
-    double pueblo1,
-           pueblo2,
-           distancia;
+    int pueblo1,
+        pueblo2;
+    double distancia;
 
     // rellenamos la matriz con el resto de valores del fichero
     for(int i=0; i<num_lineas; ++i){
@@ -71,43 +95,26 @@ vector<int> Problema::solucionGreedy(){
         mejor_candidato = aleatorio(0, n_pueblos-1);
     vector<int> sol, candidatos;
 
-    bool encontrado = false;
-    double anterior_dispersion = 0.0,
-           una_dispersion,
-           mejor_dispersion;
+    double una_dispersion,
+           mejor_dispersion = 0.0;
     
     // rellenamos el vector de candidatos
     for(int i=0; i<n_pueblos; ++i)
         candidatos.push_back(i);
-
-    // jjj mostramos el vector de candidatos
-    cout << "\tVector de candidatos : ";
-    cout << "( ";
-    for(int i=0; i<n_pueblos; ++i){
-        cout << candidatos[i] << " ";
-    }
-    cout << ")" << endl;
 
     // añadimos el primer valor aleatorio
     sol.push_back(mejor_candidato);
     candidatos[mejor_candidato] = -1;
 
     while(sol.size() < elem_sel){   
-        // inicializar los valores comparativos
-        encontrado = false;
-        for(unsigned i=0; i<candidatos.size() && !encontrado; ++i) 
-            if(candidatos[i] != -1){
-                mejor_candidato = i;
-                mejor_dispersion = dispersion(sol, anterior_dispersion, mejor_candidato);
-                encontrado = true;
-            }
+        mejor_dispersion = VALOR_GRANDE;
           
         // recorremos los pueblos aún no seleccionados
         for(unsigned i=0; i<candidatos.size(); ++i){
             if(candidatos[i] != -1){
                 // calculamos la dispersión de añadir el pueblo i
-                una_dispersion = dispersion(sol, anterior_dispersion, i);
-
+                una_dispersion = dispersion(sol, i);
+                
                 // comparamos las dispersiones obtenidas
                 if( una_dispersion < mejor_dispersion){
                     mejor_dispersion = una_dispersion;
@@ -119,7 +126,6 @@ vector<int> Problema::solucionGreedy(){
         // actualizamos los valores
         sol.push_back(mejor_candidato);
         candidatos[mejor_candidato] = -1;
-        anterior_dispersion = mejor_dispersion;
     }
 
     cout << "\tVector de candidatos : ";

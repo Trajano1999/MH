@@ -26,7 +26,7 @@ class Problema {
         vector<vector<double> > matriz;
 
         int aleatorio(int min, int max);
-        double dispersion(const vector<int> & sol, double anterior_dispersion, int elem);
+        double dispersion(vector<int> & v, int elem);
 
     public:
         Problema(unsigned int sem, const char * dir_fich);
