@@ -46,7 +46,7 @@ int main(int narg, char * arg[]){
     cin >> random_semilla;
 
     Problema problema(random_semilla, dir_fichero);
-    mostrarMatriz(problema.getMatriz());
+    //jjj mostrarMatriz(problema.getMatriz());
 
     // solución Greedy
     cout << solucion_greedy;

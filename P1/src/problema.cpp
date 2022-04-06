@@ -23,8 +23,8 @@ int Problema::aleatorio(int min, int max){
 }
 
 double Problema::dispersion(vector<int> & v, int elem){
-    double suma = 0, 
-           valor_max = 0, 
+    double suma = 0,
+           valor_max = 0,
            valor_min = VALOR_GRANDE;
 
     // añadimos el elemento
@@ -93,10 +93,9 @@ vector<vector<double> > Problema::getMatriz(){
 vector<int> Problema::solucionGreedy(){
     int n_pueblos = matriz.size(),
         mejor_candidato = aleatorio(0, n_pueblos-1);
-    vector<int> sol, candidatos;
-
     double una_dispersion,
-           mejor_dispersion = 0.0;
+           mejor_dispersion;
+    vector<int> sol, candidatos;
     
     // rellenamos el vector de candidatos
     for(int i=0; i<n_pueblos; ++i)
@@ -106,6 +105,7 @@ vector<int> Problema::solucionGreedy(){
     sol.push_back(mejor_candidato);
     candidatos[mejor_candidato] = -1;
 
+    // añadimos los demás pueblos
     while(sol.size() < elem_sel){   
         mejor_dispersion = VALOR_GRANDE;
           
@@ -127,13 +127,6 @@ vector<int> Problema::solucionGreedy(){
         sol.push_back(mejor_candidato);
         candidatos[mejor_candidato] = -1;
     }
-
-    cout << "\tVector de candidatos : ";
-    cout << "( ";
-    for(int i=0; i<n_pueblos; ++i){
-        cout << candidatos[i] << " ";
-    }
-    cout << ")" << endl;
     
     return sol;
 }
