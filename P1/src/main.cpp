@@ -46,19 +46,23 @@ int main(int narg, char * arg[]){
     const char * dir_fichero = arg[1];
 
     // mensajes por pantalla
-    string solucion_greedy = "\nSolución por Greedy : ";
-    string peticion_semilla = "\nIntroduzca la semilla : ";
+    string peticion_semilla = "\nIntroduzca la semilla : ",
+           solucion_greedy  = "\nSolución por Greedy         : ",
+           solucion_BL      = "\nSolución por Búsqueda Local : ";
 
     // lectura de semilla
     cout << peticion_semilla; 
     cin >> random_semilla;
 
     Problema problema(random_semilla, dir_fichero);
-    // jjj mostrarMatriz(problema.getMatriz());
 
-    // solución Greedy
+    // solución por Greedy
     cout << solucion_greedy;
     mostrarVector(problema.solucionGreedy());
+
+    // solución por Búsqueda Local
+    cout << solucion_BL;
+    mostrarVector(problema.solucionBusquedaLocal());
 
     cout << endl;
 }

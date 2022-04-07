@@ -30,34 +30,73 @@ int Problema::aleatorio(int min, int max){
     return rand() % (max-min+1) + min;
 }
 
-double Problema::dispersion(vector<int> & v, int elem){
-    double suma = 0,
-           valor_max = 0,
-           valor_min = VALOR_GRANDE;
+vector<double> Problema::sigmaNoSeleccionados(const vector<int> & cand, const vector<int> & sol){
+    unsigned tamanio_cand = cand.size(),
+             tamanio_sol = sol.size();
+    double suma = 0.0;
+    vector<double> res (tamanio_cand, 0.0);
 
-    // añadimos el elemento
-    v.push_back(elem);
+    for(unsigned i=0; i<tamanio_cand; ++i)
+        if(cand[i] != -1){
+            for(unsigned j=0; j<tamanio_sol; ++j)
+                suma += matriz[sol[j]][cand[i]] == 0 ? matriz[sol[j]][cand[i]] : matriz[sol[j]][cand[i]];
+            
+            res[i] = suma;
+            suma = 0.0;
+        }
     
-    // calculamos la dispersión con el elemento añadido
-    for(unsigned i=0; i<v.size(); ++i){
-        suma = 0;
+    return res;
+}
 
-        for(unsigned j=0; j<v.size(); ++j){
-            if(v[i] != v[j])
-                suma += matriz[v[i]][v[j]] == 0 ? matriz[v[j]][v[i]] : matriz[v[i]][v[j]];
+vector<double> Problema::sigmaSeleccionados(const vector<int> & sol){
+    unsigned tamanio_sol = sol.size();
+    double suma = 0.0;
+    vector<double> res (tamanio_sol, 0.0);
+    
+    for(unsigned i=0; i<tamanio_sol; ++i){
+        for(unsigned j=0; j<tamanio_sol; ++j){
+            if(i != j) 
+                suma += matriz[sol[i]][sol[j]] == 0 ? matriz[sol[j]][sol[i]] : matriz[sol[i]][sol[j]];
         }
 
-        if(suma > valor_max)
-            valor_max = suma;
-
-        if(suma < valor_min)
-            valor_min = suma;
+        res[i] = suma;
+        suma = 0.0;
     }
 
-    // eliminamos el elemento
-    v.pop_back();
+    return res;
+}
 
-    return v.size() > 2 ? valor_max - valor_min : valor_max;
+int Problema::elementoMenorDispersion(const vector<int> & cand, const vector<int> & sol){
+    double distancia;
+    unsigned tamanio_cand = cand.size(),
+             tamanio_sol = sol.size();
+    vector<double> sigma (tamanio_sol, 0.0);
+
+    // calculamos el vector de la suma de distancias de cada elemento no seleccionado a los seleccionados
+    vector<double> sigma_no_seleccionados = sigmaNoSeleccionados(cand, sol);
+
+    // calculamos el vector de la suma de distancias de cada elemento seleccionado al resto
+    vector<double> sigma_seleccionados = sigmaSeleccionados(sol);
+
+    for(unsigned i=0; i<tamanio_cand; ++i)
+        if(cand[i] != -1){
+            // calculamos el vector de la suma de distancias de los sigma seleccionados 
+            // con la distancia de añadir un elemento no seleccionado i
+            for(unsigned j=0; j<tamanio_sol; ++j){
+                distancia = matriz[sol[j]][cand[i]] == 0 ? matriz[cand[i]][sol[j]] : matriz[sol[j]][cand[i]];
+                sigma[j] = sigma_seleccionados[j] + distancia;
+            }
+
+            // calculamos el max y min de sigma
+        }
+
+    return 1;
+}
+
+void Problema::intercambio(vector<int> & v, int valor1, int valor2){
+    for(unsigned i=0; i<v.size(); ++i)
+        if(v[i] == valor1)
+            v[i] = valor2;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -109,8 +148,6 @@ vector<vector<double> > Problema::getMatriz(){
 vector<int> Problema::solucionGreedy(){
     int n_pueblos = matriz.size(),
         mejor_candidato = aleatorio(0, n_pueblos-1);
-    double una_dispersion,
-           mejor_dispersion;
     vector<int> sol, candidatos;
     
     // rellenamos el vector de candidatos
@@ -122,24 +159,8 @@ vector<int> Problema::solucionGreedy(){
     candidatos[mejor_candidato] = -1;
 
     // añadimos los demás pueblos
-    while(sol.size() < elem_sel){   
-        mejor_dispersion = VALOR_GRANDE;
-          
-        // recorremos los pueblos aún no seleccionados
-        for(unsigned i=0; i<candidatos.size(); ++i){
-            if(candidatos[i] != -1){
-                // calculamos la dispersión de añadir el pueblo i
-                una_dispersion = dispersion(sol, i);
-                
-                // comparamos las dispersiones obtenidas
-                if( una_dispersion < mejor_dispersion){
-                    mejor_dispersion = una_dispersion;
-                    mejor_candidato = i;
-                }
-            }
-        }
-
-        // actualizamos los valores
+    while(sol.size() < elem_sel){             
+        mejor_candidato = elementoMenorDispersion(candidatos, sol);
         sol.push_back(mejor_candidato);
         candidatos[mejor_candidato] = -1;
     }
