@@ -20,21 +20,31 @@ void mostrarVector(const vector<double> & v){
     cout << ")"; 
 }
 
+// jjj
+void mostrarVectorInt(const vector<int> & v){
+    cout << "( ";
+    for(unsigned i=0; i<v.size(); ++i)
+        cout << v[i] << " ";
+    cout << ")"; 
+}
+
 //-------------------------------------------------------------------------------------------------
 // CONSTANTES GLOBALES
 //-------------------------------------------------------------------------------------------------
 
 // máximo valor de un double en c++
 const double VALOR_GRANDE = 1.7976931348623158e+308;
+const unsigned MAX_EVALUACIONES = 100000;
 
 //-------------------------------------------------------------------------------------------------
 // MÉTODOS PRIVADOS
 //-------------------------------------------------------------------------------------------------
 
 // jjj
-int Problema::aleatorio(int min, int max){
+// devuelve un valor aleatorio entre los parámetros recibidos
+int Problema::randomGreedy(unsigned sem, int min, int max){
     // utilizamos srand() para modificar la semilla
-    srand(semilla);
+    srand(sem);
     return rand() % (max-min+1) + min;
 }
 
@@ -147,11 +157,42 @@ int Problema::elementoMenorDispersion(const vector<int> & cand, const vector<int
     return posicionMinima(dispersion);
 }
 
+bool Problema::comprobarValor(const vector<int> & v, int valor){
+    bool encontrado = false;
+
+    for(unsigned i=0; i<v.size() && !encontrado; ++i){
+        if(v[i] == valor)
+            encontrado = true;
+    }
+
+    return encontrado;
+}
+
+// jjj
+// devuelve m valores aleatorios distintos entre los parámetros recibidos
+set<int> Problema::randomBL(int min, int max){
+    unsigned la_semilla = semilla;
+    set<int> res;
+    
+    while(res.size() < elem_sel){
+        res.insert(randomGreedy(la_semilla, min, max));
+        // cambiamos la semilla por un valor random (basado en la semilla anterior)
+        la_semilla = rand();
+    }
+    
+    return res;
+}
+
 // intercambia un valor de un vector por otro
 void Problema::intercambio(vector<int> & v, int valor1, int valor2){
     for(unsigned i=0; i<v.size(); ++i)
         if(v[i] == valor1)
             v[i] = valor2;
+}
+
+// jjj
+double Problema::coste(const vector<int> & v){
+    return 1.0;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -202,7 +243,7 @@ vector<vector<double> > Problema::getMatriz(){
 // jjj se puede hacer un un list para que sea más eficiente al eliminar un elemento del vector, en vez de poner el elemento a -1
 vector<int> Problema::solucionGreedy(){
     int n_pueblos = matriz.size(),
-        mejor_candidato = aleatorio(0, n_pueblos-1);
+        mejor_candidato = randomGreedy(semilla, 0, n_pueblos-1);
     vector<int> sol, candidatos;
     
     // rellenamos el vector de candidatos
@@ -224,6 +265,62 @@ vector<int> Problema::solucionGreedy(){
 }
 
 vector<int> Problema::solucionBusquedaLocal(){
-    vector<int> res = {1};
-    return res;
+    int auxiliar;
+    unsigned tamanio_cand = matriz.size();
+    set<int> aleatorios = randomBL(0, tamanio_cand-1);
+    unsigned tamanio_sol = aleatorios.size();
+    set<int>::iterator k;
+
+    vector<int> sol, candidatos;
+    double coste_anterior, coste_nuevo;
+    unsigned num_evaluaciones = 0;
+    bool encontrado = false;
+
+    // generamos el primer vector de soluciones aleatorias
+    for(k=aleatorios.begin(); k!=aleatorios.end(); ++k)
+        sol.push_back(*k);
+
+    // generamos el vector de candidatos
+    for(unsigned i=0; i<tamanio_cand; ++i)
+        candidatos.push_back(i);
+    for(unsigned i=0; i<tamanio_sol; ++i)
+        candidatos[sol[i]] = -1;
+
+    cout << endl;
+    cout << "\n COMIENZO";
+    cout << "\n\tCandidato : ";
+    mostrarVectorInt(candidatos);
+    cout << "\n\tSolucion  : ";
+    mostrarVectorInt(sol);
+    cout << endl << endl;
+
+    // buscamos los vecinos de cada selección para mejorar la solución
+    for(unsigned i=0; i<tamanio_sol; ++i){
+        encontrado = false;
+        for(unsigned j=0; j<tamanio_cand && !encontrado; ++j){
+            if(candidatos[j] != -1 && num_evaluaciones < MAX_EVALUACIONES){
+                // calculo el coste inicial
+                coste_anterior = coste(sol);
+                
+                // aplicamos el intercambio
+                auxiliar = sol[i];
+                intercambio(sol, sol[i], candidatos[j]);
+
+                // calculamos coste del vecino
+                coste_nuevo = coste(sol);
+
+                // si es mejor, pasamos al siguiente, sino, lo dejamos como estaba
+                if(coste_nuevo < coste_anterior){
+                    encontrado = true;
+                    candidatos[j] = -1;
+                    candidatos[auxiliar] = auxiliar;
+                }else
+                    intercambio(sol, candidatos[j], auxiliar);
+
+                num_evaluaciones++;
+            }
+        }
+    }
+
+    return sol;
 }

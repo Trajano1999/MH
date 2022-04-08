@@ -16,6 +16,7 @@
 # include <iostream>
 # include <fstream>
 # include <vector>
+# include <set>
 # include <ctime>
 
 using namespace std;
@@ -26,7 +27,7 @@ class Problema {
         vector<vector<double> > matriz;
 
         // métodos privados para Greedy
-        int aleatorio(int min, int max);
+        int randomGreedy(unsigned sem, int min, int max);
         double valorMaximo(const vector<double> & v);
         double valorMinimo(const vector<double> & v);
         int posicionMinima(const vector<double> & v);
@@ -35,7 +36,10 @@ class Problema {
         int elementoMenorDispersion(const vector<int> & candidatos, const vector<int> & sol);
 
         // métodos privados para BL
+        bool comprobarValor(const vector<int> & v, int valor);
+        set<int> randomBL(int min, int max);
         void intercambio(vector<int> & v, int valor1, int valor2);
+        double coste(const vector<int> & v);
 
     public:
         Problema(unsigned sem, const char * dir_fich);
