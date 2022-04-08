@@ -42,7 +42,7 @@ void mostrarVector(const vector<int> & v){
 //-------------------------------------------------------------------------------------------------
 
 int main(int narg, char * arg[]){
-    unsigned int random_semilla;
+    unsigned random_semilla;
     const char * dir_fichero = arg[1];
 
     // mensajes por pantalla

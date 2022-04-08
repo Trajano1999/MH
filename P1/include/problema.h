@@ -22,7 +22,7 @@ using namespace std;
 
 class Problema {
     private:
-        unsigned int elem_sel, semilla;
+        unsigned elem_sel, semilla;
         vector<vector<double> > matriz;
 
         // métodos privados para Greedy
@@ -38,7 +38,7 @@ class Problema {
         void intercambio(vector<int> & v, int valor1, int valor2);
 
     public:
-        Problema(unsigned int sem, const char * dir_fich);
+        Problema(unsigned sem, const char * dir_fich);
         vector<vector<double> > getMatriz();
 
         // métodos para resolver el problema

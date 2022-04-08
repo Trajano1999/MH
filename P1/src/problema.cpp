@@ -157,7 +157,7 @@ void Problema::intercambio(vector<int> & v, int valor1, int valor2){
 // CONSTRUCTOR
 //-------------------------------------------------------------------------------------------------
 
-Problema::Problema(unsigned int sem, const char * dir_fich){
+Problema::Problema(unsigned sem, const char * dir_fich){
     int elem_totales;
 
     // almacenamos la semilla
