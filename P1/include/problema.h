@@ -39,9 +39,9 @@ class Problema {
         bool comprobarValor(const vector<int> & v, int valor);
         set<int> randomBL(int min, int max);
         void intercambio(vector<int> & v, int valor1, int valor2);
-        double coste(const vector<int> & v);
-        /*double costeAniadirElemento(const vector);
-        double costeEliminarElemento*/
+        double dispersion(const vector<int> & v);
+        double dispersionAniadirElemento(const vector<int> & sol, int elem);
+        double dispersionEliminarElemento(const vector<int> & sol, int elem);
 
     public:
         Problema(unsigned sem, const char * dir_fich);

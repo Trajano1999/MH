@@ -64,7 +64,7 @@ double Problema::valorMinimo(const vector<double> & v){
     double valor_min = VALOR_GRANDE;
 
     for(unsigned i=0; i<v.size(); ++i)
-        if(v[i] < valor_min)
+        if(v[i] < valor_min && v[i] > 0)
             valor_min = v[i];
         
     return valor_min;
@@ -190,10 +190,56 @@ void Problema::intercambio(vector<int> & v, int valor1, int valor2){
             v[i] = valor2;
 }
 
-// jjj
-double Problema::coste(const vector<int> & v){
+// calcula la dispersión de un vector solución dado
+double Problema::dispersion(const vector<int> & v){
+    vector<double> sigmas_seleccionados = sigmaSeleccionados(v);
+    return valorMaximo(sigmas_seleccionados) - valorMinimo(sigmas_seleccionados);
+}
+
+// calcula la dispersion al añadir un elemento
+double Problema::dispersionAniadirElemento(const vector<int> & sol, int elem){
+    unsigned tamanio_sol = sol.size();
+    double suma = 0.0;
+    vector<double> sigmas_seleccionados = sigmaSeleccionados(sol),
+                   distancias_elem (tamanio_sol, 0.0);
+
+    // calculamos las distancias del nuevo elemento a todos los demás
+    for(unsigned i=0; i<tamanio_sol; ++i){
+        distancias_elem[i] = matriz[elem][sol[i]] == 0 ? matriz[sol[i]][elem] : matriz[elem][sol[i]];
+        suma += distancias_elem[i];
+    }
+
+    // añadimos esas distancias al vector de sigmas
+    for(unsigned i=0; i<tamanio_sol; ++i)
+        sigmas_seleccionados[i] += distancias_elem[i];
     
-    return 1.0;
+    // añadimos la suma de distancias del elem nuevo respecto al resto
+    sigmas_seleccionados.push_back(suma);
+
+    cout << "\nDispersion añadir   : " << valorMaximo(sigmas_seleccionados) - valorMinimo(sigmas_seleccionados);
+    return valorMaximo(sigmas_seleccionados) - valorMinimo(sigmas_seleccionados);
+}
+
+// calcula la dispersion al eliminar un elemento
+double Problema::dispersionEliminarElemento(const vector<int> & sol, int elem){
+    unsigned pos = 0;
+    vector<double> sigmas_seleccionados = sigmaSeleccionados(sol);
+
+    // calculo la posición del elemento a eliminar
+    for(unsigned i=0; i<sol.size(); ++i){
+        if(sol[i] == elem)
+            pos = i;
+    }
+
+    // restamos la distancia del elemento eliminado al resto de elementos
+    for(unsigned i=0; i<sigmas_seleccionados.size(); ++i){
+        if(i != pos)
+            sigmas_seleccionados[i] -= matriz[sol[i]][elem] == 0 ? matriz[elem][sol[i]] : matriz[sol[i]][elem];
+        else
+            sigmas_seleccionados[i] = 0;
+    }
+    cout << "\nDispersion eliminar : " << valorMaximo(sigmas_seleccionados) - valorMinimo(sigmas_seleccionados);
+    return valorMaximo(sigmas_seleccionados) - valorMinimo(sigmas_seleccionados);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -303,17 +349,24 @@ vector<int> Problema::solucionBusquedaLocal(){
             if(candidatos[j] != -1 && num_evaluaciones < MAX_EVALUACIONES){
                 // calculo el coste inicial
                 if(calcular)
-                    coste_anterior = coste(sol);
+                    coste_anterior = dispersion(sol);
                 
-                // aplicamos el intercambio
+                // calculamos coste del vecino
+                coste_nuevo = coste_anterior - dispersionEliminarElemento(sol, sol[i]) + dispersionAniadirElemento(sol, candidatos[j]);
+
+                cout << "\nSolucion       : ";
+                mostrarVectorInt(sol);
                 auxiliar = sol[i];
                 intercambio(sol, sol[i], candidatos[j]);
+                cout << "\nIntercambio    : ";
+                mostrarVectorInt(sol);
+                cout << "\nCoste anterior : " << coste_anterior;
+                cout << "\nCoste nuevo    : " << coste_nuevo;
+                cout << endl;
 
-                // calculamos coste del vecino
-                coste_nuevo = coste(sol);
-
-                // si el coste nuevo es mejor, lo dejamos intercambiado, sino, lo intercambiamos para dejarlo como estaba
+                // si el coste nuevo es mejor, lo intercambiamos, sino, lo dejamos como estaba
                 if(coste_nuevo < coste_anterior){
+                    // aplicamos el intercambio
                     encontrado = true;
                     candidatos[j] = -1;
                     candidatos[auxiliar] = auxiliar;
@@ -324,7 +377,7 @@ vector<int> Problema::solucionBusquedaLocal(){
                 }else{
                     intercambio(sol, candidatos[j], auxiliar);
                     calcular = true;
-                }
+                }      
 
                 num_evaluaciones++;
             }
