@@ -112,6 +112,7 @@ vector<double> Problema::sigmaSeleccionados(const vector<int> & sol){
     return res;
 }
 
+// calcula el elemento con menor dispersión
 int Problema::elementoMenorDispersion(const vector<int> & cand, const vector<int> & sol){
     double distancia, max, min;
     unsigned tamanio_cand = cand.size(),
