@@ -12,6 +12,14 @@
 
 # include "problema.h"
 
+// jjj
+void mostrarVector(const vector<double> & v){
+    cout << "( ";
+    for(unsigned i=0; i<v.size(); ++i)
+        cout << v[i] << " ";
+    cout << ")"; 
+}
+
 //-------------------------------------------------------------------------------------------------
 // CONSTANTES GLOBALES
 //-------------------------------------------------------------------------------------------------
@@ -30,6 +38,43 @@ int Problema::aleatorio(int min, int max){
     return rand() % (max-min+1) + min;
 }
 
+// devuelve el mayor valor del vector
+double Problema::valorMaximo(const vector<double> & v){
+    double valor_max = 0.0;
+
+    for(unsigned i=0; i<v.size(); ++i)
+        if(v[i] > valor_max)
+            valor_max = v[i];
+        
+    return valor_max;
+}
+
+// devuelve el menor valor del vector (sin tener en cuenta el 0)
+double Problema::valorMinimo(const vector<double> & v){
+    double valor_min = VALOR_GRANDE;
+
+    for(unsigned i=0; i<v.size(); ++i)
+        if(v[i] < valor_min)
+            valor_min = v[i];
+        
+    return valor_min;
+}
+
+// devuelve la posición del menor valor del vector (sin tener en cuenta el 0)
+int Problema::posicionMinima(const vector<double> & v){
+    int pos_min = 0;
+    double valor_min = VALOR_GRANDE;
+
+    for(unsigned i=0; i<v.size(); ++i)
+        if(v[i] < valor_min && v[i] > 0){
+            valor_min = v[i];
+            pos_min = i;
+        }
+        
+    return pos_min;
+}
+
+// calcula la suma de distancias de los elementos no seleccionados a los seleccionados
 vector<double> Problema::sigmaNoSeleccionados(const vector<int> & cand, const vector<int> & sol){
     unsigned tamanio_cand = cand.size(),
              tamanio_sol = sol.size();
@@ -39,7 +84,7 @@ vector<double> Problema::sigmaNoSeleccionados(const vector<int> & cand, const ve
     for(unsigned i=0; i<tamanio_cand; ++i)
         if(cand[i] != -1){
             for(unsigned j=0; j<tamanio_sol; ++j)
-                suma += matriz[sol[j]][cand[i]] == 0 ? matriz[sol[j]][cand[i]] : matriz[sol[j]][cand[i]];
+                suma += matriz[sol[j]][cand[i]] == 0 ? matriz[cand[i]][sol[j]] : matriz[sol[j]][cand[i]];
             
             res[i] = suma;
             suma = 0.0;
@@ -48,6 +93,7 @@ vector<double> Problema::sigmaNoSeleccionados(const vector<int> & cand, const ve
     return res;
 }
 
+// calcula la suma de distancias entre los elementos seleccionados
 vector<double> Problema::sigmaSeleccionados(const vector<int> & sol){
     unsigned tamanio_sol = sol.size();
     double suma = 0.0;
@@ -55,7 +101,7 @@ vector<double> Problema::sigmaSeleccionados(const vector<int> & sol){
     
     for(unsigned i=0; i<tamanio_sol; ++i){
         for(unsigned j=0; j<tamanio_sol; ++j){
-            if(i != j) 
+            if(i != j)
                 suma += matriz[sol[i]][sol[j]] == 0 ? matriz[sol[j]][sol[i]] : matriz[sol[i]][sol[j]];
         }
 
@@ -67,32 +113,40 @@ vector<double> Problema::sigmaSeleccionados(const vector<int> & sol){
 }
 
 int Problema::elementoMenorDispersion(const vector<int> & cand, const vector<int> & sol){
-    double distancia;
+    double distancia, max, min;
     unsigned tamanio_cand = cand.size(),
              tamanio_sol = sol.size();
-    vector<double> sigma (tamanio_sol, 0.0);
+    vector<double> sigma (tamanio_sol, 0.0),
+                   dispersion (tamanio_cand, 0.0);
 
     // calculamos el vector de la suma de distancias de cada elemento no seleccionado a los seleccionados
     vector<double> sigma_no_seleccionados = sigmaNoSeleccionados(cand, sol);
 
-    // calculamos el vector de la suma de distancias de cada elemento seleccionado al resto
+    // calculamos el vector de la suma de distancias de cada elemento seleccionado con el resto
     vector<double> sigma_seleccionados = sigmaSeleccionados(sol);
 
     for(unsigned i=0; i<tamanio_cand; ++i)
         if(cand[i] != -1){
             // calculamos el vector de la suma de distancias de los sigma seleccionados 
-            // con la distancia de añadir un elemento no seleccionado i
+            // más la distancia de añadir el elemento i no seleccionado
             for(unsigned j=0; j<tamanio_sol; ++j){
                 distancia = matriz[sol[j]][cand[i]] == 0 ? matriz[cand[i]][sol[j]] : matriz[sol[j]][cand[i]];
                 sigma[j] = sigma_seleccionados[j] + distancia;
             }
 
-            // calculamos el max y min de sigma
+            // calculamos el max y min entre los sigmas seleccionados y los sigmas actuales
+            max = valorMaximo(sigma); if(sigma_no_seleccionados[i] > max) max = sigma_no_seleccionados[i];
+            min = valorMinimo(sigma); if(sigma_no_seleccionados[i] < min && sigma_no_seleccionados[i] > 0) min = sigma_no_seleccionados[i];
+            
+            // la dispersión es 0 si el tamaño del vector solución es 1
+            dispersion[i] = tamanio_sol > 1 ? max - min : max;
         }
 
-    return 1;
+    // escogemos el menor valor del vector de dispersion
+    return posicionMinima(dispersion);
 }
 
+// intercambia un valor de un vector por otro
 void Problema::intercambio(vector<int> & v, int valor1, int valor2){
     for(unsigned i=0; i<v.size(); ++i)
         if(v[i] == valor1)

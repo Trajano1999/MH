@@ -20,9 +20,9 @@ using namespace std;
 
 // muestra una matriz
 void mostrarMatriz(const vector<vector<double> > & m){
-    for(unsigned int i=0; i<m.size(); ++i){
+    for(unsigned i=0; i<m.size(); ++i){
         cout << "( ";
-        for(unsigned int j=0; j<m[i].size(); ++j){
+        for(unsigned j=0; j<m[i].size(); ++j){
             cout << m[i][j] << " ";
         }
         cout << ")" << endl;
@@ -32,7 +32,7 @@ void mostrarMatriz(const vector<vector<double> > & m){
 // muestra un vector
 void mostrarVector(const vector<int> & v){
     cout << "( ";
-    for(unsigned int i=0; i<v.size(); ++i)
+    for(unsigned i=0; i<v.size(); ++i)
         cout << v[i] << " ";
     cout << ")"; 
 }
@@ -55,6 +55,7 @@ int main(int narg, char * arg[]){
     cin >> random_semilla;
 
     Problema problema(random_semilla, dir_fichero);
+    //jjj mostrarMatriz(problema.getMatriz());
 
     // solución por Greedy
     cout << solucion_greedy;

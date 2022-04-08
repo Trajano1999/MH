@@ -27,8 +27,9 @@ class Problema {
 
         // métodos privados para Greedy
         int aleatorio(int min, int max);
-        double dispersion2(vector<int> & v, int elem);
-
+        double valorMaximo(const vector<double> & v);
+        double valorMinimo(const vector<double> & v);
+        int posicionMinima(const vector<double> & v);
         vector<double> sigmaNoSeleccionados(const vector<int> & cand, const vector<int> & sol);
         vector<double> sigmaSeleccionados(const vector<int> & sol);
         int elementoMenorDispersion(const vector<int> & candidatos, const vector<int> & sol);
@@ -44,37 +45,5 @@ class Problema {
         vector<int> solucionGreedy();
         vector<int> solucionBusquedaLocal();
 };
-
-/*
-double Problema::dispersion2(vector<int> & v, int elem){
-    double suma = 0,
-           valor_max = 0,
-           valor_min = VALOR_GRANDE;
-
-    // añadimos el elemento
-    v.push_back(elem);
-    
-    // calculamos la dispersión con el elemento añadido
-    for(unsigned i=0; i<v.size(); ++i){
-        suma = 0;
-
-        for(unsigned j=0; j<v.size(); ++j){
-            if(v[i] != v[j])
-                suma += matriz[v[i]][v[j]] == 0 ? matriz[v[j]][v[i]] : matriz[v[i]][v[j]];
-        }
-
-        if(suma > valor_max)
-            valor_max = suma;
-
-        if(suma < valor_min)
-            valor_min = suma;
-    }
-
-    // eliminamos el elemento
-    v.pop_back();
-
-    return v.size() > 2 ? valor_max - valor_min : valor_max;
-}
-*/
 
 # endif
