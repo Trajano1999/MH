@@ -40,6 +40,8 @@ class Problema {
         set<int> randomBL(int min, int max);
         void intercambio(vector<int> & v, int valor1, int valor2);
         double coste(const vector<int> & v);
+        /*double costeAniadirElemento(const vector);
+        double costeEliminarElemento*/
 
     public:
         Problema(unsigned sem, const char * dir_fich);

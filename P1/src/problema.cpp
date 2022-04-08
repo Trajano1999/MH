@@ -192,6 +192,7 @@ void Problema::intercambio(vector<int> & v, int valor1, int valor2){
 
 // jjj
 double Problema::coste(const vector<int> & v){
+    
     return 1.0;
 }
 
@@ -274,7 +275,8 @@ vector<int> Problema::solucionBusquedaLocal(){
     vector<int> sol, candidatos;
     double coste_anterior, coste_nuevo;
     unsigned num_evaluaciones = 0;
-    bool encontrado = false;
+    bool encontrado = false,
+         calcular = true;
 
     // generamos el primer vector de soluciones aleatorias
     for(k=aleatorios.begin(); k!=aleatorios.end(); ++k)
@@ -300,7 +302,8 @@ vector<int> Problema::solucionBusquedaLocal(){
         for(unsigned j=0; j<tamanio_cand && !encontrado; ++j){
             if(candidatos[j] != -1 && num_evaluaciones < MAX_EVALUACIONES){
                 // calculo el coste inicial
-                coste_anterior = coste(sol);
+                if(calcular)
+                    coste_anterior = coste(sol);
                 
                 // aplicamos el intercambio
                 auxiliar = sol[i];
@@ -309,13 +312,19 @@ vector<int> Problema::solucionBusquedaLocal(){
                 // calculamos coste del vecino
                 coste_nuevo = coste(sol);
 
-                // si es mejor, pasamos al siguiente, sino, lo dejamos como estaba
+                // si el coste nuevo es mejor, lo dejamos intercambiado, sino, lo intercambiamos para dejarlo como estaba
                 if(coste_nuevo < coste_anterior){
                     encontrado = true;
                     candidatos[j] = -1;
                     candidatos[auxiliar] = auxiliar;
-                }else
+
+                    // almacenamos el coste nuevo obetenido para no recalcularlo en la siguiente iteración
+                    coste_anterior = coste_nuevo;
+                    calcular = false;
+                }else{
                     intercambio(sol, candidatos[j], auxiliar);
+                    calcular = true;
+                }
 
                 num_evaluaciones++;
             }
