@@ -36,12 +36,11 @@ class Problema {
         int elementoMenorDispersion(const vector<int> & candidatos, const vector<int> & sol);
 
         // métodos privados para BL
-        bool comprobarValor(const vector<int> & v, int valor);
-        set<int> randomBL(int min, int max);
         void intercambio(vector<int> & v, int valor1, int valor2);
+        set<int> randomBL(int min, int max);
+        int calcularPosicion(const vector<int> & v, int elem);
         double dispersion(const vector<int> & v);
-        double dispersionAniadirElemento(const vector<int> & sol, int elem);
-        double dispersionEliminarElemento(const vector<int> & sol, int elem);
+        double dispersionIntercambiarElementos(const vector<int> & sol, int elem_eliminar, int elem_aniadir);
 
     public:
         Problema(unsigned sem, const char * dir_fich);
