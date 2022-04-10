@@ -69,8 +69,17 @@ class Problema {
             double dispersionIntercambiarElementos(const vector<int> & sol, int elem_eliminar, int elem_aniadir);
 
     public: 
+        // constructor
         Problema(unsigned sem, const char * dir_fich);
+
+        // observadores
+        unsigned getSemilla();
+        unsigned getElementosSeleccionados();
         vector<vector<double> > getMatriz();
+
+        // modificadores
+        void setSemilla(unsigned sem);
+        void setMatriz(const char * dir_fich);
 
         // métodos para resolver el problema
         vector<int> solucionGreedy();

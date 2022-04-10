@@ -202,11 +202,40 @@ double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int el
 //-------------------------------------------------------------------------------------------------
 
 Problema::Problema(unsigned sem, const char * dir_fich){
-    int elem_totales;
-
     // almacenamos la semilla
     semilla = sem;
 
+    // rellenamos la matriz
+    setMatriz(dir_fich);
+}
+
+//-------------------------------------------------------------------------------------------------
+// OBSERVADORES
+//-------------------------------------------------------------------------------------------------
+
+unsigned Problema::getSemilla(){
+    return semilla;
+}
+
+unsigned Problema::getElementosSeleccionados(){
+    return elem_sel;
+}
+
+vector<vector<double> > Problema::getMatriz(){
+    return matriz;
+}
+
+//-------------------------------------------------------------------------------------------------
+// MODIFICADORES
+//-------------------------------------------------------------------------------------------------
+
+void Problema::setSemilla(unsigned sem){
+    semilla = sem;
+}
+
+void Problema::setMatriz(const char * dir_fich){
+    int elem_totales;
+    
     // abrimos el fichero
     ifstream fichero(dir_fich);
     if(!fichero.is_open())
@@ -235,12 +264,8 @@ Problema::Problema(unsigned sem, const char * dir_fich){
 }
 
 //-------------------------------------------------------------------------------------------------
-// MÉTODOS PÚBLICOS
+// MÉTODOS PARA RESOLVER EL PROBLEMA
 //-------------------------------------------------------------------------------------------------
-
-vector<vector<double> > Problema::getMatriz(){
-    return matriz;
-}
 
 vector<int> Problema::solucionGreedy(){
     int n_pueblos = matriz.size(),
