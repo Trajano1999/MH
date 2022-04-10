@@ -61,9 +61,6 @@ class Problema {
 
             // calcula la primera posición de un valor en un vector
             int calcularPosicion(const vector<int> & v, int elem);
-            
-            // calcula la dispersión de un vector
-            double dispersion(const vector<int> & v);
 
             // calcula la dispersion de un vector en el que se intercambian dos valores
             double dispersionIntercambiarElementos(const vector<int> & sol, int elem_eliminar, int elem_aniadir);
@@ -80,6 +77,9 @@ class Problema {
         // modificadores
         void setSemilla(unsigned sem);
         void setMatriz(const char * dir_fich);
+
+        // calcula la dispersión de un vector
+        double dispersion(const vector<int> & v);
 
         // métodos para resolver el problema
         vector<int> solucionGreedy();

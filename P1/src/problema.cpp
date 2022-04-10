@@ -164,11 +164,6 @@ int Problema::calcularPosicion(const vector<int> & v, int elem){
     return res;
 }
 
-double Problema::dispersion(const vector<int> & v){
-    vector<double> sigmas_seleccionados = sigmaSeleccionados(v);
-    return v.size() > 2 ? valorMaximo(sigmas_seleccionados) - valorMinimo(sigmas_seleccionados) : valorMaximo(sigmas_seleccionados);
-}
-
 double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int elem_eliminar, int elem_aniadir){
     unsigned tamanio_sol = sol.size();
     unsigned pos_eliminado = calcularPosicion(sol, elem_eliminar);
@@ -261,6 +256,15 @@ void Problema::setMatriz(const char * dir_fich){
         fichero >> distancia;
         matriz[pueblo1][pueblo2] = distancia;
     }
+}
+
+//-------------------------------------------------------------------------------------------------
+// MÉTODOS PÚBLICOS
+//-------------------------------------------------------------------------------------------------
+
+double Problema::dispersion(const vector<int> & v){
+    vector<double> sigmas_seleccionados = sigmaSeleccionados(v);
+    return v.size() > 2 ? valorMaximo(sigmas_seleccionados) - valorMinimo(sigmas_seleccionados) : valorMaximo(sigmas_seleccionados);
 }
 
 //-------------------------------------------------------------------------------------------------
