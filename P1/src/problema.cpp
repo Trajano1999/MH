@@ -24,14 +24,12 @@ const unsigned MAX_EVALUACIONES = 100000;
 // MÉTODOS PRIVADOS GREEDY
 //-------------------------------------------------------------------------------------------------
 
-// devuelve un valor aleatorio entre los parámetros recibidos
 int Problema::randomGreedy(unsigned sem, int min, int max){
     // utilizamos srand() para modificar la semilla
     srand(sem);
     return rand() % (max-min+1) + min;
 }
 
-// devuelve el mayor valor del vector
 double Problema::valorMaximo(const vector<double> & v){
     double valor_max = 0.0;
 
@@ -42,7 +40,6 @@ double Problema::valorMaximo(const vector<double> & v){
     return valor_max;
 }
 
-// devuelve el menor valor del vector (sin tener en cuenta el 0)
 double Problema::valorMinimo(const vector<double> & v){
     double valor_min = VALOR_GRANDE;
 
@@ -53,7 +50,6 @@ double Problema::valorMinimo(const vector<double> & v){
     return valor_min;
 }
 
-// devuelve la posición del menor valor del vector (sin tener en cuenta el 0)
 int Problema::posicionMinima(const vector<double> & v){
     int pos_min = 0;
     double valor_min = VALOR_GRANDE;
@@ -67,7 +63,6 @@ int Problema::posicionMinima(const vector<double> & v){
     return pos_min;
 }
 
-// calcula la suma de distancias de los elementos no seleccionados a los seleccionados
 vector<double> Problema::sigmaNoSeleccionados(const vector<int> & cand, const vector<int> & sol){
     unsigned tamanio_cand = cand.size(),
              tamanio_sol = sol.size();
@@ -86,7 +81,6 @@ vector<double> Problema::sigmaNoSeleccionados(const vector<int> & cand, const ve
     return res;
 }
 
-// calcula la suma de distancias entre los elementos seleccionados
 vector<double> Problema::sigmaSeleccionados(const vector<int> & sol){
     unsigned tamanio_sol = sol.size();
     double suma = 0.0;
@@ -105,7 +99,6 @@ vector<double> Problema::sigmaSeleccionados(const vector<int> & sol){
     return res;
 }
 
-// calcula el elemento con menor dispersión
 int Problema::elementoMenorDispersion(const vector<int> & cand, const vector<int> & sol){
     double distancia, max, min;
     unsigned tamanio_cand = cand.size(),
@@ -144,14 +137,12 @@ int Problema::elementoMenorDispersion(const vector<int> & cand, const vector<int
 // MÉTODOS PRIVADOS BL
 //-------------------------------------------------------------------------------------------------
 
-// intercambia un valor de un vector por otro
 void Problema::intercambio(vector<int> & v, int valor1, int valor2){
     for(unsigned i=0; i<v.size(); ++i)
         if(v[i] == valor1)
             v[i] = valor2;
 }
 
-// devuelve m valores aleatorios distintos entre los parámetros recibidos
 set<int> Problema::randomBL(int min, int max){
     unsigned la_semilla = semilla;
     set<int> res;
@@ -165,7 +156,6 @@ set<int> Problema::randomBL(int min, int max){
     return res;
 }
 
-// calcula la primera posición de un elemento del vector
 int Problema::calcularPosicion(const vector<int> & v, int elem){
     int res = -1;
     for(unsigned i=0; i<v.size(); ++i)
@@ -174,13 +164,11 @@ int Problema::calcularPosicion(const vector<int> & v, int elem){
     return res;
 }
 
-// calcula la dispersión de un vector solución dado
 double Problema::dispersion(const vector<int> & v){
     vector<double> sigmas_seleccionados = sigmaSeleccionados(v);
     return v.size() > 2 ? valorMaximo(sigmas_seleccionados) - valorMinimo(sigmas_seleccionados) : valorMaximo(sigmas_seleccionados);
 }
 
-// calcula la dispersion al eliminar y añadir un elemento a un vector
 double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int elem_eliminar, int elem_aniadir){
     unsigned tamanio_sol = sol.size();
     unsigned pos_eliminado = calcularPosicion(sol, elem_eliminar);
