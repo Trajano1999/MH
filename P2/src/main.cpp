@@ -49,7 +49,7 @@ void mostrarVector(const vector<int> & v){
 //-------------------------------------------------------------------------------------------------
 
 // realiza las mediciones de los métodos de la P1 y devuelve los tiempos y las desviaciones
-vector<string> tiemposP1(char * arg, Problema problema, vector<double> soluciones_ideales, int i){
+vector<string> tiemposP1(char * arg, int i, Problema problema, vector<double> soluciones_ideales){
     unsigned tiempo_antes_greedy,
              tiempo_despues_greedy,
              tiempo_antes_BL,
@@ -139,8 +139,8 @@ int main(int narg, char * arg[]){
     // recorremos los archivos
     for(int i=1; i<narg; ++i){
 
-        // medimos los tiempos para la P1   // jjj la i sobra
-        resultadosP1 = tiemposP1(arg[i], problema, soluciones_ideales, i);
+        // medimos los tiempos para la P1
+        resultadosP1 = tiemposP1(arg[i], i, problema, soluciones_ideales);
         fichero << resultadosP1[0] << " : " << resultadosP1[1] << " : " << resultadosP1[2] << " : " << resultadosP1[3] << " : " << resultadosP1[4] << endl;
     }
 
