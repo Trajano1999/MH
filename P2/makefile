@@ -27,7 +27,7 @@ $(BIN)/$(EJECUTABLE): $(OBJECTS)
 
 # objeto main																			   		   # añadir dependencias
 $(OBJ)/main.o: src/main.cpp include/problema.h
-	$(CC) $(CFLAGS) -c $< -o $@ -I ./include
+	$(CC) $(CFLAGS) -c $< -o $@ -I ./$(INC)
 
 # objetos
 $(OBJ)/%.o: $(SRC)/%.cpp $(INC)/%.h
