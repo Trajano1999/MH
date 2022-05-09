@@ -48,7 +48,7 @@ void mostrarVector(const vector<int> & v){
 // MEDICIONES DE TIEMPOS
 //-------------------------------------------------------------------------------------------------
 
-// realiza las mediciones de los métodos de la P1 y devuelve los tiempos y las desviaciones
+// realiza las mediciones de los métodos de la P1 y devuelve tanto los tiempos comos las desviaciones
 vector<string> tiemposP1(char * arg, int i, Problema problema, vector<double> soluciones_ideales){
     unsigned tiempo_antes_greedy,
              tiempo_despues_greedy,
