@@ -45,23 +45,83 @@ void mostrarVector(const vector<int> & v){
 }
 
 //-------------------------------------------------------------------------------------------------
-// MAIN
+// MEDICIONES DE TIEMPOS
 //-------------------------------------------------------------------------------------------------
 
-int main(int narg, char * arg[]){
-    unsigned random_semilla = 0,
-             tiempo_antes_greedy,
+// realiza las mediciones de los métodos de la P1 y devuelve los tiempos y las desviaciones
+vector<string> tiemposP1(char * arg, Problema problema, vector<double> soluciones_ideales, int i){
+    unsigned tiempo_antes_greedy,
              tiempo_despues_greedy,
              tiempo_antes_BL,
              tiempo_despues_BL;
     double tiempo_final_greedy = 0.0,
            tiempo_final_BL = 0.0,
-           valor_algoritmo_greedy,
-           valor_algoritmo_BL,
            desviacion_final_greedy = 0.0,
-           desviacion_final_BL = 0.0;
-    const char * dir_fichero = arg[1];
+           desviacion_final_BL = 0.0,
+           valor_algoritmo_greedy,
+           valor_algoritmo_BL;
+
     string nombre_fichero;
+    vector<string> resultados;
+    
+    problema.setMatriz(arg);
+
+    // ejecutamos EJECUCIONES_POR_PROBLEMA veces cada archivo
+    for(unsigned j=0; j<EJECUCIONES_POR_PROBLEMA; ++j){
+        // modificamos la semilla
+        problema.setSemilla(j+1);
+        
+        // ejecutamos Greedy
+        tiempo_antes_greedy = clock();
+        problema.solucionGreedy();
+        tiempo_despues_greedy = clock();
+
+        tiempo_final_greedy += double(tiempo_despues_greedy-tiempo_antes_greedy) / CLOCKS_PER_SEC;
+        valor_algoritmo_greedy = problema.dispersion(problema.solucionGreedy());
+        desviacion_final_greedy += (valor_algoritmo_greedy - soluciones_ideales[i-1]) / valor_algoritmo_greedy;
+
+        // ejecutamos Búsqueda Lineal
+        tiempo_antes_BL = clock();
+        problema.solucionBusquedaLocal();
+        tiempo_despues_BL = clock();
+        
+        tiempo_final_BL += double(tiempo_despues_BL-tiempo_antes_BL) / CLOCKS_PER_SEC;
+        valor_algoritmo_BL = problema.dispersion(problema.solucionBusquedaLocal());
+        desviacion_final_BL += (valor_algoritmo_BL - soluciones_ideales[i-1]) / valor_algoritmo_BL;
+    }
+    
+    // calculamos los tiempos
+    tiempo_final_greedy = tiempo_final_greedy / EJECUCIONES_POR_PROBLEMA;
+    tiempo_final_BL     = tiempo_final_BL     / EJECUCIONES_POR_PROBLEMA;
+
+    // calculamos la desviación típica
+    desviacion_final_greedy = 100*desviacion_final_greedy;
+    desviacion_final_BL     = 100*desviacion_final_BL;
+
+    // eliminamos la ruta de los archivos
+    nombre_fichero = arg;
+    nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+59);
+
+    // agrupamos los valores de tiempo y desviación
+    resultados.push_back(nombre_fichero);
+    resultados.push_back(to_string(tiempo_final_greedy));
+    resultados.push_back(to_string(tiempo_final_BL));
+    resultados.push_back(to_string(desviacion_final_greedy));
+    resultados.push_back(to_string(desviacion_final_BL));
+
+    return resultados;
+}
+
+//-------------------------------------------------------------------------------------------------
+// MAIN
+//-------------------------------------------------------------------------------------------------
+
+int main(int narg, char * arg[]){
+    unsigned random_semilla = 0;
+    const char * dir_fichero = arg[1];
+    vector<string> resultadosP1;
+
+    Problema problema(random_semilla, dir_fichero);
 
     // vector con las soluciones ideales proporcionadas por el profesor
     vector<double> soluciones_ideales = { 0, 0, 0, 0, 0, 12.7179599999997, 14.0987499999997, 16.7611899999998, 17.0692099999999, 23.2652299999999, 1.92610000000002, 2.12104000000011,       \
@@ -76,57 +136,12 @@ int main(int narg, char * arg[]){
         cerr << "Error al abrir " << DIR_FICHERO_SALIDA << endl;
     fichero << "Documento : " << "Tiempo_Greedy : " << "Tiempo_BL : " << "Desv_Tipica_Greedy : " << "Desv_Tipica_BL" << endl << endl;
 
-    Problema problema(random_semilla, dir_fichero);
-
     // recorremos los archivos
     for(int i=1; i<narg; ++i){
-        dir_fichero = arg[i];
-        problema.setMatriz(dir_fichero);
 
-        // ejecutamos EJECUCIONES_POR_PROBLEMA veces cada archivo
-        for(unsigned j=0; j<EJECUCIONES_POR_PROBLEMA; ++j){
-            random_semilla = j+1;
-            problema.setSemilla(random_semilla);
-            
-            // ejecutamos Greedy
-            tiempo_antes_greedy = clock();
-            problema.solucionGreedy();
-            tiempo_despues_greedy = clock();
-
-            tiempo_final_greedy += double(tiempo_despues_greedy-tiempo_antes_greedy) / CLOCKS_PER_SEC;
-            valor_algoritmo_greedy = problema.dispersion(problema.solucionGreedy());
-            desviacion_final_greedy += (valor_algoritmo_greedy - soluciones_ideales[i-1]) / valor_algoritmo_greedy;
-
-            // ejecutamos Búsqueda Lineal
-            tiempo_antes_BL = clock();
-            problema.solucionBusquedaLocal();
-            tiempo_despues_BL = clock();
-            
-            tiempo_final_BL += double(tiempo_despues_BL-tiempo_antes_BL) / CLOCKS_PER_SEC;
-            valor_algoritmo_BL = problema.dispersion(problema.solucionBusquedaLocal());
-            desviacion_final_BL += (valor_algoritmo_BL - soluciones_ideales[i-1]) / valor_algoritmo_BL;
-        }
-        
-        // calculamos los tiempos
-        tiempo_final_greedy = tiempo_final_greedy / EJECUCIONES_POR_PROBLEMA;
-        tiempo_final_BL     = tiempo_final_BL     / EJECUCIONES_POR_PROBLEMA;
-
-        // calculamos la desviación típica
-        desviacion_final_greedy = 100*desviacion_final_greedy;
-        desviacion_final_BL     = 100*desviacion_final_BL;
-
-        // eliminamos la ruta de los archivos
-        nombre_fichero = arg[i];
-        nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+59);
-        
-        // almacenamos los datos en el fichero externo
-        fichero << nombre_fichero << " : " << tiempo_final_greedy << " : " << tiempo_final_BL << " : " << desviacion_final_greedy << " : " << desviacion_final_BL << endl;
-
-        // reiniciamos los valores
-        tiempo_final_greedy     = 0;
-        tiempo_final_BL         = 0;
-        desviacion_final_greedy = 0;
-        desviacion_final_BL     = 0;
+        // medimos los tiempos para la P1   // jjj la i sobra
+        resultadosP1 = tiemposP1(arg[i], problema, soluciones_ideales, i);
+        fichero << resultadosP1[0] << " : " << resultadosP1[1] << " : " << resultadosP1[2] << " : " << resultadosP1[3] << " : " << resultadosP1[4] << endl;
     }
 
     cout << endl;
