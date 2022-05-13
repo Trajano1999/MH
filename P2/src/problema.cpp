@@ -76,6 +76,19 @@ int Problema::calcularPosicion(const vector<int> & v, int elem){
     return res;
 }
 
+// jjj
+vector<int> Problema::generarVectorAleatorio(unsigned tamanio_vector){
+    vector<int> resultado;
+    int random,
+        contador = 0;
+    
+    for(unsigned i=0; i<tamanio_vector; ++i){
+        random = randomGreedy(semilla, 0, 1);
+    }
+
+    return resultado;
+}
+
 //-------------------------------------------------------------------------------------------------
 // MÉTODOS PRIVADOS GREEDY
 //-------------------------------------------------------------------------------------------------
@@ -199,6 +212,20 @@ double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int el
     distancias[pos_eliminado] = suma;
 
     return tamanio_sol > 2 ? valorMaximo(distancias) - valorMinimoPositivo(distancias) : valorMaximo(distancias);
+}
+
+//-------------------------------------------------------------------------------------------------
+// MÉTODOS PRIVADOS AGs
+//-------------------------------------------------------------------------------------------------
+
+vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion){
+    unsigned tamanio_vector = matriz.size();
+    vector<vector<int> > resultado;
+    
+    for(unsigned i=0; i<tamanio_poblacion; ++i)
+        resultado.push_back(generarVectorAleatorio(tamanio_vector));
+
+    return resultado;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -362,17 +389,18 @@ vector<int> Problema::solucionBusquedaLocal(){
     return sol;
 }
 
+// jjj
 vector<int> Problema::solucionAGGUniforme(){
     unsigned evaluaciones = 0;
     vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION),
-                         aux_poblacion;
+                         poblacion_hijos;
 
     while(evaluaciones < MAX_EVALUACIONES){
-        aux_poblacion = seleccion(poblacion);
+        poblacion_hijos = seleccion(poblacion);
 
-        cruce(aux_poblacion, probabilidad_cruce);
+        cruce(poblacion_hijos, PROB_CRUCE_AGG);
 
-        mutacion(aux_poblacion, probabilidad_mutacion);
+        mutacion(poblacion_hijos, PROB_MUTACION);
 
         reemplazamiento();
 
@@ -381,64 +409,3 @@ vector<int> Problema::solucionAGGUniforme(){
 
     // faltaria escoger el vector<int> que mejor P(t) tenga del vector<vector<int> >
 }
-
-/*
-vector<int> Problema::solucionAGGPosicion(){
-    unsigned evaluaciones = 0;
-    vector<vector<int> > poblacion = creacionPoblacion(),
-                         aux_poblacion;
-
-    while(evaluaciones < MAX_EVALUACIONES){
-        aux_poblacion = seleccion(poblacion);
-
-        cruce(aux_poblacion, probabilidad_cruce);
-
-        mutacion(aux_poblacion, probabilidad_mutacion);
-
-        reemplazamiento();
-
-        evaluaciones++;
-    }
-
-    // faltaria escoger el que mejor P(t) tenga
-}
-
-vector<int> Problema::solucionAGEUniforme(){
-    unsigned evaluaciones = 0;
-    vector<vector<int> > poblacion = creacionPoblacion(),
-                         aux_poblacion;
-
-    while(evaluaciones < MAX_EVALUACIONES){
-        aux_poblacion = seleccion(poblacion);
-
-        cruce(aux_poblacion, probabilidad_cruce);
-
-        mutacion(aux_poblacion, probabilidad_mutacion);
-
-        reemplazamiento();
-
-        evaluaciones++;
-    }
-
-    // faltaria escoger el que mejor P(t) tenga
-}
-
-vector<int> Problema::solucionAGEPosicion(){
-    unsigned evaluaciones = 0;
-    vector<vector<int> > poblacion = creacionPoblacion(),
-                         aux_poblacion;
-
-    while(evaluaciones < MAX_EVALUACIONES){
-        aux_poblacion = seleccion(poblacion);
-
-        cruce(aux_poblacion, probabilidad_cruce);
-
-        mutacion(aux_poblacion, probabilidad_mutacion);
-
-        reemplazamiento();
-
-        evaluaciones++;
-    }
-
-    // faltaria escoger el que mejor P(t) tenga
-}*/

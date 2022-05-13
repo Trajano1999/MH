@@ -43,6 +43,9 @@ class Problema {
             // calcula la primera posición de un valor en un vector
             int calcularPosicion(const vector<int> & v, int elem);
 
+            // genera un vector del tamaño indicado, con valores 0 y 1 en posiciones aleatorias, con exactamente m 1s
+            vector<int> generarVectorAleatorio(unsigned tamanio_vector);
+
         // métodos privados para Greedy
 
             // devuelve un valor aleatorio entre los parámetros recibidos
@@ -85,7 +88,6 @@ class Problema {
 
             // escoge el mejor hijo
             void reemplazamiento(vector<vector<int> > poblacion, vector<vector<int> > poblacion_hijos);
-
     public: 
         // constructor
         Problema(unsigned sem, const char * dir_fich);
