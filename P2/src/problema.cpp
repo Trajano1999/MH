@@ -17,8 +17,13 @@
 //-------------------------------------------------------------------------------------------------
 
 // máximo valor de un double en c++
-const double VALOR_GRANDE = 1.7976931348623158e+308;
-const unsigned MAX_EVALUACIONES = 100000;
+const double VALOR_GRANDE   = 1.7976931348623158e+308,
+             PROB_CRUCE_AGG = 0.7,
+             PROB_CRUCE_AGE = 1,
+             PROB_MUTACION  = 0.1;
+            
+const unsigned MAX_EVALUACIONES  = 100000,
+               TAMANIO_POBLACION = 50;
 
 //-------------------------------------------------------------------------------------------------
 // MÉTODOS PRIVADOS GENERALES
@@ -356,3 +361,84 @@ vector<int> Problema::solucionBusquedaLocal(){
 
     return sol;
 }
+
+vector<int> Problema::solucionAGGUniforme(){
+    unsigned evaluaciones = 0;
+    vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION),
+                         aux_poblacion;
+
+    while(evaluaciones < MAX_EVALUACIONES){
+        aux_poblacion = seleccion(poblacion);
+
+        cruce(aux_poblacion, probabilidad_cruce);
+
+        mutacion(aux_poblacion, probabilidad_mutacion);
+
+        reemplazamiento();
+
+        evaluaciones++;
+    }
+
+    // faltaria escoger el vector<int> que mejor P(t) tenga del vector<vector<int> >
+}
+
+/*
+vector<int> Problema::solucionAGGPosicion(){
+    unsigned evaluaciones = 0;
+    vector<vector<int> > poblacion = creacionPoblacion(),
+                         aux_poblacion;
+
+    while(evaluaciones < MAX_EVALUACIONES){
+        aux_poblacion = seleccion(poblacion);
+
+        cruce(aux_poblacion, probabilidad_cruce);
+
+        mutacion(aux_poblacion, probabilidad_mutacion);
+
+        reemplazamiento();
+
+        evaluaciones++;
+    }
+
+    // faltaria escoger el que mejor P(t) tenga
+}
+
+vector<int> Problema::solucionAGEUniforme(){
+    unsigned evaluaciones = 0;
+    vector<vector<int> > poblacion = creacionPoblacion(),
+                         aux_poblacion;
+
+    while(evaluaciones < MAX_EVALUACIONES){
+        aux_poblacion = seleccion(poblacion);
+
+        cruce(aux_poblacion, probabilidad_cruce);
+
+        mutacion(aux_poblacion, probabilidad_mutacion);
+
+        reemplazamiento();
+
+        evaluaciones++;
+    }
+
+    // faltaria escoger el que mejor P(t) tenga
+}
+
+vector<int> Problema::solucionAGEPosicion(){
+    unsigned evaluaciones = 0;
+    vector<vector<int> > poblacion = creacionPoblacion(),
+                         aux_poblacion;
+
+    while(evaluaciones < MAX_EVALUACIONES){
+        aux_poblacion = seleccion(poblacion);
+
+        cruce(aux_poblacion, probabilidad_cruce);
+
+        mutacion(aux_poblacion, probabilidad_mutacion);
+
+        reemplazamiento();
+
+        evaluaciones++;
+    }
+
+    // faltaria escoger el que mejor P(t) tenga
+}*/

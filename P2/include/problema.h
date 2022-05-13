@@ -67,6 +67,25 @@ class Problema {
             // calcula la dispersion de un vector en el que se intercambian dos valores
             double dispersionIntercambiarElementos(const vector<int> & sol, int elem_eliminar, int elem_aniadir);
 
+        // métodos privados para AGs // jjj
+
+            // genera la población de padres para AG Uniformes (del mismo tamaño que la población genética)
+            vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
+
+            // selecciona los ganadores de num_torneos torneos binarios arbitrarios 
+            vector<vector<int> > seleccion(const vector<vector<int> > & poblacion, unsigned num_torneos);
+
+            // realiza el cruce uniforme con probabilidad PROBABILIDAD_CRUCE
+            // jjj no se si son cruces distintos o solo cambia la probabilidad
+            void cruceUniforme(vector<vector<int> > poblacion);
+            void crucePosicion(vector<vector<int> > poblacion);
+
+            // se encarga de mutar la población con una probabilidad de PROBABILIDAD_MUTACION
+            void mutacion();
+
+            // escoge el mejor hijo
+            void reemplazamiento(vector<vector<int> > poblacion, vector<vector<int> > poblacion_hijos);
+
     public: 
         // constructor
         Problema(unsigned sem, const char * dir_fich);
@@ -84,8 +103,23 @@ class Problema {
         double dispersion(const vector<int> & v);
 
         // métodos para resolver el problema
-        vector<int> solucionGreedy();
-        vector<int> solucionBusquedaLocal();
+
+            // P1
+            vector<int> solucionGreedy();
+            vector<int> solucionBusquedaLocal();
+            
+            // P2  
+
+                // AGGs 
+                vector<int> solucionAGGUniforme();
+                vector<int> solucionAGGPosicion();
+            
+                // AGEs
+                vector<int> solucionAGEUniforme();
+                vector<int> solucionAGEPosicion();
+
+                // AMs
+                // jjj
 };
 
 # endif
