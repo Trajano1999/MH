@@ -25,8 +25,8 @@ const string DIR_FICHERO_SALIDA = "/home/juanma/Escritorio/datos.txt";
 // FUNCIONES
 //-------------------------------------------------------------------------------------------------
 
-// muestra una matriz
-void mostrarMatriz(const vector<vector<double> > & m){
+// muestra una matriz int
+void mostrarMatrizInt(const vector<vector<int> > & m){
     for(unsigned i=0; i<m.size(); ++i){
         cout << "( ";
         for(unsigned j=0; j<m[i].size(); ++j){
@@ -36,7 +36,18 @@ void mostrarMatriz(const vector<vector<double> > & m){
     }
 }
 
-// muestra un vector
+// muestra una matriz double
+void mostrarMatrizDouble(const vector<vector<double> > & m){
+    for(unsigned i=0; i<m.size(); ++i){
+        cout << "( ";
+        for(unsigned j=0; j<m[i].size(); ++j){
+            cout << m[i][j] << " ";
+        }
+        cout << ")" << endl;
+    }
+}
+
+// muestra un vector int
 void mostrarVector(const vector<int> & v){
     cout << "( ";
     for(unsigned i=0; i<v.size(); ++i)
@@ -143,6 +154,10 @@ int main(int narg, char * arg[]){
         resultadosP1 = tiemposP1(arg[i], i, problema, soluciones_ideales);
         fichero << resultadosP1[0] << " : " << resultadosP1[1] << " : " << resultadosP1[2] << " : " << resultadosP1[3] << " : " << resultadosP1[4] << endl;
     }
+
+    // jjj
+    cout << "Poblacion " << endl;
+    mostrarMatrizInt(problema.creacionPoblacion(2));
 
     cout << endl;
 }

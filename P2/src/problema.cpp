@@ -79,11 +79,18 @@ int Problema::calcularPosicion(const vector<int> & v, int elem){
 // jjj
 vector<int> Problema::generarVectorAleatorio(unsigned tamanio_vector){
     vector<int> resultado;
-    int random,
+    unsigned random,
         contador = 0;
     
     for(unsigned i=0; i<tamanio_vector; ++i){
         random = randomGreedy(semilla, 0, 1);
+        if(random == 1){
+            if(contador >= elem_sel)
+                random = 0;
+            else    
+                contador++;
+        }
+        resultado.push_back(random); 
     }
 
     return resultado;
@@ -390,7 +397,7 @@ vector<int> Problema::solucionBusquedaLocal(){
 }
 
 // jjj
-vector<int> Problema::solucionAGGUniforme(){
+/*vector<int> Problema::solucionAGGUniforme(){
     unsigned evaluaciones = 0;
     vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION),
                          poblacion_hijos;
@@ -408,4 +415,4 @@ vector<int> Problema::solucionAGGUniforme(){
     }
 
     // faltaria escoger el vector<int> que mejor P(t) tenga del vector<vector<int> >
-}
+}*/

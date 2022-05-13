@@ -73,7 +73,6 @@ class Problema {
         // métodos privados para AGs // jjj
 
             // genera la población de padres para AG Uniformes (del mismo tamaño que la población genética)
-            vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
 
             // selecciona los ganadores de num_torneos torneos binarios arbitrarios 
             vector<vector<int> > seleccion(const vector<vector<int> > & poblacion, unsigned num_torneos);
@@ -122,6 +121,8 @@ class Problema {
 
                 // AMs
                 // jjj
+                            vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
+
 };
 
 # endif
