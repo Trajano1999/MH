@@ -145,14 +145,14 @@ int main(int narg, char * arg[]){
     ofstream fichero(DIR_FICHERO_SALIDA);
     if(!fichero.is_open())
         cerr << "Error al abrir " << DIR_FICHERO_SALIDA << endl;
-    // jjjfichero << "Documento : " << "Tiempo_Greedy : " << "Tiempo_BL : " << "Desv_Tipica_Greedy : " << "Desv_Tipica_BL" << endl << endl;
+    // jjj fichero << "Documento : " << "Tiempo_Greedy : " << "Tiempo_BL : " << "Desv_Tipica_Greedy : " << "Desv_Tipica_BL" << endl << endl;
 
     // recorremos los archivos
     for(int i=1; i<narg; ++i){
 
         // medimos los tiempos para la P1
         resultadosP1 = tiemposP1(arg[i], i, problema, soluciones_ideales);
-        // jjjfichero << resultadosP1[0] << " : " << resultadosP1[1] << " : " << resultadosP1[2] << " : " << resultadosP1[3] << " : " << resultadosP1[4] << endl;
+        // jjj fichero << resultadosP1[0] << " : " << resultadosP1[1] << " : " << resultadosP1[2] << " : " << resultadosP1[3] << " : " << resultadosP1[4] << endl;
     }
 
     problema.solucionAGGUniforme();

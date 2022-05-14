@@ -77,7 +77,7 @@ class Problema {
             // jjj se acumulan muchos 1 al principio
             vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
 
-            // selecciona los ganadores de num_torneos torneos binarios arbitrarios 
+            // selecciona los ganadores de población de num_torneos torneos binarios arbitrarios 
             vector<vector<int> > seleccion(const vector<vector<int> > & poblacion, const vector<double> & dispersion_poblacion, unsigned num_torneos);
 
             // realiza el cruce uniforme con probabilidad PROBABILIDAD_CRUCE
