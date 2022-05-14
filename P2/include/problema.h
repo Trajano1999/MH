@@ -119,7 +119,6 @@ class Problema {
             vector<int> solucionBusquedaLocal();
             
             // P2  
-
                 // AGGs 
                 vector<int> solucionAGGUniforme();
                 vector<int> solucionAGGPosicion();
