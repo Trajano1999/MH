@@ -241,6 +241,10 @@ vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion){
 vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion, const vector<double> & dispersion_poblacion, unsigned num_torneos){
     vector<vector<int> > resultado;
 
+    cout << "\n";
+    for(int i=0; i<5; ++i)
+        cout << rand() << " ";
+
     return resultado;
 }
 
