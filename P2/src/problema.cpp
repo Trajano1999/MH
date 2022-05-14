@@ -77,19 +77,12 @@ int Problema::calcularPosicion(const vector<int> & v, int elem){
 }
 
 vector<int> Problema::generarVectorAleatorio(unsigned tamanio_vector){
-    unsigned random,
-             contador = 0;
-    vector<int> resultado;
-    
-    for(unsigned i=0; i<tamanio_vector; ++i){    
-        random = rand()%2;
-        if(random == 1){
-            if(contador >= elem_sel)
-                random = 0;
-            else    
-                contador++;
-        }
-        resultado.push_back(random); 
+    unsigned random;
+    vector<int> resultado(tamanio_vector, 0);
+
+    for(unsigned i=0; i<elem_sel; ++i){
+        random = rand()%tamanio_vector;
+        resultado[random] = 1; 
     }
 
     return resultado;
@@ -241,9 +234,9 @@ vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion){
 vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion, const vector<double> & dispersion_poblacion, unsigned num_torneos){
     vector<vector<int> > resultado;
 
-    cout << "\n";
+    /*cout << "\n";
     for(int i=0; i<5; ++i)
-        cout << rand() << " ";
+        cout << rand() << " ";*/
 
     return resultado;
 }

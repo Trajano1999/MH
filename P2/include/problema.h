@@ -74,7 +74,6 @@ class Problema {
         // métodos privados para AGs
 
             // genera la población de padres para AG Uniformes (del mismo tamaño que la población genética)
-            // jjj se acumulan muchos 1 al principio
             vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
 
             // selecciona los ganadores de población de num_torneos torneos binarios arbitrarios 
