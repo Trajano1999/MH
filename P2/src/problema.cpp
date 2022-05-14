@@ -78,12 +78,12 @@ int Problema::calcularPosicion(const vector<int> & v, int elem){
 
 // jjj
 vector<int> Problema::generarVectorAleatorio(unsigned tamanio_vector){
-    vector<int> resultado;
     unsigned random,
-        contador = 0;
+             contador = 0;
+    vector<int> resultado;
     
-    for(unsigned i=0; i<tamanio_vector; ++i){
-        random = randomGreedy(semilla, 0, 1);
+    for(unsigned i=0; i<tamanio_vector; ++i){    
+        random = rand()%2;
         if(random == 1){
             if(contador >= elem_sel)
                 random = 0;
@@ -228,9 +228,19 @@ double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int el
 vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion){
     unsigned tamanio_vector = matriz.size();
     vector<vector<int> > resultado;
+
+    // hacemos que cada vector generado tenga valores distintos
+    srand(time(nullptr));
     
     for(unsigned i=0; i<tamanio_poblacion; ++i)
         resultado.push_back(generarVectorAleatorio(tamanio_vector));
+
+    return resultado;
+}
+
+// jjj
+vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion, unsigned num_torneos){
+    vector<vector<int> > resultado;
 
     return resultado;
 }
@@ -397,7 +407,7 @@ vector<int> Problema::solucionBusquedaLocal(){
 }
 
 // jjj
-/*vector<int> Problema::solucionAGGUniforme(){
+vector<int> Problema::solucionAGGUniforme(){
     unsigned evaluaciones = 0;
     vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION),
                          poblacion_hijos;
@@ -415,4 +425,4 @@ vector<int> Problema::solucionBusquedaLocal(){
     }
 
     // faltaria escoger el vector<int> que mejor P(t) tenga del vector<vector<int> >
-}*/
+}
