@@ -76,7 +76,6 @@ int Problema::calcularPosicion(const vector<int> & v, int elem){
     return res;
 }
 
-// jjj
 vector<int> Problema::generarVectorAleatorio(unsigned tamanio_vector){
     unsigned random,
              contador = 0;
@@ -239,9 +238,29 @@ vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion){
 }
 
 // jjj
-vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion, unsigned num_torneos){
+vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion, const vector<double> & dispersion_poblacion, unsigned num_torneos){
     vector<vector<int> > resultado;
 
+    return resultado;
+}
+
+double Problema::dispersionVectorPoblacion(const vector<int> & vector_poblacion){
+    vector<int> vector_pueblos;
+
+    for(unsigned i=0; i<vector_poblacion.size(); ++i){
+        if(vector_poblacion[i] == 1)
+            vector_pueblos.push_back(i);
+    }
+
+    return dispersion(vector_pueblos);
+}
+
+vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblacion){
+    vector<double> resultado;
+    
+    for(unsigned i=0; i<TAMANIO_POBLACION; ++i)
+        resultado.push_back(dispersionVectorPoblacion(poblacion[i]));
+    
     return resultado;
 }
 
@@ -406,23 +425,51 @@ vector<int> Problema::solucionBusquedaLocal(){
     return sol;
 }
 
+// jjj muestra una matriz int
+void mostrarMatrizInt(const vector<vector<int> > & m){
+    for(unsigned i=0; i<m.size(); ++i){
+        cout << "( ";
+        for(unsigned j=0; j<m[i].size(); ++j){
+            cout << m[i][j] << " ";
+        }
+        cout << ")" << endl;
+    }
+}
+
+// jjj muestra un vector double
+void mostrarVector(const vector<double> & v){
+    cout << "( ";
+    for(unsigned i=0; i<v.size(); ++i)
+        cout << v[i] << " ";
+    cout << ")"; 
+}
+
 // jjj
 vector<int> Problema::solucionAGGUniforme(){
-    unsigned evaluaciones = 0;
+    //unsigned evaluaciones = 0;
+    vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION),
                          poblacion_hijos;
+    
+    cout << "\nPoblacion : " << endl;
+    mostrarMatrizInt(poblacion);
 
-    while(evaluaciones < MAX_EVALUACIONES){
-        poblacion_hijos = seleccion(poblacion);
+    //while(evaluaciones < MAX_EVALUACIONES){
+        dispersion_poblacion = dispersionPoblacion(poblacion);
+        cout << "\nDispersion : " << endl;
+        mostrarVector(dispersion_poblacion);
+        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION);
 
-        cruce(poblacion_hijos, PROB_CRUCE_AGG);
+        /*cruceUniforme(poblacion_hijos, PROB_CRUCE_AGG);
 
         mutacion(poblacion_hijos, PROB_MUTACION);
 
         reemplazamiento();
 
-        evaluaciones++;
-    }
+        evaluaciones++;*/
+    //}
+
+    return poblacion[0];
 
     // faltaria escoger el vector<int> que mejor P(t) tenga del vector<vector<int> >
 }
