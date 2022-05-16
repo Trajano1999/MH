@@ -108,7 +108,7 @@ vector<int> Problema::generarVectorAleatorio(unsigned tamanio_vector){
     vector<int> resultado(tamanio_vector, 0);
 
     for(unsigned i=0; i<elem_sel; ++i){
-        random = rand()%tamanio_vector;
+        random = rand() % tamanio_vector;
         resultado[random] = 1; 
     }
 
@@ -244,6 +244,26 @@ double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int el
 // MÉTODOS PRIVADOS AGs
 //-------------------------------------------------------------------------------------------------
 
+double Problema::dispersionVectorPoblacion(const vector<int> & vector_poblacion){
+    vector<int> vector_pueblos;
+
+    for(unsigned i=0; i<vector_poblacion.size(); ++i){
+        if(vector_poblacion[i] == 1)
+            vector_pueblos.push_back(i);
+    }
+
+    return dispersion(vector_pueblos);
+}
+
+vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblacion){
+    vector<double> resultado;
+    
+    for(unsigned i=0; i<TAMANIO_POBLACION; ++i)
+        resultado.push_back(dispersionVectorPoblacion(poblacion[i]));
+    
+    return resultado;
+}
+
 vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion){
     unsigned tamanio_vector = matriz.size();
     vector<vector<int> > resultado;
@@ -263,13 +283,14 @@ vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion,
 
     srand(time(NULL));
     for(unsigned i=0; i<num_torneos; ++i){
+        
+        // seleccionamos 2 aleatorios distintos
         aleatorio1 = rand() % (TAMANIO_POBLACION);
         do{
             aleatorio2 = rand() % (TAMANIO_POBLACION);
         }while(aleatorio2 == aleatorio1);
 
-        cout << "\nAleatorios : " << aleatorio1 << " , " << aleatorio2;
-
+        // escogemos el que menos dispersion tenga
         if(dispersion_poblacion[aleatorio1] < dispersion_poblacion[aleatorio2])
             resultado.push_back(poblacion[aleatorio1]);
         else
@@ -279,24 +300,38 @@ vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion,
     return resultado;
 }
 
-double Problema::dispersionVectorPoblacion(const vector<int> & vector_poblacion){
-    vector<int> vector_pueblos;
-
-    for(unsigned i=0; i<vector_poblacion.size(); ++i){
-        if(vector_poblacion[i] == 1)
-            vector_pueblos.push_back(i);
-    }
-
-    return dispersion(vector_pueblos);
+// jjj
+void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, const double prob_cruce){
+    vector<vector<int> > resultado;
+    
 }
 
-vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblacion){
-    vector<double> resultado;
-    
-    for(unsigned i=0; i<TAMANIO_POBLACION; ++i)
-        resultado.push_back(dispersionVectorPoblacion(poblacion[i]));
-    
-    return resultado;
+void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, const double prob_cruce){
+    unsigned tamanio_matriz = matriz.size();
+    int aleatorio1, aleatorio2;
+    vector<int> auxiliar(tamanio_matriz, -1);
+
+    srand(time(NULL));
+
+    for(unsigned i=0; i<prob_cruce*TAMANIO_POBLACION; ++i){
+        
+        // seleccionamos 2 aleatorios distintos
+        aleatorio1 = rand() % (TAMANIO_POBLACION);
+        do{
+            aleatorio2 = rand() % (TAMANIO_POBLACION);
+        }while(aleatorio2 == aleatorio1);
+
+        // rellenamos el vector aux con el cruce
+        for(unsigned j=0; j<tamanio_matriz; ++j){
+            auxiliar[j] = poblacion_hijos[aleatorio1][j];
+
+            if( poblacion_hijos[aleatorio1][j] == poblacion_hijos[aleatorio2][j] )
+                auxiliar[j] = poblacion_hijos[aleatorio2][j];
+        }
+
+        // modificamos el vector poblacion por el auxiliar
+        poblacion_hijos[i] = auxiliar;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -476,8 +511,8 @@ vector<int> Problema::solucionAGGUniforme(){
         mostrarVector(dispersion_poblacion);
         poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION);
 
-        /*cruceUniforme(poblacion_hijos, PROB_CRUCE_AGG);
-
+        crucePosicion(poblacion_hijos, PROB_CRUCE_AGE);
+        /*
         mutacion(poblacion_hijos, PROB_MUTACION);
 
         reemplazamiento();

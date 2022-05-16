@@ -73,6 +73,18 @@ class Problema {
 
         // métodos privados para AGs
 
+            // calcula la dispersion de un vector poblacion (que es un vector {0,1,1,0})
+            double dispersionVectorPoblacion(const vector<int> & vector_poblacion);
+
+            // calcula la dispersion de una poblacion (que es un vector de vectores {0,1,1,0})
+            vector<double> dispersionPoblacion(const vector<vector<int> > & poblacion);
+
+            // mantiene las posiciones que contienen el mismo valor en ambos padres
+            // jjj
+
+            // ajusta el números de 1s tras aplicar el cruceUniforme
+            // jjj reparacion
+
             // genera la población de padres para AG Uniformes (del mismo tamaño que la población genética)
             vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
 
@@ -80,21 +92,16 @@ class Problema {
             vector<vector<int> > seleccion(const vector<vector<int> > & poblacion, const vector<double> & dispersion_poblacion, unsigned num_torneos);
 
             // realiza el cruce uniforme con probabilidad PROBABILIDAD_CRUCE
-            // jjj no se si son cruces distintos o solo cambia la probabilidad
-            void cruceUniforme(vector<vector<int> > poblacion);
-            void crucePosicion(vector<vector<int> > poblacion);
+            void cruceUniforme(vector<vector<int> > & poblacion_hijos, const double prob_cruce);
+            
+            // realiza el cruce de posición con probabilidad PROBABILIDAD_CRUCE
+            void crucePosicion(vector<vector<int> > & poblacion_hijos, const double prob_cruce);
 
             // se encarga de mutar la población con una probabilidad de PROBABILIDAD_MUTACION
             void mutacion();
 
             // escoge el mejor hijo
             void reemplazamiento(vector<vector<int> > poblacion, vector<vector<int> > poblacion_hijos);
-
-            // calcula la dispersion de un vector poblacion (que es un vector {0,1,1,0})
-            double dispersionVectorPoblacion(const vector<int> & vector_poblacion);
-
-            // calcula la dispersion de una poblacion (que es un vector de vectores {0,1,1,0})
-            vector<double> dispersionPoblacion(const vector<vector<int> > & poblacion);
 
     public: 
         // constructor
