@@ -79,11 +79,8 @@ class Problema {
             // calcula la dispersion de una poblacion (que es un vector de vectores {0,1,1,0})
             vector<double> dispersionPoblacion(const vector<vector<int> > & poblacion);
 
-            // mantiene las posiciones que contienen el mismo valor en ambos padres
-            // jjj
-
             // ajusta el números de 1s tras aplicar el cruceUniforme
-            // jjj reparacion
+            void reparacion(vector<int> & hijo);
 
             // genera la población de padres para AG Uniformes (del mismo tamaño que la población genética)
             vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
