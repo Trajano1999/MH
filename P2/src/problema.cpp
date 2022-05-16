@@ -12,6 +12,33 @@
 
 # include "problema.h"
 
+// jjj muestra un vector int
+void mostrarVectorInt(const vector<int> & v){
+    cout << "( ";
+    for(unsigned i=0; i<v.size(); ++i)
+        cout << v[i] << " ";
+    cout << ")"; 
+}
+
+// jjj muestra una matriz int
+void mostrarMatrizInt(const vector<vector<int> > & m){
+    for(unsigned i=0; i<m.size(); ++i){
+        cout << "( ";
+        for(unsigned j=0; j<m[i].size(); ++j){
+            cout << m[i][j] << " ";
+        }
+        cout << ")" << endl;
+    }
+}
+
+// jjj muestra un vector double
+void mostrarVector(const vector<double> & v){
+    cout << "( ";
+    for(unsigned i=0; i<v.size(); ++i)
+        cout << v[i] << " ";
+    cout << ")"; 
+}
+
 //-------------------------------------------------------------------------------------------------
 // CONSTANTES GLOBALES
 //-------------------------------------------------------------------------------------------------
@@ -230,13 +257,24 @@ vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion){
     return resultado;
 }
 
-// jjj
 vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion, const vector<double> & dispersion_poblacion, unsigned num_torneos){
+    int aleatorio1, aleatorio2;
     vector<vector<int> > resultado;
 
-    /*cout << "\n";
-    for(int i=0; i<5; ++i)
-        cout << rand() << " ";*/
+    srand(time(NULL));
+    for(unsigned i=0; i<num_torneos; ++i){
+        aleatorio1 = rand() % (TAMANIO_POBLACION);
+        do{
+            aleatorio2 = rand() % (TAMANIO_POBLACION);
+        }while(aleatorio2 == aleatorio1);
+
+        cout << "\nAleatorios : " << aleatorio1 << " , " << aleatorio2;
+
+        if(dispersion_poblacion[aleatorio1] < dispersion_poblacion[aleatorio2])
+            resultado.push_back(poblacion[aleatorio1]);
+        else
+            resultado.push_back(poblacion[aleatorio2]);
+    }
 
     return resultado;
 }
@@ -420,25 +458,6 @@ vector<int> Problema::solucionBusquedaLocal(){
     }
 
     return sol;
-}
-
-// jjj muestra una matriz int
-void mostrarMatrizInt(const vector<vector<int> > & m){
-    for(unsigned i=0; i<m.size(); ++i){
-        cout << "( ";
-        for(unsigned j=0; j<m[i].size(); ++j){
-            cout << m[i][j] << " ";
-        }
-        cout << ")" << endl;
-    }
-}
-
-// jjj muestra un vector double
-void mostrarVector(const vector<double> & v){
-    cout << "( ";
-    for(unsigned i=0; i<v.size(); ++i)
-        cout << v[i] << " ";
-    cout << ")"; 
 }
 
 // jjj
