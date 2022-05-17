@@ -50,7 +50,8 @@ const double VALOR_GRANDE   = 1.7976931348623158e+308,
              PROB_MUTACION  = 0.1;
             
 const unsigned MAX_EVALUACIONES  = 100000,
-               TAMANIO_POBLACION = 50;
+               TAMANIO_POBLACION_GENERACIONAL = 50,
+               TAMANIO_POBLACION_ESTACIONARIA = 2;
 
 //-------------------------------------------------------------------------------------------------
 // MÉTODOS PRIVADOS GENERALES
@@ -245,9 +246,10 @@ double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int el
 //-------------------------------------------------------------------------------------------------
 
 double Problema::dispersionVectorPoblacion(const vector<int> & vector_poblacion){
+    unsigned tamanio_poblacion = vector_poblacion.size();
     vector<int> vector_pueblos;
 
-    for(unsigned i=0; i<vector_poblacion.size(); ++i){
+    for(unsigned i=0; i<tamanio_poblacion; ++i){
         if(vector_poblacion[i] == 1)
             vector_pueblos.push_back(i);
     }
@@ -256,14 +258,16 @@ double Problema::dispersionVectorPoblacion(const vector<int> & vector_poblacion)
 }
 
 vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblacion){
+    unsigned tamanio_poblacion = poblacion.size();
     vector<double> resultado;
     
-    for(unsigned i=0; i<TAMANIO_POBLACION; ++i)
+    for(unsigned i=0; i<tamanio_poblacion; ++i)
         resultado.push_back(dispersionVectorPoblacion(poblacion[i]));
     
     return resultado;
 }
 
+// jjj
 void Problema::reparacion(vector<int> & hijo){
     unsigned contador = 0,
              mejor_posicion = 0,
@@ -272,7 +276,7 @@ void Problema::reparacion(vector<int> & hijo){
            mayor_dispersion = 0, 
            menor_dispersion = dispersionVectorPoblacion(hijo);
     
-    for(unsigned i=0; i<TAMANIO_POBLACION; ++i)
+    for(unsigned i=0; i<tamanio; ++i)
         if(hijo[i] == 1)
             contador++;
 
@@ -319,7 +323,6 @@ vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion){
     unsigned tamanio_vector = matriz.size();
     vector<vector<int> > resultado;
 
-    // hacemos que cada vector generado tenga valores distintos
     srand(time(nullptr));
     
     for(unsigned i=0; i<tamanio_poblacion; ++i)
@@ -336,9 +339,9 @@ vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion,
     for(unsigned i=0; i<num_torneos; ++i){
         
         // seleccionamos 2 aleatorios distintos
-        aleatorio1 = rand() % (TAMANIO_POBLACION);
+        aleatorio1 = rand() % (num_torneos);
         do{
-            aleatorio2 = rand() % (TAMANIO_POBLACION);
+            aleatorio2 = rand() % (num_torneos);
         }while(aleatorio2 == aleatorio1);
 
         // escogemos el que menos dispersion tenga
@@ -351,19 +354,19 @@ vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion,
     return resultado;
 }
 
-void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, const double prob_cruce){
+void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce){
     unsigned tamanio_matriz = matriz.size();
     int aleatorio1, aleatorio2, aleatorio3;
     vector<int> auxiliar(tamanio_matriz, -1);
 
     srand(time(NULL));
 
-    for(unsigned i=0; i<prob_cruce*TAMANIO_POBLACION; ++i){
+    for(unsigned i=0; i<PROB_CRUCE_AGG*tamanio_cruce; ++i){
         
         // seleccionamos 2 aleatorios distintos
-        aleatorio1 = rand() % (TAMANIO_POBLACION);
+        aleatorio1 = rand() % (tamanio_cruce);
         do{
-            aleatorio2 = rand() % (TAMANIO_POBLACION);
+            aleatorio2 = rand() % (tamanio_cruce);
         }while(aleatorio2 == aleatorio1);
 
         // rellenamos el vector aux con el cruce
@@ -375,38 +378,43 @@ void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, const doubl
                 auxiliar[j] = poblacion_hijos[aleatorio1][j];
         }
 
-        // modificamos el vector poblacion por el auxiliar
+        // modificamos el vector poblacion por el auxiliar jjj
         poblacion_hijos[i] = auxiliar;
         reparacion(poblacion_hijos[i]);
+        cout << poblacion_hijos[i].size() << endl;
     }
 }
 
-void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, const double prob_cruce){
+void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce){
     unsigned tamanio_matriz = matriz.size();
     int aleatorio1, aleatorio2;
     vector<int> auxiliar(tamanio_matriz, -1);
 
     srand(time(NULL));
 
-    for(unsigned i=0; i<prob_cruce*TAMANIO_POBLACION; ++i){
+    for(unsigned i=0; i<PROB_CRUCE_AGE*tamanio_cruce; ++i){
         
         // seleccionamos 2 aleatorios distintos
-        aleatorio1 = rand() % (TAMANIO_POBLACION);
+        aleatorio1 = rand() % (tamanio_cruce);
         do{
-            aleatorio2 = rand() % (TAMANIO_POBLACION);
+            aleatorio2 = rand() % (tamanio_cruce);
         }while(aleatorio2 == aleatorio1);
 
-        // rellenamos el vector aux con el cruce
+        // rellenamos el vector aux con el cruce // jjj
         for(unsigned j=0; j<tamanio_matriz; ++j){
             auxiliar[j] = poblacion_hijos[aleatorio1][j];
 
             if( poblacion_hijos[aleatorio1][j] == poblacion_hijos[aleatorio2][j] )
-                auxiliar[j] = poblacion_hijos[aleatorio2][j];
+                auxiliar[j] = poblacion_hijos[aleatorio1][j];
         }
 
         // modificamos el vector poblacion por el auxiliar
         poblacion_hijos[i] = auxiliar;
     }
+}
+
+void Problema::mutacion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_mutacion){
+
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -574,7 +582,7 @@ vector<int> Problema::solucionBusquedaLocal(){
 vector<int> Problema::solucionAGGUniforme(){
     //unsigned evaluaciones = 0;
     vector<double> dispersion_poblacion;
-    vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION),
+    vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION_GENERACIONAL),
                          poblacion_hijos;
     
     cout << "\nPoblacion : " << endl;
@@ -584,12 +592,12 @@ vector<int> Problema::solucionAGGUniforme(){
         dispersion_poblacion = dispersionPoblacion(poblacion);
         cout << "\nDispersion : " << endl;
         mostrarVector(dispersion_poblacion);
-        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION);
+        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_GENERACIONAL);
 
-        cruceUniforme(poblacion_hijos, PROB_CRUCE_AGG);
+        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GENERACIONAL);
+        
+        mutacion(poblacion_hijos, TAMANIO_POBLACION_GENERACIONAL);
         /*
-        mutacion(poblacion_hijos, PROB_MUTACION);
-
         reemplazamiento();
 
         evaluaciones++;*/
