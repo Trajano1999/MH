@@ -379,7 +379,7 @@ void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned ta
             auxiliar[j] = aleatorio3 > 0 ? poblacion_hijos[aleatorio1][j] : poblacion_hijos[aleatorio2][j];
         }
 
-        // modificamos el vector poblacion por el auxiliar
+        // modificamos el vector poblacion por el auxiliar y lo reparamos
         poblacion_hijos[i] = auxiliar;
         reparacion(poblacion_hijos[i]);
     }
@@ -604,8 +604,8 @@ vector<int> Problema::solucionAGGUniforme(){
 
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN);
         
-        /*mutacion(poblacion_hijos, TAMANIO_POBLACION_GEN);
-        
+        mutacion(poblacion_hijos, TAMANIO_POBLACION_GEN);
+        /*
         reemplazamiento();
 
         evaluaciones++;*/
