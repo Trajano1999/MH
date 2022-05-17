@@ -267,7 +267,6 @@ vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblac
     return resultado;
 }
 
-// jjj
 void Problema::reparacion(vector<int> & hijo){
     unsigned contador = 0,
              mejor_posicion = 0,
@@ -369,7 +368,7 @@ void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned ta
             aleatorio2 = rand() % (tamanio_cruce);
         }while(aleatorio2 == aleatorio1);
 
-        // rellenamos el vector aux con el cruce
+        // rellenamos el vector aux con el cruce de los dos aleatorios
         for(unsigned j=0; j<tamanio_matriz; ++j){
             aleatorio3 = rand() % 2;
             auxiliar[j] = aleatorio3 > 0 ? poblacion_hijos[aleatorio1][j] : poblacion_hijos[aleatorio2][j];
@@ -378,10 +377,9 @@ void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned ta
                 auxiliar[j] = poblacion_hijos[aleatorio1][j];
         }
 
-        // modificamos el vector poblacion por el auxiliar jjj
+        // modificamos el vector poblacion por el auxiliar
         poblacion_hijos[i] = auxiliar;
         reparacion(poblacion_hijos[i]);
-        cout << poblacion_hijos[i].size() << endl;
     }
 }
 
@@ -400,7 +398,7 @@ void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned ta
             aleatorio2 = rand() % (tamanio_cruce);
         }while(aleatorio2 == aleatorio1);
 
-        // rellenamos el vector aux con el cruce // jjj
+        // rellenamos el vector aux con el cruce de los dos aleatorios // jjj
         for(unsigned j=0; j<tamanio_matriz; ++j){
             auxiliar[j] = poblacion_hijos[aleatorio1][j];
 
