@@ -264,24 +264,53 @@ vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblac
     return resultado;
 }
 
-// jjj
 void Problema::reparacion(vector<int> & hijo){
-    unsigned contador = 0;
+    unsigned contador = 0,
+             mejor_posicion = 0,
+             tamanio = hijo.size();
+    double dispersion, 
+           mayor_dispersion = 0, 
+           menor_dispersion = dispersionVectorPoblacion(hijo);
     
     for(unsigned i=0; i<TAMANIO_POBLACION; ++i)
         if(hijo[i] == 1)
             contador++;
 
     while(contador > elem_sel){
-        // buscamos el elemento que más dispersión tenga y lo eliminamos
+        mayor_dispersion = 0;
 
-        
+        // buscamos el elemento que más dispersión tenga y lo eliminamos
+        for(unsigned i=0; i<tamanio; ++i){
+            if(hijo[i] == 1){
+                hijo[i] = 0;
+                dispersion = dispersionVectorPoblacion(hijo);
+                if(dispersion > mayor_dispersion){
+                    mayor_dispersion = dispersion;
+                    mejor_posicion = i;
+                }
+                hijo[i] = 1;
+            }
+        }
+        hijo[mejor_posicion] = 0;
         contador--;
     }
 
     while(contador < elem_sel){
-        // buscamos el elemento que menos dispersión suma y lo añadimos
+        menor_dispersion = dispersionVectorPoblacion(hijo);
 
+        // buscamos el elemento que menos dispersión sume y lo añadimos
+        for(unsigned i=0; i<tamanio; ++i){
+            if(hijo[i] == 0){
+                hijo[i] = 1;
+                dispersion = dispersionVectorPoblacion(hijo);
+                if(dispersion < menor_dispersion){
+                    menor_dispersion = dispersion;
+                    mejor_posicion = i;
+                }
+                hijo[i] = 0;
+            }
+        }
+        hijo[mejor_posicion] = 1;
         contador++;
     }
 }
