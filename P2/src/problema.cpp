@@ -372,9 +372,6 @@ void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned ta
         for(unsigned j=0; j<tamanio_matriz; ++j){
             aleatorio3 = rand() % 2;
             auxiliar[j] = aleatorio3 > 0 ? poblacion_hijos[aleatorio1][j] : poblacion_hijos[aleatorio2][j];
-
-            if( poblacion_hijos[aleatorio1][j] == poblacion_hijos[aleatorio2][j] )
-                auxiliar[j] = poblacion_hijos[aleatorio1][j];
         }
 
         // modificamos el vector poblacion por el auxiliar
@@ -386,7 +383,8 @@ void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned ta
 void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce){
     unsigned tamanio_matriz = matriz.size();
     int aleatorio1, aleatorio2;
-    vector<int> auxiliar(tamanio_matriz, -1);
+    vector<int> auxiliar(tamanio_matriz, -1),
+                restos_padre;
 
     srand(time(NULL));
 
@@ -398,13 +396,19 @@ void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned ta
             aleatorio2 = rand() % (tamanio_cruce);
         }while(aleatorio2 == aleatorio1);
 
-        // rellenamos el vector aux con el cruce de los dos aleatorios // jjj
         for(unsigned j=0; j<tamanio_matriz; ++j){
-            auxiliar[j] = poblacion_hijos[aleatorio1][j];
-
+            
+            // si tienen el mismo valor, se mantiene en el hijo
             if( poblacion_hijos[aleatorio1][j] == poblacion_hijos[aleatorio2][j] )
                 auxiliar[j] = poblacion_hijos[aleatorio1][j];
+            
+            // sino, lo añadimos al vector restos_padre para barajarlo y añadirlo
+            else
+                restos_padre.push_back(poblacion_hijos[aleatorio1][j]);
         }
+
+        // recorremos auxiliar y donde haya -1 ponemos un valor de restos_padre aleatorio
+        // jjj
 
         // modificamos el vector poblacion por el auxiliar
         poblacion_hijos[i] = auxiliar;
