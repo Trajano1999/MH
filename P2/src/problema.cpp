@@ -413,9 +413,6 @@ vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion)
 {
     unsigned tamanio_vector = matriz.size();
     vector<vector<int> > resultado;
-
-    // jjj quitar srand()
-    srand(time(nullptr));
     
     for(unsigned i=0; i<tamanio_poblacion; ++i)
         resultado.push_back(generarVectorAleatorio(tamanio_vector));
@@ -428,7 +425,6 @@ vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion,
     int aleatorio1, aleatorio2;
     vector<vector<int> > resultado;
 
-    srand(time(NULL));
     for(unsigned i=0; i<num_torneos; ++i)
     {     
         // seleccionamos 2 aleatorios distintos
@@ -452,8 +448,6 @@ void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned ta
     unsigned tamanio_matriz = matriz.size();
     int aleatorio1, aleatorio2, aleatorio3;
     vector<int> auxiliar(tamanio_matriz, -1);
-
-    srand(time(NULL));
 
     for(unsigned i=0; i<PROB_CRUCE_AGG*tamanio_cruce; ++i)
     {    
@@ -481,8 +475,6 @@ void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned ta
     unsigned tamanio_matriz = matriz.size();
     int aleatorio1, aleatorio2, aleatorio3;
     vector<int> restos_padre;
-
-    srand(time(NULL));
 
     for(unsigned i=0; i<PROB_CRUCE_AGE*tamanio_cruce; ++i)
     {
@@ -527,8 +519,6 @@ void Problema::mutacionGeneracional(vector<vector<int> > & poblacion_hijos)
              aleatorio2,
              auxiliar;
     
-    srand(time(NULL));
-
     for(unsigned i=0; i<TAMANIO_POBLACION_GEN*PROB_MUTACION; ++i)
     {
         aleatorio1 = rand() % (tamanio_poblacion);
@@ -550,8 +540,6 @@ void Problema::mutacionEstacionaria(vector<vector<int> > & poblacion_hijos)
              aleatorio2,
              auxiliar;
     
-    srand(time(NULL));
-
     for(unsigned i=0; i<TAMANIO_POBLACION_EST*PROB_MUTACION*tamanio_poblacion; ++i)
     {
         vector_elegido = rand() % 2;
@@ -807,23 +795,17 @@ vector<int> Problema::solucionAGGUniforme()
     vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN),
                          poblacion_hijos;
 
-    cout << "\nCREACION : " << endl; mostrarMatrizInt(poblacion);
-    //while(evaluaciones < MAX_EVALUACIONES)
-    //{
+    while(evaluaciones < MAX_EVALUACIONES)
+    {
         dispersion_poblacion = dispersionPoblacion(poblacion);
-        cout << "\nDISPERSIONES : " << endl; mostrarVector(dispersion_poblacion); cout << endl;
         poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_GEN);
 
-        cout << "\nSELECCION : " << endl; mostrarMatrizInt(poblacion_hijos);
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN);
-        cout << "\nCRUCE : " << endl; mostrarMatrizInt(poblacion_hijos);
         mutacionGeneracional(poblacion_hijos);
-        cout << "\nMUTACION : " << endl; mostrarMatrizInt(poblacion_hijos);
         reemplazamientoGeneracional(poblacion, poblacion_hijos);
-        cout << "\nREEMPLAZO : " << endl; mostrarMatrizInt(poblacion); cout << endl;
 
         evaluaciones++;
-    //}
+    }
 
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion_resultado = mejorVectorPoblacion(poblacion);

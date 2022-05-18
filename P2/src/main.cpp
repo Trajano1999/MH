@@ -25,7 +25,7 @@ const string DIR_FICHERO_SALIDA = "/home/juanma/Escritorio/datos.txt";
 // FUNCIONES
 //-------------------------------------------------------------------------------------------------
 
-// muestra una matriz int
+// jjj muestra una matriz int
 /*void mostrarMatrizInt(const vector<vector<int> > & m)
 {
     for(unsigned i=0; i<m.size(); ++i)
@@ -37,7 +37,7 @@ const string DIR_FICHERO_SALIDA = "/home/juanma/Escritorio/datos.txt";
     }
 }
 
-// muestra una matriz double
+// jjj muestra una matriz double
 void mostrarMatrizDouble(const vector<vector<double> > & m)
 {
     for(unsigned i=0; i<m.size(); ++i)
@@ -49,7 +49,7 @@ void mostrarMatrizDouble(const vector<vector<double> > & m)
     }
 }*/
 
-// muestra un vector int
+// jjj muestra un vector int
 void mostrarVector(const vector<int> & v)
 {
     cout << "( ";
@@ -161,11 +161,20 @@ int main(int narg, char * arg[])
         // jjj fichero << resultadosP1[0] << " : " << resultadosP1[1] << " : " << resultadosP1[2] << " : " << resultadosP1[3] << " : " << resultadosP1[4] << endl;
     }
 
-    vector<int> el_vector = problema.solucionAGGUniforme();
-    cout << "\nSolución AGG Uniforme : "; mostrarVector(el_vector); cout << " - " << el_vector.size();
-    //cout << "\nSolución AGG Posición : "; mostrarVector(problema.solucionAGGPosicion());
-    //cout << "\nSolución AGE Uniforme : "; mostrarVector(problema.solucionAGEUniforme());
-    //cout << "\nSolución AGE Posición : "; mostrarVector(problema.solucionAGEPosicion());
+
+    vector<int> v_Greedy = problema.solucionGreedy();
+    vector<int> v_BL     = problema.solucionBusquedaLocal();
+    vector<int> v_AGGU   = problema.solucionAGGUniforme();
+    vector<int> v_AGGP   = problema.solucionAGGPosicion();
+    vector<int> v_AGEU   = problema.solucionAGEUniforme();
+    vector<int> v_AGEP   = problema.solucionAGEPosicion();
+
+    cout << "\nSolución Greedy : "; mostrarVector(v_Greedy); cout << " - " << v_Greedy.size();
+    cout << "\nSolución BL     : "; mostrarVector(v_BL);     cout << " - " << v_BL.size();
+    cout << "\nSolución AGGU   : "; mostrarVector(v_AGGU);   cout << " - " << v_AGGU.size();
+    cout << "\nSolución AGGP   : "; mostrarVector(v_AGGP);   cout << " - " << v_AGGP.size();
+    cout << "\nSolución AGEU   : "; mostrarVector(v_AGEU);   cout << " - " << v_AGEU.size();
+    cout << "\nSolución AGEP   : "; mostrarVector(v_AGEP);   cout << " - " << v_AGEP.size();
 
     cout << endl;
 }
