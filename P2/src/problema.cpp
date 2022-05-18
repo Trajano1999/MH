@@ -323,7 +323,7 @@ void Problema::reparacion(vector<int> & hijo){
     }
 }
 
-vector<int> Problema::mejorVectorPoblacion(vector<vector<int> > poblacion){
+vector<int> Problema::mejorVectorPoblacion(const vector<vector<int> > & poblacion){
     unsigned posicion = 0, 
              tamanio_poblacion = poblacion.size();
     double mejor_dispersion = VALOR_GRANDE;
@@ -336,6 +336,26 @@ vector<int> Problema::mejorVectorPoblacion(vector<vector<int> > poblacion){
     for(unsigned i=0; i<tamanio_poblacion; ++i){
         if(dispersiones[i] < mejor_dispersion){
             mejor_dispersion = dispersiones[i];
+            posicion = i;
+        }
+    }
+
+    return poblacion[posicion];
+}
+
+vector<int> Problema::peorVectorPoblacion(const vector<vector<int> > & poblacion){
+    unsigned posicion = 0, 
+             tamanio_poblacion = poblacion.size();
+    double peor_dispersion = 0;
+    vector<double> dispersiones;
+
+    // calculamos la dispersion de todos los vectores de la poblacion
+    dispersiones = dispersionPoblacion(poblacion);
+
+    // buscamos el máximo valor del vector dispersiones
+    for(unsigned i=0; i<tamanio_poblacion; ++i){
+        if(dispersiones[i] > peor_dispersion){
+            peor_dispersion = dispersiones[i];
             posicion = i;
         }
     }
@@ -454,14 +474,37 @@ void Problema::mutacion(vector<vector<int> > & poblacion_hijos, unsigned tamanio
 
 }
 
-// jjj
 void Problema::reemplazamientoGeneracional(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos){
-    vector<int> mejor_poblacion = mejorVectorPoblacion(poblacion);
+    unsigned posicion_peor = 0;
+    bool mejor_encontrado = false,
+         peor_encontrado = false;
+    vector<int> peor_vector_poblacion,
+                mejor_vector_poblacion = mejorVectorPoblacion(poblacion);
 
-    // ver si mejor_poblacion está en poblacion_hijos
-        // si está, poblacion = poblacion_hijos
-        // sino, poblacion = poblacion_hijos y el peor de poblacion hijos lo cambio por mejor_poblacion 
+    poblacion = poblacion_hijos;
 
+    for(unsigned i=0; i<TAMANIO_POBLACION_GEN && !mejor_encontrado; ++i){
+        if(poblacion[i] == mejor_vector_poblacion)
+            mejor_encontrado = true;
+    }
+
+    // si el mejor vector de la iteración anterior no está, lo sustituimos por el peor actual
+    if(!mejor_encontrado){
+        peor_vector_poblacion = peorVectorPoblacion(poblacion);
+
+        for(unsigned i=0; i<TAMANIO_POBLACION_GEN && !peor_encontrado; ++i){
+            if(poblacion[i] == peor_vector_poblacion){
+                peor_encontrado = true;
+                posicion_peor = i;
+            }
+        }
+
+        poblacion[posicion_peor] = mejor_vector_poblacion;
+    }
+}
+
+void Problema::reemplazamientoEstacionario(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos){
+    
 }
 
 //-------------------------------------------------------------------------------------------------

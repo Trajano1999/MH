@@ -83,7 +83,10 @@ class Problema {
             void reparacion(vector<int> & hijo);
 
             // calcula el vector con menor dispersión de una población dada
-            vector<int> mejorVectorPoblacion(vector<vector<int> > poblacion);
+            vector<int> mejorVectorPoblacion(const vector<vector<int> > & poblacion);
+
+            // calcula el vector con mayor dispersión de una población dada
+            vector<int> peorVectorPoblacion(const vector<vector<int> > & poblacion);
 
             // genera la población de padres para AG Uniformes (del mismo tamaño que la población genética)
             vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
