@@ -504,7 +504,26 @@ void Problema::reemplazamientoGeneracional(vector<vector<int> > & poblacion, con
 }
 
 void Problema::reemplazamientoEstacionario(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos){
-    
+    unsigned peor_posicion = 0,
+             tamanio_poblacion = poblacion.size(),
+             tamanio_poblacion_hijos = poblacion_hijos.size();
+    double peor_dispersion;
+    vector<double> dispersiones, 
+                   dispersiones_hijos = dispersionPoblacion(poblacion_hijos);
+
+    for(unsigned i=0; i<tamanio_poblacion_hijos; ++i){
+        peor_dispersion = 0;
+        dispersiones = dispersionPoblacion(poblacion);
+        
+        for(unsigned j=0; j<tamanio_poblacion; ++j)
+            if(dispersiones[i] > peor_dispersion){
+                peor_dispersion = dispersiones[i];
+                peor_posicion = i;
+            }
+        
+        if(dispersiones[peor_posicion] > dispersiones_hijos[i])
+            poblacion[peor_posicion] = poblacion_hijos[i];
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
