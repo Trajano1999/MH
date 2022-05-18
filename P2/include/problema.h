@@ -82,6 +82,9 @@ class Problema {
             // ajusta el números de 1s tras aplicar el cruceUniforme
             void reparacion(vector<int> & hijo);
 
+            // calcula el vector con menor dispersión de una población dada
+            vector<int> mejorVectorPoblacion(vector<vector<int> > poblacion);
+
             // genera la población de padres para AG Uniformes (del mismo tamaño que la población genética)
             vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
 
@@ -97,8 +100,11 @@ class Problema {
             // se encarga de mutar la población con una probabilidad de PROB_MUTACION
             void mutacion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_mutacion);
 
-            // escoge el mejor hijo
-            void reemplazamiento(vector<vector<int> > poblacion, vector<vector<int> > poblacion_hijos);
+            // aplica el reemplazamiento generacional explicado
+            void reemplazamientoGeneracional(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos);
+
+            // aplica el reemplazamiento estacionario explicado
+            void reemplazamientoEstacionario(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos);
 
     public: 
         // constructor

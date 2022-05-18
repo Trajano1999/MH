@@ -323,6 +323,26 @@ void Problema::reparacion(vector<int> & hijo){
     }
 }
 
+vector<int> Problema::mejorVectorPoblacion(vector<vector<int> > poblacion){
+    unsigned posicion = 0, 
+             tamanio_poblacion = poblacion.size();
+    double mejor_dispersion = VALOR_GRANDE;
+    vector<double> dispersiones;
+
+    // calculamos la dispersion de todos los vectores de la poblacion
+    dispersiones = dispersionPoblacion(poblacion);
+
+    // buscamos el mínimo valor del vector dispersiones
+    for(unsigned i=0; i<tamanio_poblacion; ++i){
+        if(dispersiones[i] < mejor_dispersion){
+            mejor_dispersion = dispersiones[i];
+            posicion = i;
+        }
+    }
+
+    return poblacion[posicion];
+}
+
 vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion){
     unsigned tamanio_vector = matriz.size();
     vector<vector<int> > resultado;
@@ -426,7 +446,21 @@ void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned ta
     }
 }
 
-void Problema::mutacion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_mutacion){
+// jjj
+void Problema::mutacion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_mutacion){    
+    for(unsigned i=0; i<tamanio_mutacion; ++i){
+
+    }
+
+}
+
+// jjj
+void Problema::reemplazamientoGeneracional(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos){
+    vector<int> mejor_poblacion = mejorVectorPoblacion(poblacion);
+
+    // ver si mejor_poblacion está en poblacion_hijos
+        // si está, poblacion = poblacion_hijos
+        // sino, poblacion = poblacion_hijos y el peor de poblacion hijos lo cambio por mejor_poblacion 
 
 }
 
@@ -604,11 +638,11 @@ vector<int> Problema::solucionAGGUniforme(){
 
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN);
         
-        mutacion(poblacion_hijos, TAMANIO_POBLACION_GEN);
-        /*
-        reemplazamiento();
+        //mutacion(poblacion_hijos, TAMANIO_POBLACION_GEN);
+        
+        reemplazamientoGeneracional(poblacion, poblacion_hijos);
 
-        evaluaciones++;*/
+        //evaluaciones++;
     //}
 
     return poblacion[0];
