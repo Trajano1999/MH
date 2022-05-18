@@ -76,10 +76,12 @@ vector<string> tiemposP1(char * arg, int i, Problema problema, vector<double> so
            valor_algoritmo_greedy,
            valor_algoritmo_BL;
 
-    string nombre_fichero;
     vector<string> resultados;
-    
     problema.setMatriz(arg);
+    string nombre_fichero = arg;
+
+    // eliminamos la ruta de los archivos
+    nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+59);
 
     // ejecutamos EJECUCIONES_POR_PROBLEMA veces cada archivo
     for(unsigned j=0; j<EJECUCIONES_POR_PROBLEMA; ++j)
@@ -114,16 +116,26 @@ vector<string> tiemposP1(char * arg, int i, Problema problema, vector<double> so
     desviacion_final_greedy = 100*desviacion_final_greedy;
     desviacion_final_BL     = 100*desviacion_final_BL;
 
-    // eliminamos la ruta de los archivos
-    nombre_fichero = arg;
-    nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+59);
-
     // agrupamos los valores de tiempo y desviación
     resultados.push_back(nombre_fichero);
     resultados.push_back(to_string(tiempo_final_greedy));
     resultados.push_back(to_string(tiempo_final_BL));
     resultados.push_back(to_string(desviacion_final_greedy));
     resultados.push_back(to_string(desviacion_final_BL));
+
+    return resultados;
+}
+
+vector<string> tiemposP2(char * arg, int i, Problema problema, vector<double> soluciones_ideales)
+{
+    vector<string> resultados;
+    problema.setMatriz(arg);
+    string nombre_fichero = arg;
+
+    // eliminamos la ruta de los archivos
+    nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+59);
+
+    // iteraciones jjj
 
     return resultados;
 }
@@ -136,8 +148,7 @@ int main(int narg, char * arg[])
 {
     unsigned random_semilla = 0;
     const char * dir_fichero = arg[1];
-    vector<string> resultadosP1;
-
+    vector<string> resultadosP1, resultadosP2;
     Problema problema(random_semilla, dir_fichero);
 
     // vector con las soluciones ideales proporcionadas por el profesor
@@ -151,16 +162,20 @@ int main(int narg, char * arg[])
     ofstream fichero(DIR_FICHERO_SALIDA);
     if(!fichero.is_open())
         cerr << "Error al abrir " << DIR_FICHERO_SALIDA << endl;
-    // jjj fichero << "Documento : " << "Tiempo_Greedy : " << "Tiempo_BL : " << "Desv_Tipica_Greedy : " << "Desv_Tipica_BL" << endl << endl;
-
-    // recorremos los archivos
+    
+    // mostramos los datos en el fichero
+    fichero << "Documento : " << "Tiempo_Greedy : " << "Tiempo_BL : " << "Desv_Tipica_Greedy : " << "Desv_Tipica_BL" << endl << endl;
     for(int i=1; i<narg; ++i)
     {
-        // medimos los tiempos para la P1
+        // medimos los tiempos y desviaciones para la P1
         resultadosP1 = tiemposP1(arg[i], i, problema, soluciones_ideales);
-        // jjj fichero << resultadosP1[0] << " : " << resultadosP1[1] << " : " << resultadosP1[2] << " : " << resultadosP1[3] << " : " << resultadosP1[4] << endl;
-    }
 
+        // medimos los tiempos y desviaciones para la P2
+        resultadosP2 = tiemposP2(arg[i], i, problema, soluciones_ideales);
+
+        // añadimos los datos
+        fichero << resultadosP2[0];
+    }
 
     vector<int> v_Greedy = problema.solucionGreedy();
     vector<int> v_BL     = problema.solucionBusquedaLocal();
@@ -170,11 +185,11 @@ int main(int narg, char * arg[])
     vector<int> v_AGEP   = problema.solucionAGEPosicion();
 
     cout << "\nSolución Greedy : " << problema.dispersion(v_Greedy) << " - "; mostrarVector(v_Greedy); cout << " - " << v_Greedy.size();
-    cout << "\nSolución BL     : " << problema.dispersion(v_BL) << " - ";     mostrarVector(v_BL);     cout << " - " << v_BL.size();
-    cout << "\nSolución AGGU   : " << problema.dispersion(v_AGGU) << " - ";   mostrarVector(v_AGGU);   cout << " - " << v_AGGU.size();
-    cout << "\nSolución AGGP   : " << problema.dispersion(v_AGGP) << " - ";   mostrarVector(v_AGGP);   cout << " - " << v_AGGP.size();
-    cout << "\nSolución AGEU   : " << problema.dispersion(v_AGEU) << " - ";   mostrarVector(v_AGEU);   cout << " - " << v_AGEU.size();
-    cout << "\nSolución AGEP   : " << problema.dispersion(v_AGEP) << " - ";   mostrarVector(v_AGEP);   cout << " - " << v_AGEP.size();
+    cout << "\nSolución BL     : " << problema.dispersion(v_BL)     << " - "; mostrarVector(v_BL);     cout << " - " << v_BL.size();
+    cout << "\nSolución AGGU   : " << problema.dispersion(v_AGGU)   << " - "; mostrarVector(v_AGGU);   cout << " - " << v_AGGU.size();
+    cout << "\nSolución AGGP   : " << problema.dispersion(v_AGGP)   << " - "; mostrarVector(v_AGGP);   cout << " - " << v_AGGP.size();
+    cout << "\nSolución AGEU   : " << problema.dispersion(v_AGEU)   << " - "; mostrarVector(v_AGEU);   cout << " - " << v_AGEU.size();
+    cout << "\nSolución AGEP   : " << problema.dispersion(v_AGEP)   << " - "; mostrarVector(v_AGEP);   cout << " - " << v_AGEP.size();
 
     cout << endl;
 }
