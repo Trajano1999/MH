@@ -26,29 +26,32 @@ const string DIR_FICHERO_SALIDA = "/home/juanma/Escritorio/datos.txt";
 //-------------------------------------------------------------------------------------------------
 
 // muestra una matriz int
-/*void mostrarMatrizInt(const vector<vector<int> > & m){
-    for(unsigned i=0; i<m.size(); ++i){
+/*void mostrarMatrizInt(const vector<vector<int> > & m)
+{
+    for(unsigned i=0; i<m.size(); ++i)
+    {
         cout << "( ";
-        for(unsigned j=0; j<m[i].size(); ++j){
+        for(unsigned j=0; j<m[i].size(); ++j)
             cout << m[i][j] << " ";
-        }
         cout << ")" << endl;
     }
 }
 
 // muestra una matriz double
-void mostrarMatrizDouble(const vector<vector<double> > & m){
-    for(unsigned i=0; i<m.size(); ++i){
+void mostrarMatrizDouble(const vector<vector<double> > & m)
+{
+    for(unsigned i=0; i<m.size(); ++i)
+    {
         cout << "( ";
-        for(unsigned j=0; j<m[i].size(); ++j){
+        for(unsigned j=0; j<m[i].size(); ++j)
             cout << m[i][j] << " ";
-        }
         cout << ")" << endl;
     }
 }*/
 
 // muestra un vector int
-void mostrarVector(const vector<int> & v){
+void mostrarVector(const vector<int> & v)
+{
     cout << "( ";
     for(unsigned i=0; i<v.size(); ++i)
         cout << v[i] << " ";
@@ -60,7 +63,8 @@ void mostrarVector(const vector<int> & v){
 //-------------------------------------------------------------------------------------------------
 
 // realiza las mediciones de los métodos de la P1 y devuelve tanto los tiempos comos las desviaciones
-vector<string> tiemposP1(char * arg, int i, Problema problema, vector<double> soluciones_ideales){
+vector<string> tiemposP1(char * arg, int i, Problema problema, vector<double> soluciones_ideales)
+{
     unsigned tiempo_antes_greedy,
              tiempo_despues_greedy,
              tiempo_antes_BL,
@@ -78,7 +82,8 @@ vector<string> tiemposP1(char * arg, int i, Problema problema, vector<double> so
     problema.setMatriz(arg);
 
     // ejecutamos EJECUCIONES_POR_PROBLEMA veces cada archivo
-    for(unsigned j=0; j<EJECUCIONES_POR_PROBLEMA; ++j){
+    for(unsigned j=0; j<EJECUCIONES_POR_PROBLEMA; ++j)
+    {
         // modificamos la semilla
         problema.setSemilla(j+1);
         
@@ -127,7 +132,8 @@ vector<string> tiemposP1(char * arg, int i, Problema problema, vector<double> so
 // MAIN
 //-------------------------------------------------------------------------------------------------
 
-int main(int narg, char * arg[]){
+int main(int narg, char * arg[])
+{
     unsigned random_semilla = 0;
     const char * dir_fichero = arg[1];
     vector<string> resultadosP1;
@@ -148,14 +154,15 @@ int main(int narg, char * arg[]){
     // jjj fichero << "Documento : " << "Tiempo_Greedy : " << "Tiempo_BL : " << "Desv_Tipica_Greedy : " << "Desv_Tipica_BL" << endl << endl;
 
     // recorremos los archivos
-    for(int i=1; i<narg; ++i){
-
+    for(int i=1; i<narg; ++i)
+    {
         // medimos los tiempos para la P1
         resultadosP1 = tiemposP1(arg[i], i, problema, soluciones_ideales);
         // jjj fichero << resultadosP1[0] << " : " << resultadosP1[1] << " : " << resultadosP1[2] << " : " << resultadosP1[3] << " : " << resultadosP1[4] << endl;
     }
 
-    cout << "\nSolución AGG Uniforme : "; mostrarVector(problema.solucionAGGUniforme());
+    vector<int> el_vector = problema.solucionAGGUniforme();
+    cout << "\nSolución AGG Uniforme : "; mostrarVector(el_vector); cout << " - " << el_vector.size();
     //cout << "\nSolución AGG Posición : "; mostrarVector(problema.solucionAGGPosicion());
     //cout << "\nSolución AGE Uniforme : "; mostrarVector(problema.solucionAGEUniforme());
     //cout << "\nSolución AGE Posición : "; mostrarVector(problema.solucionAGEPosicion());

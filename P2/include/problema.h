@@ -22,7 +22,8 @@
 
 using namespace std;
 
-class Problema {
+class Problema 
+{
     private:
         unsigned elem_sel, semilla;
         vector<vector<double> > matriz;
