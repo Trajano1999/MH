@@ -100,8 +100,11 @@ class Problema {
             // realiza el cruce de posición con probabilidad PROB_CRUCE_AGE
             void crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce);
 
-            // se encarga de mutar la población con una probabilidad de PROB_MUTACION
-            void mutacion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_mutacion);
+            // se encarga de mutar la población generacional con una probabilidad de PROB_MUTACION
+            void mutacionGeneracional(vector<vector<int> > & poblacion_hijos);
+
+            // se encarga de mutar la población generacional con una probabilidad de PROB_MUTACION
+            void mutacionEstacionaria(vector<vector<int> > & poblacion_hijos);
 
             // aplica el reemplazamiento generacional explicado
             void reemplazamientoGeneracional(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos);

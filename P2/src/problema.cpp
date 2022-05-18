@@ -466,13 +466,48 @@ void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned ta
     }
 }
 
-// jjj
-void Problema::mutacion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_mutacion){    
-    for(unsigned i=0; i<tamanio_mutacion; ++i){
+void Problema::mutacionGeneracional(vector<vector<int> > & poblacion_hijos){    
+    unsigned tamanio_poblacion = matriz.size(),
+             aleatorio1, 
+             aleatorio2,
+             auxiliar;
+    
+    srand(time(NULL));
 
+    for(unsigned i=0; i<TAMANIO_POBLACION_GEN*PROB_MUTACION; ++i){
+        aleatorio1 = rand() % (tamanio_poblacion);
+        do{
+            aleatorio2 = rand() % (tamanio_poblacion);
+        }while(aleatorio2 == aleatorio1 || poblacion_hijos[i][aleatorio1] == poblacion_hijos[i][aleatorio2]);
+
+        auxiliar = poblacion_hijos[i][aleatorio1];
+        poblacion_hijos[i][aleatorio1] = poblacion_hijos[i][aleatorio2];
+        poblacion_hijos[i][aleatorio2] = auxiliar;
     }
-
 }
+
+void Problema::mutacionEstacionaria(vector<vector<int> > & poblacion_hijos){
+    unsigned tamanio_poblacion = matriz.size(),
+             vector_elegido,
+             aleatorio1, 
+             aleatorio2,
+             auxiliar;
+    
+    srand(time(NULL));
+
+    for(unsigned i=0; i<TAMANIO_POBLACION_EST*PROB_MUTACION*tamanio_poblacion; ++i){
+        vector_elegido = rand() % 2;
+        aleatorio1 = rand() % (tamanio_poblacion);
+        do{
+            aleatorio2 = rand() % (tamanio_poblacion);
+        }while(aleatorio2 == aleatorio1 || poblacion_hijos[vector_elegido][aleatorio1] == poblacion_hijos[vector_elegido][aleatorio2]);
+
+        auxiliar = poblacion_hijos[vector_elegido][aleatorio1];
+        poblacion_hijos[vector_elegido][aleatorio1] = poblacion_hijos[vector_elegido][aleatorio2];
+        poblacion_hijos[vector_elegido][aleatorio2] = auxiliar;
+    }
+}
+
 
 void Problema::reemplazamientoGeneracional(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos){
     unsigned posicion_peor = 0;
@@ -687,27 +722,128 @@ vector<int> Problema::solucionBusquedaLocal(){
     return sol;
 }
 
-// jjj
 vector<int> Problema::solucionAGGUniforme(){
-    //unsigned evaluaciones = 0;
+    unsigned evaluaciones = 0,
+             tamanio_vector = matriz.size();
+vector<int> vector_resultado,
+            vector_poblacion_resultado;
     vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN),
                          poblacion_hijos;
 
-    //while(evaluaciones < MAX_EVALUACIONES){
+    cout << "\nCREACION : " << endl; mostrarMatrizInt(poblacion);
+    //while(evaluaciones < MAX_EVALUACIONES)
+    //{
+        dispersion_poblacion = dispersionPoblacion(poblacion);
+        cout << "\nDISPERSIONES : " << endl; mostrarVector(dispersion_poblacion); cout << endl;
+        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_GEN);
+
+        cout << "\nSELECCION : " << endl; mostrarMatrizInt(poblacion_hijos);
+        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN);
+        cout << "\nCRUCE : " << endl; mostrarMatrizInt(poblacion_hijos);
+        mutacionGeneracional(poblacion_hijos);
+        cout << "\nMUTACION : " << endl; mostrarMatrizInt(poblacion_hijos);
+        reemplazamientoGeneracional(poblacion, poblacion_hijos);
+        cout << "\nREEMPLAZO : " << endl; mostrarMatrizInt(poblacion); cout << endl;
+
+        evaluaciones++;
+    //}
+
+    // transformamos el vector_poblacion en un vector de pueblos
+    vector_poblacion_resultado = mejorVectorPoblacion(poblacion);
+    for(unsigned i=0; i<tamanio_vector; ++i)
+        if(vector_poblacion_resultado[i] == 1)
+            vector_resultado.push_back(i);
+
+    return vector_resultado;
+}
+
+vector<int> Problema::solucionAGGPosicion(){
+    unsigned evaluaciones = 0,
+             tamanio_vector = matriz.size();
+    vector<int> vector_resultado,
+                vector_poblacion_resultado;
+    vector<double> dispersion_poblacion;
+    vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN),
+                         poblacion_hijos;
+
+    while(evaluaciones < MAX_EVALUACIONES)
+    {
         dispersion_poblacion = dispersionPoblacion(poblacion);
         poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_GEN);
 
-        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN);
-        
-        //mutacion(poblacion_hijos, TAMANIO_POBLACION_GEN);
-        
+        crucePosicion(poblacion_hijos, TAMANIO_POBLACION_GEN);
+        mutacionGeneracional(poblacion_hijos);
         reemplazamientoGeneracional(poblacion, poblacion_hijos);
 
-        //evaluaciones++;
-    //}
+        evaluaciones++;
+    }
 
-    return poblacion[0];
+    // transformamos el vector_poblacion en un vector de pueblos
+    vector_poblacion_resultado = mejorVectorPoblacion(poblacion);
+    for(unsigned i=0; i<tamanio_vector; ++i)
+        if(vector_poblacion_resultado[i] == 1)
+            vector_resultado.push_back(i);
 
-    // faltaria escoger el vector<int> que mejor P(t) tenga del vector<vector<int> >
+    return vector_resultado;
+}
+
+vector<int> Problema::solucionAGEUniforme(){
+    unsigned evaluaciones = 0,
+             tamanio_vector = matriz.size();
+    vector<int> vector_resultado,
+                vector_poblacion_resultado;         
+    vector<double> dispersion_poblacion;
+    vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN),
+                         poblacion_hijos;
+
+    while(evaluaciones < MAX_EVALUACIONES)
+    {
+        dispersion_poblacion = dispersionPoblacion(poblacion);
+        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_EST);
+
+        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_EST);
+        mutacionEstacionaria(poblacion_hijos);
+        reemplazamientoEstacionario(poblacion, poblacion_hijos);
+
+        evaluaciones++;
+    }
+
+    // transformamos el vector_poblacion en un vector de pueblos
+    vector_poblacion_resultado = mejorVectorPoblacion(poblacion);
+    for(unsigned i=0; i<tamanio_vector; ++i)
+        if(vector_poblacion_resultado[i] == 1)
+            vector_resultado.push_back(i);
+
+    return vector_resultado;
+}
+
+vector<int> Problema::solucionAGEPosicion(){
+    unsigned evaluaciones = 0,
+             tamanio_vector = matriz.size();
+    vector<int> vector_resultado,
+                vector_poblacion_resultado;
+    vector<double> dispersion_poblacion;
+    vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN),
+                         poblacion_hijos;
+
+    while(evaluaciones < MAX_EVALUACIONES)
+    {
+        dispersion_poblacion = dispersionPoblacion(poblacion);
+        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_EST);
+
+        crucePosicion(poblacion_hijos, TAMANIO_POBLACION_EST);
+        mutacionEstacionaria(poblacion_hijos);
+        reemplazamientoEstacionario(poblacion, poblacion_hijos);
+
+        evaluaciones++;
+    }
+
+    // transformamos el vector_poblacion en un vector de pueblos
+    vector_poblacion_resultado = mejorVectorPoblacion(poblacion);
+    for(unsigned i=0; i<tamanio_vector; ++i)
+        if(vector_poblacion_resultado[i] == 1)
+            vector_resultado.push_back(i);
+
+    return vector_resultado;
 }

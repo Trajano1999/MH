@@ -25,8 +25,8 @@ const string DIR_FICHERO_SALIDA = "/home/juanma/Escritorio/datos.txt";
 // FUNCIONES
 //-------------------------------------------------------------------------------------------------
 
-/* jjj// muestra una matriz int
-void mostrarMatrizInt(const vector<vector<int> > & m){
+// muestra una matriz int
+/*void mostrarMatrizInt(const vector<vector<int> > & m){
     for(unsigned i=0; i<m.size(); ++i){
         cout << "( ";
         for(unsigned j=0; j<m[i].size(); ++j){
@@ -34,7 +34,7 @@ void mostrarMatrizInt(const vector<vector<int> > & m){
         }
         cout << ")" << endl;
     }
-}*/
+}
 
 // muestra una matriz double
 void mostrarMatrizDouble(const vector<vector<double> > & m){
@@ -45,15 +45,15 @@ void mostrarMatrizDouble(const vector<vector<double> > & m){
         }
         cout << ")" << endl;
     }
-}
+}*/
 
-/* jjj// muestra un vector int
+// muestra un vector int
 void mostrarVector(const vector<int> & v){
     cout << "( ";
     for(unsigned i=0; i<v.size(); ++i)
         cout << v[i] << " ";
     cout << ")"; 
-}*/
+}
 
 //-------------------------------------------------------------------------------------------------
 // MEDICIONES DE TIEMPOS
@@ -155,7 +155,10 @@ int main(int narg, char * arg[]){
         // jjj fichero << resultadosP1[0] << " : " << resultadosP1[1] << " : " << resultadosP1[2] << " : " << resultadosP1[3] << " : " << resultadosP1[4] << endl;
     }
 
-    problema.solucionAGGUniforme();
+    cout << "\nSolución AGG Uniforme : "; mostrarVector(problema.solucionAGGUniforme());
+    //cout << "\nSolución AGG Posición : "; mostrarVector(problema.solucionAGGPosicion());
+    //cout << "\nSolución AGE Uniforme : "; mostrarVector(problema.solucionAGEUniforme());
+    //cout << "\nSolución AGE Posición : "; mostrarVector(problema.solucionAGEPosicion());
 
     cout << endl;
 }
