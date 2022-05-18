@@ -169,12 +169,12 @@ int main(int narg, char * arg[])
     vector<int> v_AGEU   = problema.solucionAGEUniforme();
     vector<int> v_AGEP   = problema.solucionAGEPosicion();
 
-    cout << "\nSolución Greedy : "; mostrarVector(v_Greedy); cout << " - " << v_Greedy.size();
-    cout << "\nSolución BL     : "; mostrarVector(v_BL);     cout << " - " << v_BL.size();
-    cout << "\nSolución AGGU   : "; mostrarVector(v_AGGU);   cout << " - " << v_AGGU.size();
-    cout << "\nSolución AGGP   : "; mostrarVector(v_AGGP);   cout << " - " << v_AGGP.size();
-    cout << "\nSolución AGEU   : "; mostrarVector(v_AGEU);   cout << " - " << v_AGEU.size();
-    cout << "\nSolución AGEP   : "; mostrarVector(v_AGEP);   cout << " - " << v_AGEP.size();
+    cout << "\nSolución Greedy : " << problema.dispersion(v_Greedy) << " - "; mostrarVector(v_Greedy); cout << " - " << v_Greedy.size();
+    cout << "\nSolución BL     : " << problema.dispersion(v_BL) << " - ";     mostrarVector(v_BL);     cout << " - " << v_BL.size();
+    cout << "\nSolución AGGU   : " << problema.dispersion(v_AGGU) << " - ";   mostrarVector(v_AGGU);   cout << " - " << v_AGGU.size();
+    cout << "\nSolución AGGP   : " << problema.dispersion(v_AGGP) << " - ";   mostrarVector(v_AGGP);   cout << " - " << v_AGGP.size();
+    cout << "\nSolución AGEU   : " << problema.dispersion(v_AGEU) << " - ";   mostrarVector(v_AGEU);   cout << " - " << v_AGEU.size();
+    cout << "\nSolución AGEP   : " << problema.dispersion(v_AGEP) << " - ";   mostrarVector(v_AGEP);   cout << " - " << v_AGEP.size();
 
     cout << endl;
 }

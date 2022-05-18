@@ -409,6 +409,18 @@ vector<int> Problema::peorVectorPoblacion(const vector<vector<int> > & poblacion
     return poblacion[posicion];
 }
 
+vector<int> Problema::trasnformacionVectorPoblacion(const vector<int> & vector_poblacion)
+{
+    unsigned tamanio_vector = vector_poblacion.size();
+    vector<int> resultado;
+
+    for(unsigned i=0; i<tamanio_vector; ++i)
+        if(vector_poblacion[i] == 1)
+            resultado.push_back(i);
+    
+    return resultado;
+}
+
 vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion)
 {
     unsigned tamanio_vector = matriz.size();
@@ -787,10 +799,8 @@ vector<int> Problema::solucionBusquedaLocal()
 
 vector<int> Problema::solucionAGGUniforme()
 {
-    unsigned evaluaciones = 0,
-             tamanio_vector = matriz.size();
-    vector<int> vector_resultado,
-            vector_poblacion_resultado;
+    unsigned evaluaciones = 0;
+    vector<int> vector_poblacion;
     vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN),
                          poblacion_hijos;
@@ -808,20 +818,15 @@ vector<int> Problema::solucionAGGUniforme()
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
-    vector_poblacion_resultado = mejorVectorPoblacion(poblacion);
-    for(unsigned i=0; i<tamanio_vector; ++i)
-        if(vector_poblacion_resultado[i] == 1)
-            vector_resultado.push_back(i);
+    vector_poblacion = mejorVectorPoblacion(poblacion);
 
-    return vector_resultado;
+    return trasnformacionVectorPoblacion(vector_poblacion);
 }
 
 vector<int> Problema::solucionAGGPosicion()
 {
-    unsigned evaluaciones = 0,
-             tamanio_vector = matriz.size();
-    vector<int> vector_resultado,
-                vector_poblacion_resultado;
+    unsigned evaluaciones = 0;
+    vector<int> vector_poblacion;
     vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN),
                          poblacion_hijos;
@@ -839,20 +844,15 @@ vector<int> Problema::solucionAGGPosicion()
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
-    vector_poblacion_resultado = mejorVectorPoblacion(poblacion);
-    for(unsigned i=0; i<tamanio_vector; ++i)
-        if(vector_poblacion_resultado[i] == 1)
-            vector_resultado.push_back(i);
+    vector_poblacion = mejorVectorPoblacion(poblacion);
 
-    return vector_resultado;
+    return trasnformacionVectorPoblacion(vector_poblacion);
 }
 
 vector<int> Problema::solucionAGEUniforme()
 {
-    unsigned evaluaciones = 0,
-             tamanio_vector = matriz.size();
-    vector<int> vector_resultado,
-                vector_poblacion_resultado;         
+    unsigned evaluaciones = 0;
+    vector<int> vector_poblacion;         
     vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN),
                          poblacion_hijos;
@@ -870,20 +870,15 @@ vector<int> Problema::solucionAGEUniforme()
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
-    vector_poblacion_resultado = mejorVectorPoblacion(poblacion);
-    for(unsigned i=0; i<tamanio_vector; ++i)
-        if(vector_poblacion_resultado[i] == 1)
-            vector_resultado.push_back(i);
+    vector_poblacion = mejorVectorPoblacion(poblacion);
 
-    return vector_resultado;
+    return trasnformacionVectorPoblacion(vector_poblacion);
 }
 
 vector<int> Problema::solucionAGEPosicion()
 {
-    unsigned evaluaciones = 0,
-             tamanio_vector = matriz.size();
-    vector<int> vector_resultado,
-                vector_poblacion_resultado;
+    unsigned evaluaciones = 0;
+    vector<int> vector_poblacion;
     vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN),
                          poblacion_hijos;
@@ -901,10 +896,7 @@ vector<int> Problema::solucionAGEPosicion()
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
-    vector_poblacion_resultado = mejorVectorPoblacion(poblacion);
-    for(unsigned i=0; i<tamanio_vector; ++i)
-        if(vector_poblacion_resultado[i] == 1)
-            vector_resultado.push_back(i);
+    vector_poblacion = mejorVectorPoblacion(poblacion);
 
-    return vector_resultado;
+    return trasnformacionVectorPoblacion(vector_poblacion);
 }
