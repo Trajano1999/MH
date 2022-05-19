@@ -639,7 +639,7 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio)
     vector<int> resultado, 
                 sol, 
                 candidatos;
-
+    
     // generamos el vector de candidatos
     for(unsigned i=0; i<tamanio_cand; ++i)
         candidatos.push_back(i);

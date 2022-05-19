@@ -89,7 +89,7 @@ int main(int narg, char * arg[])
         string nombre_fichero = arg[i];
 
         // eliminamos la ruta de los archivos
-        nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+38);
+        nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
 
         // calculamos los tiempos
         tiempo_antes = clock();
