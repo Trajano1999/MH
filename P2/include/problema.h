@@ -90,7 +90,7 @@ class Problema
             vector<int> peorVectorPoblacion(const vector<vector<int> > & poblacion);
 
             // trasnforma un vector_poblacion {0,1,1} en un vector_pueblos {1,2}
-            vector<int> trasnformacionVectorPoblacion(const vector<int> & vector_poblacion);
+            vector<int> transformacionVectorPoblacion(const vector<int> & vector_poblacion);
 
             // genera la población de padres para AG Uniformes (del mismo tamaño que la población genética)
             vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);

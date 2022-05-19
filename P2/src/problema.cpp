@@ -408,7 +408,7 @@ vector<int> Problema::peorVectorPoblacion(const vector<vector<int> > & poblacion
     return poblacion[posicion];
 }
 
-vector<int> Problema::trasnformacionVectorPoblacion(const vector<int> & vector_poblacion)
+vector<int> Problema::transformacionVectorPoblacion(const vector<int> & vector_poblacion)
 {
     unsigned tamanio_vector = vector_poblacion.size();
     vector<int> resultado;
@@ -819,7 +819,7 @@ vector<int> Problema::solucionAGGUniforme()
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
 
-    return trasnformacionVectorPoblacion(vector_poblacion);
+    return transformacionVectorPoblacion(vector_poblacion);
 }
 
 vector<int> Problema::solucionAGGPosicion()
@@ -845,7 +845,7 @@ vector<int> Problema::solucionAGGPosicion()
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
 
-    return trasnformacionVectorPoblacion(vector_poblacion);
+    return transformacionVectorPoblacion(vector_poblacion);
 }
 
 vector<int> Problema::solucionAGEUniforme()
@@ -871,7 +871,7 @@ vector<int> Problema::solucionAGEUniforme()
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
 
-    return trasnformacionVectorPoblacion(vector_poblacion);
+    return transformacionVectorPoblacion(vector_poblacion);
 }
 
 vector<int> Problema::solucionAGEPosicion()
@@ -897,5 +897,5 @@ vector<int> Problema::solucionAGEPosicion()
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
 
-    return trasnformacionVectorPoblacion(vector_poblacion);
+    return transformacionVectorPoblacion(vector_poblacion);
 }
