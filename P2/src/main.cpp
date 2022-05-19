@@ -69,11 +69,11 @@ int main(int narg, char * arg[])
            tiempo_despues,
 
            tiempo_greedy;
-           /*tiempo_BL,
-           tiempo_AGGU,
-           tiempo_AGGP,
-           tiempo_AGEU,
-           tiempo_AGEP;*/
+           //tiempo_BL,
+           //tiempo_AGGU;
+           //tiempo_AGGP,
+           //tiempo_AGEU,
+           //tiempo_AGEP;*/
 
     // comprobamos que el número de argumentos es correcto
     if(narg <= 1)
@@ -123,6 +123,7 @@ int main(int narg, char * arg[])
         tiempo_AGEP = tiempo_despues - tiempo_antes;*/
 
         cout << tiempo_greedy << "\t" << problema.dispersion(v_Greedy) << endl;
+        //cout << tiempo_AGGU << "\t" << problema.dispersion(v_AGGU) << endl;
         /*cout << "\n\t" << tiempo_BL;
         cout << "\n\t" << tiempo_AGGU;
         cout << "\n\t" << tiempo_AGGP;

@@ -64,7 +64,7 @@ const double VALOR_GRANDE   = 1.7976931348623158e+308,
              PROB_CRUCE_AGE = 1,
              PROB_MUTACION  = 0.1;
             
-const unsigned MAX_EVALUACIONES  = 100000,
+const unsigned MAX_EVALUACIONES      = 100000,
                TAMANIO_POBLACION_GEN = 50,
                TAMANIO_POBLACION_EST = 2;
 
@@ -565,7 +565,6 @@ void Problema::mutacionEstacionaria(vector<vector<int> > & poblacion_hijos)
     }
 }
 
-
 void Problema::reemplazamientoGeneracional(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos)
 {
     unsigned posicion_peor = 0;
@@ -620,6 +619,69 @@ void Problema::reemplazamientoEstacionario(vector<vector<int> > & poblacion, con
         if(dispersiones[peor_posicion] > dispersiones_hijos[i])
             poblacion[peor_posicion] = poblacion_hijos[i];
     }
+}
+
+//-------------------------------------------------------------------------------------------------
+// MÉTODOS PRIVADOS AMs
+//-------------------------------------------------------------------------------------------------
+
+// jjj
+vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio)
+{
+    int auxiliar;
+    unsigned num_evaluaciones = 0,
+             tamanio_cand = matriz.size(),
+             tamanio_sol = vector_inicio.size();
+    double coste_anterior, 
+           coste_nuevo;
+    bool encontrado = false,
+         calcular = true;
+    vector<int> resultado, 
+                sol, 
+                candidatos;
+
+    // generamos el vector de candidatos
+    for(unsigned i=0; i<tamanio_cand; ++i)
+        candidatos.push_back(i);
+    for(unsigned i=0; i<tamanio_sol; ++i)
+        candidatos[sol[i]] = -1;
+
+    // buscamos los vecinos de cada selección para mejorar la solución
+    for(unsigned i=0; i<tamanio_sol; ++i)
+    {
+        encontrado = false;
+        for(unsigned j=0; j<tamanio_cand && !encontrado; ++j)
+            if(candidatos[j] != -1 && num_evaluaciones < MAX_EVALUACIONES)
+            {
+                // calculo el coste inicial
+                if(calcular)
+                    coste_anterior = dispersion(sol);
+
+                // calculamos coste del vecino
+                coste_nuevo = dispersionIntercambiarElementos(sol, sol[i], candidatos[j]);
+
+                // si el coste nuevo es mejor, lo intercambiamos, sino, lo dejamos como estaba
+                if(coste_nuevo < coste_anterior)
+                {
+                    auxiliar = sol[i];
+                    intercambio(sol, sol[i], candidatos[j]);
+
+                    // aplicamos el intercambio
+                    encontrado = true;
+                    candidatos[j] = -1;
+                    candidatos[auxiliar] = auxiliar;
+
+                    // almacenamos el coste nuevo obetenido para no recalcularlo en la siguiente iteración
+                    coste_anterior = coste_nuevo;
+                    calcular = false;
+                }else
+                    calcular = true;  
+
+                num_evaluaciones++;
+            }
+    }
+
+    return resultado;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -890,6 +952,38 @@ vector<int> Problema::solucionAGEPosicion()
         crucePosicion(poblacion_hijos, TAMANIO_POBLACION_EST);
         mutacionEstacionaria(poblacion_hijos);
         reemplazamientoEstacionario(poblacion, poblacion_hijos);
+
+        evaluaciones++;
+    }
+
+    // transformamos el vector_poblacion en un vector de pueblos
+    vector_poblacion = mejorVectorPoblacion(poblacion);
+
+    return transformacionVectorPoblacion(vector_poblacion);
+}
+
+// jjj
+vector<int> Problema::solucionAM1()
+{
+    unsigned evaluaciones = 0;
+    vector<int> vector_poblacion;
+    vector<double> dispersion_poblacion;
+    vector<vector<int> > poblacion_hijos,
+                         poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN);
+
+    while(evaluaciones < MAX_EVALUACIONES)
+    {
+        dispersion_poblacion = dispersionPoblacion(poblacion);
+        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_GEN);
+
+        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN);
+        mutacionGeneracional(poblacion_hijos);
+        // aqui
+        if(evaluaciones % 10)
+        {
+            // llamamos a BLP2
+        }
+        reemplazamientoGeneracional(poblacion, poblacion_hijos);
 
         evaluaciones++;
     }

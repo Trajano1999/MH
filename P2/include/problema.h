@@ -116,6 +116,11 @@ class Problema
             // aplica el reemplazamiento estacionario explicado
             void reemplazamientoEstacionario(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos);
 
+        // métodos privados para AMs
+
+            // aplicamos BL pero recibiendo el primer vector por parámetro
+            vector<int> busquedaLocalP2(const vector<int> & vector_inicio);
+
     public: 
         // constructor
         Problema(unsigned sem, const char * dir_fich);
@@ -148,7 +153,9 @@ class Problema
                 vector<int> solucionAGEPosicion();
 
                 // AMs
-                // jjj
+                vector<int> solucionAM1();
+                vector<int> solucionAM2();
+                vector<int> solucionAM3();
 };
 
 # endif
