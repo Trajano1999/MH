@@ -225,7 +225,7 @@ int Problema::elementoMenorDispersion(const vector<int> & cand, const vector<int
             min = valorMinimoPositivo(sigma); if(sigma_no_seleccionados[i] < min && sigma_no_seleccionados[i] > 0) min = sigma_no_seleccionados[i];
             
             // la dispersión es 0 si el tamaño del vector solución es 1
-            dispersion[i] = tamanio_sol > 1 ? max - min : max;
+            dispersion[i] = tamanio_sol > 2 ? max - min : 0;
         }
 
     // escogemos el menor valor del vector de dispersion
@@ -290,7 +290,6 @@ double Problema::dispersionVectorPoblacion(const vector<int> & vector_poblacion)
     unsigned tamanio_poblacion = vector_poblacion.size();
     vector<int> vector_pueblos;
 
-    // jjj vector {0,1,1} es {1,2} o {2,3} 
     for(unsigned i=0; i<tamanio_poblacion; ++i)
         if(vector_poblacion[i] == 1)
             vector_pueblos.push_back(i);
