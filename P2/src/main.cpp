@@ -82,9 +82,6 @@ int main(int narg, char * arg[])
         return 1;
     }
 
-    // estructura a seguir
-    // jjj cout << "\n" << "Fichero" << "\t\t\t" << "Tiempo" << "\t\t" << "Coste";
-
     // recorremos todos los argumentos
     for(int i=1; i<narg; ++i)
     {
@@ -92,9 +89,7 @@ int main(int narg, char * arg[])
         string nombre_fichero = arg[i];
 
         // eliminamos la ruta de los archivos
-        nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
-
-        // jjj cout << "\nComienzo del archivo " << i << " de " << narg-1 << endl;
+        nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+38);
 
         // calculamos los tiempos
         tiempo_antes = clock();
@@ -127,7 +122,7 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         tiempo_AGEP = tiempo_despues - tiempo_antes;*/
 
-        cout << nombre_fichero << "\t" << tiempo_greedy << "\t\t" << problema.dispersion(v_Greedy);
+        cout << tiempo_greedy << "\t" << problema.dispersion(v_Greedy) << endl;
         /*cout << "\n\t" << tiempo_BL;
         cout << "\n\t" << tiempo_AGGU;
         cout << "\n\t" << tiempo_AGGP;
@@ -140,12 +135,7 @@ int main(int narg, char * arg[])
         cout << "\n\t" << problema.dispersion(v_AGGP);
         cout << "\n\t" << problema.dispersion(v_AGEU);
         cout << "\n\t" << problema.dispersion(v_AGEP);*/
-        
-        // jjj cout << "\nFin del archivo " << i << " de " << narg-1 << endl;
-        //if(i<narg-1)
-        //   cout << "\n----------------------------------------------------------------------";
     }
 
-    cout << endl;
     return 0;
 }

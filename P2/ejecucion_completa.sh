@@ -10,6 +10,7 @@ total_iteraciones=50
 echo ""
 rm $RUTA_ARCHIVO_SALIDA
 	
+echo "TIEMPOS - DESVIACIONES" >> $RUTA_ARCHIVO_SALIDA
 for FILE in $(ls $RUTA_ARCHIVOS_ENTRADA)
 do	
 	iteraciones=$((iteraciones+1))
