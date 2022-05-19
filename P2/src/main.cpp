@@ -121,11 +121,10 @@ int main(int narg, char * arg[])
     if(!fichero.is_open())
         cerr << "Error al abrir " << DIR_FICHERO_SALIDA << endl;
     
-    // mostramos los datos en el fichero
-    fichero << "Documento : " << "Tiempo_Greedy : " << "Desv_Greedy : " << "Tiempo_BL : " << "Desv_BL : " << "Tiempo_AGGU : " << "Desv_AGGU : " << "Tiempo_AGGP : " << "Desv_AGGP : " << "Tiempo_AGEU : " << "Desv_AGEU : " << "Tiempo_AGEP : " << "Desv_AGEP " << endl << endl;
+    // tomamos los datos
     for(int i=1; i<narg; ++i)
     {
-        cout << "\nComienza Iteración : " << i << endl;
+        cout << "\nComienza la iteración : " << i << " de 50 " << endl;
         
         problema.setMatriz(arg[i]);
         string nombre_fichero = arg[i];
@@ -198,26 +197,28 @@ int main(int narg, char * arg[])
         media_desv_AGEU += desv_tipica_AGEU;
         media_desv_AGEP += desv_tipica_AGEP;
 
-        // añadimos los datos
+        // añadimos los datos jjj
         //fichero << nombre_fichero << " " << tiem << " " << resultadosP2[2] << " " << resultadosP2[3] << " " << resultadosP2[4] << " " << resultadosP2[5] << " " << resultadosP2[6] << " " << resultadosP2[7] << " " << resultadosP2[8] << " " << resultadosP2[9] << " " << resultadosP2[10] << " " << resultadosP2[11] << " " << resultadosP2[12] << endl;
 
-        cout << "Terminada Iteración : " << i << endl;
+        cout << "Terminada la iteración : " << i << " de 50 " << endl;
     }
 
+    fichero << "Tiempo_Greedy : " << "Desv_Greedy : " << "Tiempo_BL : " << "Desv_BL : " << "Tiempo_AGGU : " << "Desv_AGGU : " << "Tiempo_AGGP : " << "Desv_AGGP : " << "Tiempo_AGEU : " << "Desv_AGEU : " << "Tiempo_AGEP : " << "Desv_AGEP " << endl << endl;
+    fichero << media_tiempo_greedy/50 << " : " << media_desv_greedy/50 << " : " << media_tiempo_BL/50 << " : " << media_desv_BL/50 << " : " << media_tiempo_AGGU/50 << " : " << media_desv_AGGU/50 << " : " << media_tiempo_AGGP/50 << " : " << media_desv_AGGP/50 << " : " << media_tiempo_AGEU/50 << " : " << media_desv_AGEU/50 << " : " << media_desv_AGEU/50 << " : " << media_tiempo_AGEP/50 << " : " << media_desv_AGEP/50 << endl; 
+
     cout << endl;
-    cout << "Media tiempo greedy : " << media_tiempo_greedy / 50 << endl;
+    cout << "Media tiempo greedy : " << media_tiempo_greedy/50 << endl;
     cout << "Media tiempo BL     : " << media_tiempo_BL/50 << endl;
     cout << "Media tiempo AGGU   : " << media_tiempo_AGGU/50 << endl;
     cout << "Media tiempo AGGP   : " << media_tiempo_AGGP/50 << endl;
     cout << "Media tiempo AGEU   : " << media_tiempo_AGEU/50 << endl;
     cout << "Media tiempo AGEP   : " << media_tiempo_AGEP/50 << endl;
-
-    cout << "Media desv greedy   : " << media_desv_greedy / 50 << endl;
+    cout << endl;
+    cout << "Media desv greedy   : " << media_desv_greedy/50 << endl;
     cout << "Media desv BL       : " << media_desv_BL/50 << endl;
     cout << "Media desv AGGU     : " << media_desv_AGGU/50 << endl;
     cout << "Media desv AGGP     : " << media_desv_AGGP/50 << endl;
     cout << "Media desv AGEU     : " << media_desv_AGEU/50 << endl;
     cout << "Media desv AGEP     : " << media_desv_AGEP/50 << endl;
-
     cout << endl;
 }
