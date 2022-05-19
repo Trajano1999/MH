@@ -7,6 +7,7 @@ RUTA_ARCHIVO_SALIDA="/home/juanma/Escritorio/Uni/Segundo_Cuatri/MH/P2/datos.txt"
 iteraciones=0
 total_iteraciones=50
 
+echo ""
 rm $RUTA_ARCHIVO_SALIDA
 	
 for FILE in $(ls $RUTA_ARCHIVOS_ENTRADA)
