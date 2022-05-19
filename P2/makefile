@@ -39,12 +39,9 @@ clear:
 
 # ejecución																						   # alterar opciones de ejecución
 exec: $(BIN)/$(EJECUTABLE)
-	./$< $(RUTA_ARCHIVOS_ENTRADA)/GKD-b_10_n25_m7.txt
-	
-#	$(RUTA_ARCHIVOS_ENTRADA)/GKD-b_1_n25_m2.txt
-
-#	$(RUTA_ARCHIVOS_ENTRADA)/GKD-b_2_n25_m2.txt 				\
-	$(RUTA_ARCHIVOS_ENTRADA)/GKD-b_3_n25_m2.txt 				\
+	./$< $(RUTA_ARCHIVOS_ENTRADA)/GKD-b_1_n25_m2.txt \
+	$(RUTA_ARCHIVOS_ENTRADA)/GKD-b_2_n25_m2.txt 				
+#	$(RUTA_ARCHIVOS_ENTRADA)/GKD-b_3_n25_m2.txt 				\
 	$(RUTA_ARCHIVOS_ENTRADA)/GKD-b_4_n25_m2.txt 				\
 	$(RUTA_ARCHIVOS_ENTRADA)/GKD-b_5_n25_m2.txt 				\
 	$(RUTA_ARCHIVOS_ENTRADA)/GKD-b_6_n25_m7.txt 				\

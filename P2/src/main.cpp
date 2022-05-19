@@ -59,88 +59,6 @@ void mostrarVector(const vector<int> & v)
 }
 
 //-------------------------------------------------------------------------------------------------
-// MEDICIONES DE TIEMPOS
-//-------------------------------------------------------------------------------------------------
-
-// realiza las mediciones de los métodos de la P1 y devuelve tanto los tiempos comos las desviaciones
-vector<string> tiemposP1(char * arg, int i, Problema problema, vector<double> soluciones_ideales)
-{
-    unsigned tiempo_antes_greedy,
-             tiempo_despues_greedy,
-             tiempo_antes_BL,
-             tiempo_despues_BL;
-    double tiempo_final_greedy = 0.0,
-           tiempo_final_BL = 0.0,
-           desviacion_final_greedy = 0.0,
-           desviacion_final_BL = 0.0,
-           valor_algoritmo_greedy,
-           valor_algoritmo_BL;
-
-    vector<string> resultados;
-    problema.setMatriz(arg);
-    string nombre_fichero = arg;
-
-    // eliminamos la ruta de los archivos
-    nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+59);
-
-    // ejecutamos EJECUCIONES_POR_PROBLEMA veces cada archivo
-    for(unsigned j=0; j<EJECUCIONES_POR_PROBLEMA; ++j)
-    {
-        // modificamos la semilla
-        problema.setSemilla(j+1);
-        
-        // ejecutamos Greedy
-        tiempo_antes_greedy = clock();
-        problema.solucionGreedy();
-        tiempo_despues_greedy = clock();
-
-        tiempo_final_greedy += double(tiempo_despues_greedy-tiempo_antes_greedy) / CLOCKS_PER_SEC;
-        valor_algoritmo_greedy = problema.dispersion(problema.solucionGreedy());
-        desviacion_final_greedy += (valor_algoritmo_greedy - soluciones_ideales[i-1]) / valor_algoritmo_greedy;
-
-        // ejecutamos Búsqueda Lineal
-        tiempo_antes_BL = clock();
-        problema.solucionBusquedaLocal();
-        tiempo_despues_BL = clock();
-        
-        tiempo_final_BL += double(tiempo_despues_BL-tiempo_antes_BL) / CLOCKS_PER_SEC;
-        valor_algoritmo_BL = problema.dispersion(problema.solucionBusquedaLocal());
-        desviacion_final_BL += (valor_algoritmo_BL - soluciones_ideales[i-1]) / valor_algoritmo_BL;
-    }
-    
-    // calculamos los tiempos
-    tiempo_final_greedy = tiempo_final_greedy / EJECUCIONES_POR_PROBLEMA;
-    tiempo_final_BL     = tiempo_final_BL     / EJECUCIONES_POR_PROBLEMA;
-
-    // calculamos la desviación típica
-    desviacion_final_greedy = 100*desviacion_final_greedy;
-    desviacion_final_BL     = 100*desviacion_final_BL;
-
-    // agrupamos los valores de tiempo y desviación
-    resultados.push_back(nombre_fichero);
-    resultados.push_back(to_string(tiempo_final_greedy));
-    resultados.push_back(to_string(tiempo_final_BL));
-    resultados.push_back(to_string(desviacion_final_greedy));
-    resultados.push_back(to_string(desviacion_final_BL));
-
-    return resultados;
-}
-
-vector<string> tiemposP2(char * arg, int i, Problema problema, vector<double> soluciones_ideales)
-{
-    vector<string> resultados;
-    problema.setMatriz(arg);
-    string nombre_fichero = arg;
-
-    // eliminamos la ruta de los archivos
-    nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+59);
-
-    // iteraciones jjj
-
-    return resultados;
-}
-
-//-------------------------------------------------------------------------------------------------
 // MAIN
 //-------------------------------------------------------------------------------------------------
 
@@ -158,38 +76,148 @@ int main(int narg, char * arg[])
         18.5315999999998, 19.4883300000001, 18.1124199999998, 155.434770000002, 198.894619999999, 187.96703, 168.590200000001, 178.193740000003, 23.3460800000003, 26.7894999999996,         \
         26.7544699999996, 25.9355900000005, 27.7730099999994, 227.749309999998, 228.6029, 226.745339999999, 226.409610000003, 248.856619999998 };
 
+    // variables para tomar los datos
+    double tiempo_antes,
+           tiempo_despues,
+
+           tiempo_greedy,
+           media_tiempo_greedy = 0,
+           valor_greedy,
+           desv_tipica_greedy,
+           media_desv_greedy = 0,
+
+           tiempo_BL,
+           media_tiempo_BL = 0,
+           valor_BL,
+           desv_tipica_BL,
+           media_desv_BL = 0,
+
+           tiempo_AGGU,
+           media_tiempo_AGGU = 0,
+           valor_AGGU,
+           desv_tipica_AGGU,
+           media_desv_AGGU = 0,
+
+           tiempo_AGGP,
+           media_tiempo_AGGP = 0,
+           valor_AGGP,
+           desv_tipica_AGGP,
+           media_desv_AGGP = 0,
+
+           tiempo_AGEU,
+           media_tiempo_AGEU = 0,
+           valor_AGEU,
+           desv_tipica_AGEU,
+           media_desv_AGEU = 0,
+
+           tiempo_AGEP,
+           media_tiempo_AGEP = 0,
+           valor_AGEP,
+           desv_tipica_AGEP,
+           media_desv_AGEP = 0;
+
     // guardamos los datos en un fichero externo
     ofstream fichero(DIR_FICHERO_SALIDA);
     if(!fichero.is_open())
         cerr << "Error al abrir " << DIR_FICHERO_SALIDA << endl;
     
     // mostramos los datos en el fichero
-    fichero << "Documento : " << "Tiempo_Greedy : " << "Tiempo_BL : " << "Desv_Tipica_Greedy : " << "Desv_Tipica_BL" << endl << endl;
+    fichero << "Documento : " << "Tiempo_Greedy : " << "Desv_Greedy : " << "Tiempo_BL : " << "Desv_BL : " << "Tiempo_AGGU : " << "Desv_AGGU : " << "Tiempo_AGGP : " << "Desv_AGGP : " << "Tiempo_AGEU : " << "Desv_AGEU : " << "Tiempo_AGEP : " << "Desv_AGEP " << endl << endl;
     for(int i=1; i<narg; ++i)
     {
-        // medimos los tiempos y desviaciones para la P1
-        resultadosP1 = tiemposP1(arg[i], i, problema, soluciones_ideales);
+        cout << "\nComienza Iteración : " << i << endl;
+        
+        problema.setMatriz(arg[i]);
+        string nombre_fichero = arg[i];
 
-        // medimos los tiempos y desviaciones para la P2
-        resultadosP2 = tiemposP2(arg[i], i, problema, soluciones_ideales);
+        // eliminamos la ruta de los archivos
+        nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+59);
+
+        // calculamos los tiempos
+        tiempo_antes = clock();
+        vector<int> v_Greedy = problema.solucionGreedy();
+        tiempo_despues = clock();
+        tiempo_greedy = tiempo_despues - tiempo_antes;
+
+        tiempo_antes = clock();
+        vector<int> v_BL = problema.solucionBusquedaLocal();
+        tiempo_despues = clock();
+        tiempo_BL = tiempo_despues - tiempo_antes;
+
+        tiempo_antes = clock();
+        vector<int> v_AGGU = problema.solucionAGGUniforme();
+        tiempo_despues = clock();
+        tiempo_AGGU = tiempo_despues - tiempo_antes;
+
+        tiempo_antes = clock();
+        vector<int> v_AGGP = problema.solucionAGGPosicion();
+        tiempo_despues = clock();
+        tiempo_AGGP = tiempo_despues - tiempo_antes;
+
+        tiempo_antes = clock();
+        vector<int> v_AGEU = problema.solucionAGEUniforme();
+        tiempo_despues = clock();
+        tiempo_AGEU = tiempo_despues - tiempo_antes;
+
+        tiempo_antes = clock();
+        vector<int> v_AGEP = problema.solucionAGEPosicion();
+        tiempo_despues = clock();
+        tiempo_AGEP = tiempo_despues - tiempo_antes;
+        
+        // calculamos las desv. típicas
+        valor_greedy = problema.dispersion(v_Greedy);
+        desv_tipica_greedy = 100.00 * ( valor_greedy - soluciones_ideales[i-1] ) / valor_greedy;
+
+        valor_BL = problema.dispersion(v_BL);
+        desv_tipica_BL = 100.00 * ( valor_BL - soluciones_ideales[i-1] ) / valor_BL;
+
+        valor_AGGU = problema.dispersion(v_AGGU);
+        desv_tipica_AGGU = 100.00 * ( valor_AGGU - soluciones_ideales[i-1] ) / valor_AGGU;
+
+        valor_AGGP = problema.dispersion(v_AGGP);
+        desv_tipica_AGGP = 100.00 * ( valor_AGGP - soluciones_ideales[i-1] ) / valor_AGGP;
+
+        valor_AGEU = problema.dispersion(v_AGEU);
+        desv_tipica_AGEU = 100.00 * ( valor_AGEU - soluciones_ideales[i-1] ) / valor_AGEU;
+
+        valor_AGEP = problema.dispersion(v_AGEP);
+        desv_tipica_AGEP = 100.00 * ( valor_AGEP - soluciones_ideales[i-1] ) / valor_AGEP;
+
+        // calculamos las medias
+        media_tiempo_greedy += tiempo_greedy;
+        media_tiempo_BL += tiempo_BL;
+        media_tiempo_AGGU += tiempo_AGGU;
+        media_tiempo_AGGP += tiempo_AGGP;
+        media_tiempo_AGEU += tiempo_AGEU;
+        media_tiempo_AGEP += tiempo_AGEP;
+
+        media_desv_greedy += desv_tipica_greedy;
+        media_desv_BL += desv_tipica_BL;
+        media_desv_AGGU += desv_tipica_AGGU;
+        media_desv_AGGP += desv_tipica_AGGP;
+        media_desv_AGEU += desv_tipica_AGEU;
+        media_desv_AGEP += desv_tipica_AGEP;
 
         // añadimos los datos
-        fichero << resultadosP2[0];
+        //fichero << nombre_fichero << " " << tiem << " " << resultadosP2[2] << " " << resultadosP2[3] << " " << resultadosP2[4] << " " << resultadosP2[5] << " " << resultadosP2[6] << " " << resultadosP2[7] << " " << resultadosP2[8] << " " << resultadosP2[9] << " " << resultadosP2[10] << " " << resultadosP2[11] << " " << resultadosP2[12] << endl;
+
+        cout << "Terminada Iteración : " << i << endl;
     }
 
-    vector<int> v_Greedy = problema.solucionGreedy();
-    vector<int> v_BL     = problema.solucionBusquedaLocal();
-    vector<int> v_AGGU   = problema.solucionAGGUniforme();
-    vector<int> v_AGGP   = problema.solucionAGGPosicion();
-    vector<int> v_AGEU   = problema.solucionAGEUniforme();
-    vector<int> v_AGEP   = problema.solucionAGEPosicion();
+    cout << endl;
+    cout << "Media tiempo greedy : " << media_tiempo_greedy / 50 << endl;
+    cout << "Media tiempo BL     : " << media_tiempo_BL/50 << endl;
+    cout << "Media tiempo AGGU   : " << media_tiempo_AGGU/50 << endl;
+    cout << "Media tiempo AGGP   : " << media_tiempo_AGGP/50 << endl;
+    cout << "Media tiempo AGEU   : " << media_tiempo_AGEU/50 << endl;
+    cout << "Media tiempo AGEP   : " << media_tiempo_AGEP/50 << endl;
 
-    cout << "\nSolución Greedy : " << problema.dispersion(v_Greedy) << " - "; mostrarVector(v_Greedy); cout << " - " << v_Greedy.size();
-    cout << "\nSolución BL     : " << problema.dispersion(v_BL)     << " - "; mostrarVector(v_BL);     cout << " - " << v_BL.size();
-    cout << "\nSolución AGGU   : " << problema.dispersion(v_AGGU)   << " - "; mostrarVector(v_AGGU);   cout << " - " << v_AGGU.size();
-    cout << "\nSolución AGGP   : " << problema.dispersion(v_AGGP)   << " - "; mostrarVector(v_AGGP);   cout << " - " << v_AGGP.size();
-    cout << "\nSolución AGEU   : " << problema.dispersion(v_AGEU)   << " - "; mostrarVector(v_AGEU);   cout << " - " << v_AGEU.size();
-    cout << "\nSolución AGEP   : " << problema.dispersion(v_AGEP)   << " - "; mostrarVector(v_AGEP);   cout << " - " << v_AGEP.size();
+    cout << "Media desv greedy   : " << media_desv_greedy / 50 << endl;
+    cout << "Media desv BL       : " << media_desv_BL/50 << endl;
+    cout << "Media desv AGGU     : " << media_desv_AGGU/50 << endl;
+    cout << "Media desv AGGP     : " << media_desv_AGGP/50 << endl;
+    cout << "Media desv AGEU     : " << media_desv_AGEU/50 << endl;
+    cout << "Media desv AGEP     : " << media_desv_AGEP/50 << endl;
 
     cout << endl;
 }
