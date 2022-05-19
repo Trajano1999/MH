@@ -454,13 +454,13 @@ vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion,
     return resultado;
 }
 
-void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce)
+void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce, double probabilidad)
 {
     unsigned tamanio_matriz = matriz.size();
     int aleatorio1, aleatorio2, aleatorio3;
     vector<int> auxiliar(tamanio_matriz, -1);
 
-    for(unsigned i=0; i<PROB_CRUCE_AGG*tamanio_cruce; ++i)
+    for(unsigned i=0; i<probabilidad*tamanio_cruce; ++i)
     {    
         // seleccionamos 2 aleatorios distintos
         aleatorio1 = rand() % (tamanio_cruce);
@@ -481,13 +481,13 @@ void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned ta
     }
 }
 
-void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce)
+void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce, double probabilidad)
 {
     unsigned tamanio_matriz = matriz.size();
     int aleatorio1, aleatorio2, aleatorio3;
     vector<int> restos_padre;
 
-    for(unsigned i=0; i<PROB_CRUCE_AGE*tamanio_cruce; ++i)
+    for(unsigned i=0; i<probabilidad*tamanio_cruce; ++i)
     {
         vector<int> auxiliar(tamanio_matriz, -1);
         restos_padre.clear();
@@ -523,14 +523,14 @@ void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned ta
     }
 }
 
-void Problema::mutacionGeneracional(vector<vector<int> > & poblacion_hijos)
+void Problema::mutacionGeneracional(vector<vector<int> > & poblacion_hijos, double probabilidad)
 {    
     unsigned tamanio_poblacion = matriz.size(),
              aleatorio1, 
              aleatorio2,
              auxiliar;
     
-    for(unsigned i=0; i<TAMANIO_POBLACION_GEN*PROB_MUTACION; ++i)
+    for(unsigned i=0; i<TAMANIO_POBLACION_GEN*probabilidad; ++i)
     {
         aleatorio1 = rand() % (tamanio_poblacion);
         do{
@@ -543,7 +543,7 @@ void Problema::mutacionGeneracional(vector<vector<int> > & poblacion_hijos)
     }
 }
 
-void Problema::mutacionEstacionaria(vector<vector<int> > & poblacion_hijos)
+void Problema::mutacionEstacionaria(vector<vector<int> > & poblacion_hijos, double probabilidad)
 {
     unsigned tamanio_poblacion = matriz.size(),
              vector_elegido,
@@ -551,7 +551,7 @@ void Problema::mutacionEstacionaria(vector<vector<int> > & poblacion_hijos)
              aleatorio2,
              auxiliar;
     
-    for(unsigned i=0; i<TAMANIO_POBLACION_EST*PROB_MUTACION*tamanio_poblacion; ++i)
+    for(unsigned i=0; i<TAMANIO_POBLACION_EST*probabilidad*tamanio_poblacion; ++i)
     {
         vector_elegido = rand() % 2;
         aleatorio1 = rand() % (tamanio_poblacion);
@@ -811,7 +811,7 @@ vector<int> Problema::solucionBusquedaLocal()
          calcular = true;
 
     // generamos el primer vector de soluciones aleatorias
-    for(k=aleatorios.begin(); k!=aleatorios.end(); ++k)
+    for(k = aleatorios.begin(); k != aleatorios.end(); ++k)
         sol.push_back(*k);
 
     // generamos el vector de candidatos
@@ -871,8 +871,8 @@ vector<int> Problema::solucionAGGUniforme()
         dispersion_poblacion = dispersionPoblacion(poblacion);
         poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_GEN);
 
-        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN);
-        mutacionGeneracional(poblacion_hijos);
+        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN, PROB_CRUCE_AGG);
+        mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
         reemplazamientoGeneracional(poblacion, poblacion_hijos);
 
         evaluaciones++;
@@ -897,8 +897,8 @@ vector<int> Problema::solucionAGGPosicion()
         dispersion_poblacion = dispersionPoblacion(poblacion);
         poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_GEN);
 
-        crucePosicion(poblacion_hijos, TAMANIO_POBLACION_GEN);
-        mutacionGeneracional(poblacion_hijos);
+        crucePosicion(poblacion_hijos, TAMANIO_POBLACION_GEN, PROB_CRUCE_AGG);
+        mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
         reemplazamientoGeneracional(poblacion, poblacion_hijos);
 
         evaluaciones++;
@@ -923,8 +923,8 @@ vector<int> Problema::solucionAGEUniforme()
         dispersion_poblacion = dispersionPoblacion(poblacion);
         poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_EST);
 
-        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_EST);
-        mutacionEstacionaria(poblacion_hijos);
+        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_EST, PROB_CRUCE_AGE);
+        mutacionEstacionaria(poblacion_hijos, PROB_MUTACION);
         reemplazamientoEstacionario(poblacion, poblacion_hijos);
 
         evaluaciones++;
@@ -949,8 +949,8 @@ vector<int> Problema::solucionAGEPosicion()
         dispersion_poblacion = dispersionPoblacion(poblacion);
         poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_EST);
 
-        crucePosicion(poblacion_hijos, TAMANIO_POBLACION_EST);
-        mutacionEstacionaria(poblacion_hijos);
+        crucePosicion(poblacion_hijos, TAMANIO_POBLACION_EST, PROB_CRUCE_AGE);
+        mutacionEstacionaria(poblacion_hijos, PROB_MUTACION);
         reemplazamientoEstacionario(poblacion, poblacion_hijos);
 
         evaluaciones++;
@@ -976,8 +976,8 @@ vector<int> Problema::solucionAM1()
         dispersion_poblacion = dispersionPoblacion(poblacion);
         poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_GEN);
 
-        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN);
-        mutacionGeneracional(poblacion_hijos);
+        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN, PROB_CRUCE_AGG);
+        mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
         // aqui
         if(evaluaciones % 10)
         {

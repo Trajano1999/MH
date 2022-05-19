@@ -98,17 +98,17 @@ class Problema
             // selecciona los ganadores de población de num_torneos torneos binarios arbitrarios 
             vector<vector<int> > seleccion(const vector<vector<int> > & poblacion, const vector<double> & dispersion_poblacion, unsigned num_torneos);
 
-            // realiza el cruce uniforme con probabilidad PROB_CRUCE_AGG
-            void cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce);
+            // realiza el cruce uniforme con la probabilidad asociada
+            void cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce, double probabilidad);
             
-            // realiza el cruce de posición con probabilidad PROB_CRUCE_AGE
-            void crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce);
+            // realiza el cruce de posición con la probabilidad asociada
+            void crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce, double probabilidad);
 
-            // se encarga de mutar la población generacional con una probabilidad de PROB_MUTACION
-            void mutacionGeneracional(vector<vector<int> > & poblacion_hijos);
+            // se encarga de mutar la población generacional
+            void mutacionGeneracional(vector<vector<int> > & poblacion_hijos, double probabilidad);
 
-            // se encarga de mutar la población generacional con una probabilidad de PROB_MUTACION
-            void mutacionEstacionaria(vector<vector<int> > & poblacion_hijos);
+            // se encarga de mutar la población generacional
+            void mutacionEstacionaria(vector<vector<int> > & poblacion_hijos, double probabilidad);
 
             // aplica el reemplazamiento generacional explicado
             void reemplazamientoGeneracional(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos);
