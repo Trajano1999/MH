@@ -68,12 +68,12 @@ int main(int narg, char * arg[])
     double tiempo_antes,
            tiempo_despues,
 
-           tiempo_greedy,
-           tiempo_BL,
+           tiempo_greedy;
+           /*tiempo_BL,
            tiempo_AGGU,
            tiempo_AGGP,
            tiempo_AGEU,
-           tiempo_AGEP;
+           tiempo_AGEP;*/
 
     // comprobamos que el número de argumentos es correcto
     if(narg <= 1)
@@ -81,6 +81,9 @@ int main(int narg, char * arg[])
         cerr << "./ejecutable <argumento1> ... <argumentoN>";
         return 1;
     }
+
+    // estructura a seguir
+    // jjj cout << "\n" << "Fichero" << "\t\t\t" << "Tiempo" << "\t\t" << "Coste";
 
     // recorremos todos los argumentos
     for(int i=1; i<narg; ++i)
@@ -99,7 +102,7 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         tiempo_greedy = tiempo_despues - tiempo_antes;
 
-        tiempo_antes = clock();
+        /*tiempo_antes = clock();
         vector<int> v_BL = problema.solucionBusquedaLocal();
         tiempo_despues = clock();
         tiempo_BL = tiempo_despues - tiempo_antes;
@@ -122,30 +125,27 @@ int main(int narg, char * arg[])
         tiempo_antes = clock();
         vector<int> v_AGEP = problema.solucionAGEPosicion();
         tiempo_despues = clock();
-        tiempo_AGEP = tiempo_despues - tiempo_antes;
+        tiempo_AGEP = tiempo_despues - tiempo_antes;*/
 
-        cout << "\nFichero";
-        cout << "\n\t" << nombre_fichero;
-        cout << "\nTiempos";
-        cout << "\n\t" << tiempo_greedy;
-        cout << "\n\t" << tiempo_BL;
+        cout << nombre_fichero << "\t" << tiempo_greedy << "\t\t" << problema.dispersion(v_Greedy);
+        /*cout << "\n\t" << tiempo_BL;
         cout << "\n\t" << tiempo_AGGU;
         cout << "\n\t" << tiempo_AGGP;
         cout << "\n\t" << tiempo_AGEU;
         cout << "\n\t" << tiempo_AGEP;
         cout << "\nCostes";
-        cout << "\n\t" << problema.dispersion(v_Greedy);
+        cout << "\n\t" << problema.dispersion(v_Greedy)
         cout << "\n\t" << problema.dispersion(v_BL);
         cout << "\n\t" << problema.dispersion(v_AGGU);
         cout << "\n\t" << problema.dispersion(v_AGGP);
         cout << "\n\t" << problema.dispersion(v_AGEU);
-        cout << "\n\t" << problema.dispersion(v_AGEP);
+        cout << "\n\t" << problema.dispersion(v_AGEP);*/
         
         // jjj cout << "\nFin del archivo " << i << " de " << narg-1 << endl;
-        if(i<narg-1)
-            cout << "\n----------------------------------------------------------------------";
+        //if(i<narg-1)
+        //   cout << "\n----------------------------------------------------------------------";
     }
 
-    cout << endl << endl;
+    cout << endl;
     return 0;
 }
