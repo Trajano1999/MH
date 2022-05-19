@@ -703,7 +703,7 @@ void Problema::setMatriz(const char * dir_fich)
 double Problema::dispersion(const vector<int> & v)
 {
     vector<double> sigmas_seleccionados = sigmaSeleccionados(v);
-    return v.size() > 2 ? valorMaximo(sigmas_seleccionados) - valorMinimoPositivo(sigmas_seleccionados) : valorMaximo(sigmas_seleccionados);
+    return v.size() > 2 ? valorMaximo(sigmas_seleccionados) - valorMinimoPositivo(sigmas_seleccionados) : 0;
 }
 
 //-------------------------------------------------------------------------------------------------
