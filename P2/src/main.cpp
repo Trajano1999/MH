@@ -19,7 +19,7 @@ using namespace std;
 //-------------------------------------------------------------------------------------------------
 
 const unsigned EJECUCIONES_POR_PROBLEMA = 5;
-const string DIR_FICHERO_SALIDA = "/home/juanma/Escritorio/datos.txt";
+const string DIR_FICHERO_SALIDA = "/home/juanma/Escritorio/Uni/Segundo_Cuatri/MH/P2/datos2.txt";
 
 //-------------------------------------------------------------------------------------------------
 // FUNCIONES
@@ -62,7 +62,7 @@ void mostrarVector(const vector<int> & v)
 // MAIN
 //-------------------------------------------------------------------------------------------------
 
-int main(int narg, char * arg[])
+/*int main(int narg, char * arg[])
 {
     unsigned random_semilla = 0;
     const char * dir_fichero = arg[1];
@@ -221,4 +221,32 @@ int main(int narg, char * arg[])
     cout << "Media desv AGEU     : " << media_desv_AGEU/50 << endl;
     cout << "Media desv AGEP     : " << media_desv_AGEP/50 << endl;
     cout << endl;
+
+    return 0;
+}*/
+
+int main(int narg, char * arg[])
+{
+    unsigned random_semilla = 0;
+    const char * dir_fichero = arg[1];
+    vector<string> resultadosP1, resultadosP2;
+    Problema problema(random_semilla, dir_fichero);
+
+    double tiempo_antes,
+           tiempo_despues,
+
+           tiempo_greedy;
+           //media_tiempo_greedy = 0,
+           //valor_greedy,
+           //desv_tipica_greedy,
+           //media_desv_greedy = 0;
+
+    tiempo_antes = clock();
+    problema.solucionGreedy();
+    tiempo_despues = clock();
+    tiempo_greedy = tiempo_despues - tiempo_antes;
+
+    cout << "Tiempo Greedy : " << tiempo_greedy << endl;
+
+    return 0;
 }
