@@ -1001,8 +1001,10 @@ vector<int> Problema::solucionAM1()
 
 vector<int> Problema::solucionAM2()
 {
-    unsigned evaluaciones = 0;
-    vector<int> vector_poblacion;
+    unsigned aleatorio,
+             evaluaciones = 0;
+    vector<int> vector_poblacion,
+                repeticion_aleatorios;
     vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion_hijos,
                          poblacion = creacionPoblacion(TAMANIO_POBLACION_MM);
@@ -1015,10 +1017,21 @@ vector<int> Problema::solucionAM2()
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_MM, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
                 
-        // cada 10 generaciones, aplicamos BL a un subconjunto de la población jjj
+        // cada 10 generaciones, aplicamos BL a un subconjunto de la población
         if(evaluaciones % 10 == 0)
-            for(unsigned i=0; i<TAMANIO_POBLACION_MM; ++i)  
-                poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i]), MAX_EVAL_MEMETICOS, evaluaciones));
+        {
+            for(unsigned i=0; i<TAMANIO_POBLACION_MM*PROB_BL_MEMETICO; ++i)
+            {
+                // generamos aleatorios distintos
+                do{
+                    aleatorio = rand() % (TAMANIO_POBLACION_MM);
+                }while(estaEnVector(repeticion_aleatorios, aleatorio));
+
+                repeticion_aleatorios.push_back(aleatorio);
+                poblacion_hijos[aleatorio] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[aleatorio]), MAX_EVAL_MEMETICOS, evaluaciones));
+            }
+            repeticion_aleatorios.clear();
+        }
         else
             evaluaciones++;
 

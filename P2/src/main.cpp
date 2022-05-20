@@ -122,7 +122,7 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         tiempo_AGEP = tiempo_despues - tiempo_antes;*/
 
-        cout << tiempo_greedy << "\t" << problema.dispersion(v_Greedy) << endl;
+        //cout << tiempo_greedy << "\t" << problema.dispersion(v_Greedy) << endl;
         //cout << tiempo_AGGU << "\t" << problema.dispersion(v_AGGU) << endl;
         /*cout << "\n\t" << tiempo_BL;
         cout << "\n\t" << tiempo_AGGU;
@@ -140,7 +140,12 @@ int main(int narg, char * arg[])
     
     cout << "\nMemetico 1 : ";
     vector<int> memetico1 = problema.solucionAM1();
-    mostrarVector(memetico1); cout << endl;
+    mostrarVector(memetico1);
 
+    cout << "\nMemetico 2 : ";
+    vector<int> memetico2 = problema.solucionAM2();
+    mostrarVector(memetico2); 
+    
+    cout << endl;
     return 0;
 }
