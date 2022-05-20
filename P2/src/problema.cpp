@@ -675,16 +675,12 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigne
                 elementos_escogidos.push_back(aleatorio1);
 
             coste_anterior = dispersion(resultado);
-            //cerr << "\n\tCoste Anterior : " << coste_anterior;
             coste_nuevo = dispersionIntercambiarElementos(resultado, resultado[i], candidatos[aleatorio1]);
-            //cerr << "\n\tCoste Nuevo    : " << coste_nuevo << endl;
         }while(
             ( coste_anterior <= coste_nuevo || estaEnVector(elementos_escogidos, aleatorio1) || candidatos[aleatorio1] == -1 ) 
             && elementos_escogidos.size() < tamanio_candidatos && num_evaluaciones < max_evaluaciones
         );
-        cout << "\n\taleatorio : " << aleatorio1;
-        cout << "\n\tresultado antes  : "; mostrarVectorInt(resultado);
-        cout << "\n\tcandidatos antes : "; mostrarVectorInt(candidatos);
+        
         // si aleatorio1 disminuye la dispersion, intercambiamos
         if(coste_nuevo < coste_anterior)
         {
@@ -694,14 +690,11 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigne
             candidatos[auxiliar] = auxiliar;
             num_evaluaciones++;
         }
-        cout << "\n\tresultado despue : "; mostrarVectorInt(resultado);
-        cout << "\n\tcandidatos despu : "; mostrarVectorInt(candidatos);
 
         elementos_escogidos.clear();
     }        
 
     evaluaciones += num_evaluaciones;
-    cout << "\n\tResultado : "; mostrarVectorInt(resultado); cout << endl;
     return resultado;
 }
 
@@ -983,8 +976,8 @@ vector<int> Problema::solucionAM1()
     vector<vector<int> > poblacion_hijos,
                          poblacion = creacionPoblacion(TAMANIO_POBLACION_MM);
 
-    //while(evaluaciones < MAX_EVALUACIONES)
-    //{
+    while(evaluaciones < MAX_EVALUACIONES)
+    {
         dispersion_poblacion = dispersionPoblacion(poblacion);
         poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_MM);
 
@@ -992,19 +985,16 @@ vector<int> Problema::solucionAM1()
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
         
         cout << "\nPoblacion : " << endl; mostrarMatrizInt(poblacion_hijos);
+        
         // cada 10 generaciones llamamos a BL
-        //if(evaluaciones % 10 == 0)
-            for(unsigned i=0; i<TAMANIO_POBLACION_MM; ++i)
-            {   
-                cout << "\nAntes   de BL : "; mostrarVectorInt(transformacionVectorPueblos(poblacion_hijos[i])); cout << endl;
+        if(evaluaciones % 10 == 0)
+            for(unsigned i=0; i<TAMANIO_POBLACION_MM; ++i)  
                 poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i]), MAX_EVAL_MEMETICOS, evaluaciones));
-                cout << "\nDespues de BL : "; mostrarVectorInt(transformacionVectorPueblos(poblacion_hijos[i])); cout << endl;
-            }
-        //else
-        //    evaluaciones++;
+        else
+            evaluaciones++;
 
         reemplazamientoGeneracional(poblacion, poblacion_hijos);                
-    //}
+    }
 
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
