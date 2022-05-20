@@ -428,6 +428,17 @@ vector<int> Problema::transformacionVectorPueblos(const vector<int> & vector_pob
     return resultado;
 }
 
+vector<int> Problema::transformacionVectorPoblacion(const vector<int> & vector_pueblos)
+{
+    unsigned tamanio = vector_pueblos.size();
+    vector<int> resultado(tamanio, 0);
+    
+    for(unsigned i=0; i<tamanio; ++i)
+        resultado[vector_pueblos[i]] = 1;
+    
+    return resultado;
+}
+
 vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion)
 {
     unsigned tamanio_vector = matriz.size();

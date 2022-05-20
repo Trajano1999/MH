@@ -92,8 +92,11 @@ class Problema
             // calcula el vector con mayor dispersión de una población dada
             vector<int> peorVectorPoblacion(const vector<vector<int> > & poblacion);
 
-            // trasnforma un vector_poblacion {0,1,1} en un vector_pueblos {1,2}
+            // transforma un vector_poblacion {0,1,1} en un vector_pueblos {1,2}
             vector<int> transformacionVectorPueblos(const vector<int> & vector_poblacion);
+
+            // transforma un vector_pueblos {1,2} en un vector_poblacion {0,1,1} 
+            vector<int> transformacionVectorPoblacion(const vector<int> & vector_pueblos);
 
             // genera la población de padres para AG Uniformes (del mismo tamaño que la población genética)
             vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
