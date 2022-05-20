@@ -137,19 +137,6 @@ int main(int narg, char * arg[])
         cout << "\n\t" << problema.dispersion(v_AGEU);
         cout << "\n\t" << problema.dispersion(v_AGEP);*/
     }
-    
-    cout << "\nMemetico 1 : ";
-    vector<int> memetico1 = problema.solucionAM1();
-    mostrarVector(memetico1);
 
-    cout << "\nMemetico 2 : ";
-    vector<int> memetico2 = problema.solucionAM2();
-    mostrarVector(memetico2); 
-    
-    cout << "\nMemetico 3 : ";
-    vector<int> memetico3 = problema.solucionAM3();
-    mostrarVector(memetico3);
-    
-    cout << endl;
     return 0;
 }

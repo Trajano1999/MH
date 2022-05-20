@@ -86,6 +86,9 @@ class Problema
             // ajusta el números de 1s tras aplicar el cruceUniforme
             void reparacion(vector<int> & hijo);
 
+            // calcula la posicion de un vector recibido en una población dada
+            int posicionVectorPoblacion(const vector<vector<int> > & poblacion, const vector<int> & vector);
+
             // calcula el vector con menor dispersión de una población dada
             vector<int> mejorVectorPoblacion(const vector<vector<int> > & poblacion);
 

@@ -377,6 +377,22 @@ void Problema::reparacion(vector<int> & hijo)
     }
 }
 
+int Problema::posicionVectorPoblacion(const vector<vector<int> > & poblacion, const vector<int> & vector)
+{
+    bool encontrado = false;
+    unsigned posicion = 0,
+             tamanio = poblacion.size();
+
+    for(unsigned i=0; i<tamanio && !encontrado; ++i)
+        if(poblacion[i] == vector)
+        {
+            posicion = i;
+            encontrado = true;
+        }
+
+    return posicion;
+}
+
 vector<int> Problema::mejorVectorPoblacion(const vector<vector<int> > & poblacion)
 {
     unsigned posicion = 0, 
@@ -1045,11 +1061,14 @@ vector<int> Problema::solucionAM2()
 
 vector<int> Problema::solucionAM3()
 {
-    unsigned evaluaciones = 0;
-    vector<int> vector_poblacion;
+    unsigned mejor_pos,
+             evaluaciones = 0;
+    vector<int> mejor_vector,
+                vector_poblacion;
     vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion_hijos,
-                         poblacion = creacionPoblacion(TAMANIO_POBLACION_MM);
+                         poblacion = creacionPoblacion(TAMANIO_POBLACION_MM),
+                         poblacion_similar;
 
     while(evaluaciones < MAX_EVALUACIONES)
     {
@@ -1059,10 +1078,18 @@ vector<int> Problema::solucionAM3()
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_MM, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
                 
-        // cada 10 generaciones, aplicamos BL a los TAMANIO_POBLACION_MM*PROB_BL_MEMETICO mejores jjj
+        poblacion_similar = poblacion_hijos;
+
+        // cada 10 generaciones, aplicamos BL a los mejores
         if(evaluaciones % 10 == 0)
-            for(unsigned i=0; i<TAMANIO_POBLACION_MM; ++i)
-                poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i]), MAX_EVAL_MEMETICOS, evaluaciones));
+            for(unsigned i=0; i<TAMANIO_POBLACION_MM*PROB_BL_MEMETICO; ++i)
+            {
+                mejor_vector = mejorVectorPoblacion(poblacion_similar);
+                mejor_pos = posicionVectorPoblacion(poblacion_hijos, mejor_vector);
+    
+                poblacion_hijos[mejor_pos] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(mejor_vector), MAX_EVAL_MEMETICOS, evaluaciones));
+                poblacion_similar.erase(poblacion_similar.begin() + posicionVectorPoblacion(poblacion_similar, mejor_vector));
+            }
         else
             evaluaciones++;
 
