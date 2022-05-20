@@ -983,10 +983,8 @@ vector<int> Problema::solucionAM1()
 
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_MM, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
-        
-        cout << "\nPoblacion : " << endl; mostrarMatrizInt(poblacion_hijos);
-        
-        // cada 10 generaciones llamamos a BL
+                
+        // cada 10 generaciones, aplicamos BL a toda la población
         if(evaluaciones % 10 == 0)
             for(unsigned i=0; i<TAMANIO_POBLACION_MM; ++i)  
                 poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i]), MAX_EVAL_MEMETICOS, evaluaciones));
@@ -1001,33 +999,33 @@ vector<int> Problema::solucionAM1()
     return transformacionVectorPueblos(vector_poblacion);
 }
 
-/*vector<int> Problema::solucionAM2()
+vector<int> Problema::solucionAM2()
 {
     unsigned evaluaciones = 0;
     vector<int> vector_poblacion;
     vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion_hijos,
-                         poblacion = creacionPoblacion(TAMANIO_POBLACION_GEN);
+                         poblacion = creacionPoblacion(TAMANIO_POBLACION_MM);
 
     while(evaluaciones < MAX_EVALUACIONES)
     {
         dispersion_poblacion = dispersionPoblacion(poblacion);
-        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_GEN);
+        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_MM);
 
-        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN, PROB_CRUCE_AGG);
+        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_MM, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
-        
-        // cada 10 generaciones llamamos a BL
+                
+        // cada 10 generaciones, aplicamos BL a un subconjunto de la población jjj
         if(evaluaciones % 10 == 0)
-            for(unsigned i=0; i<TAMANIO_POBLACION_GEN; ++i)
-                poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i])));
-        
-        reemplazamientoGeneracional(poblacion, poblacion_hijos);
-        evaluaciones++;
+            for(unsigned i=0; i<TAMANIO_POBLACION_MM; ++i)  
+                poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i]), MAX_EVAL_MEMETICOS, evaluaciones));
+        else
+            evaluaciones++;
+
+        reemplazamientoGeneracional(poblacion, poblacion_hijos);                
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
-
     return transformacionVectorPueblos(vector_poblacion);
-}*/
+}
