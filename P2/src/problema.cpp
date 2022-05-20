@@ -830,7 +830,6 @@ vector<int> Problema::solucionBusquedaLocal()
 {
     unsigned evaluaciones = 0;
     vector<int> aleatorio = transformacionVectorPueblos(generarVectorAleatorio(matriz.size()));
-    
     return busquedaLocalP2(aleatorio, MAX_EVALUACIONES, evaluaciones);
 }
 
@@ -1013,8 +1012,7 @@ vector<int> Problema::solucionAM3()
                 vector_poblacion;
     vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion_hijos,
-                         poblacion = creacionPoblacion(TAMANIO_POBLACION_MM),
-                         poblacion_similar;
+                         poblacion = creacionPoblacion(TAMANIO_POBLACION_MM);
 
     while(evaluaciones < MAX_EVALUACIONES)
     {
@@ -1024,17 +1022,14 @@ vector<int> Problema::solucionAM3()
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_MM, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
                 
-        poblacion_similar = poblacion_hijos;
-
+        dispersion_poblacion = dispersionPoblacion(poblacion_hijos);
         // cada 10 generaciones, aplicamos BL a los mejores
         if(evaluaciones % 10 == 0)
             for(unsigned i=0; i<TAMANIO_POBLACION_MM*PROB_BL_MEMETICO; ++i)
             {
-                mejor_vector = mejorVectorPoblacion(poblacion_similar);
-                mejor_pos = posicionVectorPoblacion(poblacion_hijos, mejor_vector);
-    
-                poblacion_hijos[mejor_pos] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(mejor_vector), MAX_EVAL_MEMETICOS, evaluaciones));
-                poblacion_similar.erase(poblacion_similar.begin() + posicionVectorPoblacion(poblacion_similar, mejor_vector));
+                mejor_pos = posicionMinimoPositivo(dispersion_poblacion);
+                poblacion_hijos[mejor_pos] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[mejor_pos]), MAX_EVAL_MEMETICOS, evaluaciones));
+                dispersion_poblacion.erase(dispersion_poblacion.begin() + mejor_pos);
             }
         else
             evaluaciones++;

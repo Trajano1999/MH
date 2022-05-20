@@ -129,5 +129,7 @@ int main(int narg, char * arg[])
         */
     }
 
+    cout << "AM3 : "; mostrarVector(problema.solucionAM3()); cout << endl;
+
     return 0;
 }
