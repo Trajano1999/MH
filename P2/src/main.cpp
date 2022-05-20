@@ -66,14 +66,7 @@ int main(int narg, char * arg[])
 {
     Problema problema(RAMDOM_SEMILLA, arg[1]);
     double tiempo_antes,
-           tiempo_despues,
-
-           tiempo_greedy;
-           //tiempo_BL,
-           //tiempo_AGGU;
-           //tiempo_AGGP,
-           //tiempo_AGEU,
-           //tiempo_AGEP;
+           tiempo_despues;
 
     // comprobamos que el número de argumentos es correcto
     if(narg <= 1)
@@ -92,39 +85,36 @@ int main(int narg, char * arg[])
         nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
 
         // calculamos los tiempos
-        tiempo_antes = clock();
-        vector<int> v_Greedy = problema.solucionGreedy();
-        tiempo_despues = clock();
-        tiempo_greedy = tiempo_despues - tiempo_antes;
-
         /*tiempo_antes = clock();
+        vector<int> v_Greedy = problema.solucionGreedy();
+        tiempo_despues = clock();*/
+
+        tiempo_antes = clock();
         vector<int> v_BL = problema.solucionBusquedaLocal();
         tiempo_despues = clock();
-        tiempo_BL = tiempo_despues - tiempo_antes;
 
-        tiempo_antes = clock();
+        /*tiempo_antes = clock();
         vector<int> v_AGGU = problema.solucionAGGUniforme();
         tiempo_despues = clock();
-        tiempo_AGGU = tiempo_despues - tiempo_antes;
 
         tiempo_antes = clock();
         vector<int> v_AGGP = problema.solucionAGGPosicion();
         tiempo_despues = clock();
-        tiempo_AGGP = tiempo_despues - tiempo_antes;
 
         tiempo_antes = clock();
         vector<int> v_AGEU = problema.solucionAGEUniforme();
         tiempo_despues = clock();
-        tiempo_AGEU = tiempo_despues - tiempo_antes;
 
         tiempo_antes = clock();
         vector<int> v_AGEP = problema.solucionAGEPosicion();
-        tiempo_despues = clock();
-        tiempo_AGEP = tiempo_despues - tiempo_antes;*/
+        tiempo_despues = clock();*/
 
-        cout << tiempo_greedy << "\t" << problema.dispersion(v_Greedy) << endl;
-        //cout << tiempo_AGGU << "\t" << problema.dispersion(v_AGGU) << endl;
-        /*cout << "\n\t" << tiempo_BL;
+        // guardamos en el fichero
+        cout << tiempo_despues - tiempo_antes << "\t" << problema.dispersion(v_BL) << endl;
+        
+        /*
+        cout << "\n\t" << tiempo_greedy;
+        cout << "\n\t" << tiempo_BL;
         cout << "\n\t" << tiempo_AGGU;
         cout << "\n\t" << tiempo_AGGP;
         cout << "\n\t" << tiempo_AGEU;
@@ -135,7 +125,8 @@ int main(int narg, char * arg[])
         cout << "\n\t" << problema.dispersion(v_AGGU);
         cout << "\n\t" << problema.dispersion(v_AGGP);
         cout << "\n\t" << problema.dispersion(v_AGEU);
-        cout << "\n\t" << problema.dispersion(v_AGEP);*/
+        cout << "\n\t" << problema.dispersion(v_AGEP);
+        */
     }
 
     return 0;
