@@ -828,64 +828,10 @@ vector<int> Problema::solucionGreedy()
 
 vector<int> Problema::solucionBusquedaLocal()
 {
-    int auxiliar;
-    unsigned tamanio_cand = matriz.size();
-    set<int> aleatorios = randomBL(0, tamanio_cand-1);
-    unsigned tamanio_sol = aleatorios.size();
-    set<int>::iterator k;
-
-    vector<int> sol, candidatos;
-    double coste_anterior, coste_nuevo;
-    unsigned num_evaluaciones = 0;
-    bool encontrado = false,
-         calcular = true;
-
-    // generamos el primer vector de soluciones aleatorias
-    for(k = aleatorios.begin(); k != aleatorios.end(); ++k)
-        sol.push_back(*k);
-
-    // generamos el vector de candidatos
-    for(unsigned i=0; i<tamanio_cand; ++i)
-        candidatos.push_back(i);
-    for(unsigned i=0; i<tamanio_sol; ++i)
-        candidatos[sol[i]] = -1;
-
-    // buscamos los vecinos de cada selección para mejorar la solución
-    for(unsigned i=0; i<tamanio_sol; ++i)
-    {
-        encontrado = false;
-        for(unsigned j=0; j<tamanio_cand && !encontrado; ++j)
-            if(candidatos[j] != -1 && num_evaluaciones < MAX_EVALUACIONES)
-            {
-                // calculo el coste inicial
-                if(calcular)
-                    coste_anterior = dispersion(sol);
-
-                // calculamos coste del vecino
-                coste_nuevo = dispersionIntercambiarElementos(sol, sol[i], candidatos[j]);
-
-                // si el coste nuevo es mejor, lo intercambiamos, sino, lo dejamos como estaba
-                if(coste_nuevo < coste_anterior)
-                {
-                    auxiliar = sol[i];
-                    intercambio(sol, sol[i], candidatos[j]);
-
-                    // aplicamos el intercambio
-                    encontrado = true;
-                    candidatos[j] = -1;
-                    candidatos[auxiliar] = auxiliar;
-
-                    // almacenamos el coste nuevo obetenido para no recalcularlo en la siguiente iteración
-                    coste_anterior = coste_nuevo;
-                    calcular = false;
-                }else
-                    calcular = true;  
-
-                num_evaluaciones++;
-            }
-    }
-
-    return sol;
+    unsigned evaluaciones = 0;
+    vector<int> aleatorio = transformacionVectorPueblos(generarVectorAleatorio(matriz.size()));
+    
+    return busquedaLocalP2(aleatorio, MAX_EVALUACIONES, evaluaciones);
 }
 
 vector<int> Problema::solucionAGGUniforme()

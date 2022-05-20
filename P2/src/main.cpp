@@ -122,7 +122,7 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         tiempo_AGEP = tiempo_despues - tiempo_antes;*/
 
-        //cout << tiempo_greedy << "\t" << problema.dispersion(v_Greedy) << endl;
+        cout << tiempo_greedy << "\t" << problema.dispersion(v_Greedy) << endl;
         //cout << tiempo_AGGU << "\t" << problema.dispersion(v_AGGU) << endl;
         /*cout << "\n\t" << tiempo_BL;
         cout << "\n\t" << tiempo_AGGU;
