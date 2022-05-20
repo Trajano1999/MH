@@ -116,6 +116,15 @@ void Problema::intercambio(vector<int> & v, int valor1, int valor2)
             v[i] = valor2;
 }
 
+bool Problema::estaEnVector(vector<int> vector, int valor)
+{
+    for(unsigned i=0; i<vector.size(); ++i)
+        if(vector[i] == valor)
+            return true;
+
+    return false;
+}
+
 int Problema::calcularPosicion(const vector<int> & v, int elem)
 {
     int res = -1;
@@ -314,7 +323,6 @@ void Problema::reparacion(vector<int> & hijo)
              mejor_posicion = 0,
              tamanio = hijo.size();
     double dispersion, 
-           mayor_dispersion = 0, 
            menor_dispersion = dispersionVectorPoblacion(hijo);
     
     for(unsigned i=0; i<tamanio; ++i)
@@ -323,7 +331,7 @@ void Problema::reparacion(vector<int> & hijo)
 
     while(contador > elem_sel)
     {
-        mayor_dispersion = 0;
+        menor_dispersion = VALOR_GRANDE;
 
         // buscamos el elemento que más dispersión tenga y lo eliminamos
         for(unsigned i=0; i<tamanio; ++i)
@@ -331,9 +339,9 @@ void Problema::reparacion(vector<int> & hijo)
             {
                 hijo[i] = 0;
                 dispersion = dispersionVectorPoblacion(hijo);
-                if(dispersion > mayor_dispersion)
+                if(dispersion < menor_dispersion)
                 {
-                    mayor_dispersion = dispersion;
+                    menor_dispersion = dispersion;
                     mejor_posicion = i;
                 }
                 hijo[i] = 1;
@@ -625,31 +633,42 @@ void Problema::reemplazamientoEstacionario(vector<vector<int> > & poblacion, con
 // MÉTODOS PRIVADOS AMs
 //-------------------------------------------------------------------------------------------------
 
-// jjj
 vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio)
 {
     unsigned aleatorio1,
+             auxiliar,
+             num_evaluaciones = 0,
              coste_anterior,
              coste_nuevo,
              tamanio_candidatos = matriz.size(),
              tamanio_resultado = vector_inicio.size();
     vector<int> candidatos,
+                elementos_escogidos,
                 resultado = vector_inicio;
             
     for(unsigned i=0; i<tamanio_resultado; ++i)
-    {
+    {   
+        // escogemos el aleatorio 
         do{
             aleatorio1 = rand() % (tamanio_candidatos);
+            elementos_escogidos.push_back(aleatorio1);
             coste_anterior = dispersion(resultado);
-            coste_nuevo = dispersionIntercambiarElementos(resultado, resultado[i], aleatorio1);
-        }while(coste_anterior <= coste_nuevo || aleatorio1 == -1);
+            coste_nuevo = dispersionIntercambiarElementos(resultado, resultado[i], candidatos[aleatorio1]);
+            num_evaluaciones++;
+        }while( (coste_anterior <= coste_nuevo || estaEnVector(elementos_escogidos, aleatorio1) || candidatos[aleatorio1] == 1 ) && elementos_escogidos.size() < tamanio_candidatos && num_evaluaciones < MAX_EVALUACIONES);
     
-        /*if(coste_nuevo < coste_anterior)
+        // si aleatorio1 disminuye la dispersion, intercambiamos
+        if(coste_nuevo < coste_anterior)
         {
-            
-        }*/
-    }        
+            auxiliar = resultado[i];
+            intercambio(resultado, resultado[i], candidatos[aleatorio1]);
 
+            candidatos[aleatorio1] = -1;
+            candidatos[auxiliar] = auxiliar;
+        }
+
+        elementos_escogidos.clear();
+    }        
 
     return resultado;
 }

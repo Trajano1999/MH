@@ -42,6 +42,9 @@ class Problema
             // intercambia los elementos con valor1 de un vector por valor2
             void intercambio(vector<int> & v, int valor1, int valor2);
 
+            // indica si un elemento está en el vector
+            bool estaEnVector(vector<int> vector, int valor);
+
             // calcula la primera posición de un valor en un vector
             int calcularPosicion(const vector<int> & v, int elem);
 
