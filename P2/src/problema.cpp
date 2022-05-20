@@ -278,7 +278,7 @@ double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int el
         }
 
     distancias[pos_eliminado] = suma;
-    return tamanio_sol > 2 ? valorMaximo(distancias) - valorMinimoPositivo(distancias) : valorMaximo(distancias);
+    return tamanio_sol > 2 ? valorMaximo(distancias) - valorMinimoPositivo(distancias) : 0;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -628,58 +628,28 @@ void Problema::reemplazamientoEstacionario(vector<vector<int> > & poblacion, con
 // jjj
 vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio)
 {
-    int auxiliar;
-    unsigned num_evaluaciones = 0,
-             tamanio_cand = matriz.size(),
-             tamanio_sol = vector_inicio.size();
-    double coste_anterior, 
-           coste_nuevo;
-    bool encontrado = false,
-         calcular = true;
-    vector<int> resultado, 
-                sol, 
-                candidatos;
-    
-    // generamos el vector de candidatos
-    for(unsigned i=0; i<tamanio_cand; ++i)
-        candidatos.push_back(i);
-    for(unsigned i=0; i<tamanio_sol; ++i)
-        candidatos[sol[i]] = -1;
-
-    // buscamos los vecinos de cada selección para mejorar la solución
-    for(unsigned i=0; i<tamanio_sol; ++i)
+    unsigned aleatorio1,
+             coste_anterior,
+             coste_nuevo,
+             tamanio_candidatos = matriz.size(),
+             tamanio_resultado = vector_inicio.size();
+    vector<int> candidatos,
+                resultado = vector_inicio;
+            
+    for(unsigned i=0; i<tamanio_resultado; ++i)
     {
-        encontrado = false;
-        for(unsigned j=0; j<tamanio_cand && !encontrado; ++j)
-            if(candidatos[j] != -1 && num_evaluaciones < MAX_EVALUACIONES)
-            {
-                // calculo el coste inicial
-                if(calcular)
-                    coste_anterior = dispersion(sol);
+        do{
+            aleatorio1 = rand() % (tamanio_candidatos);
+            coste_anterior = dispersion(resultado);
+            coste_nuevo = dispersionIntercambiarElementos(resultado, resultado[i], aleatorio1);
+        }while(coste_anterior <= coste_nuevo || aleatorio1 == -1);
+    
+        /*if(coste_nuevo < coste_anterior)
+        {
+            
+        }*/
+    }        
 
-                // calculamos coste del vecino
-                coste_nuevo = dispersionIntercambiarElementos(sol, sol[i], candidatos[j]);
-
-                // si el coste nuevo es mejor, lo intercambiamos, sino, lo dejamos como estaba
-                if(coste_nuevo < coste_anterior)
-                {
-                    auxiliar = sol[i];
-                    intercambio(sol, sol[i], candidatos[j]);
-
-                    // aplicamos el intercambio
-                    encontrado = true;
-                    candidatos[j] = -1;
-                    candidatos[auxiliar] = auxiliar;
-
-                    // almacenamos el coste nuevo obetenido para no recalcularlo en la siguiente iteración
-                    coste_anterior = coste_nuevo;
-                    calcular = false;
-                }else
-                    calcular = true;  
-
-                num_evaluaciones++;
-            }
-    }
 
     return resultado;
 }

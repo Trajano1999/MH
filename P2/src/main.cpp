@@ -73,7 +73,7 @@ int main(int narg, char * arg[])
            //tiempo_AGGU;
            //tiempo_AGGP,
            //tiempo_AGEU,
-           //tiempo_AGEP;*/
+           //tiempo_AGEP;
 
     // comprobamos que el número de argumentos es correcto
     if(narg <= 1)
