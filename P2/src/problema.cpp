@@ -66,6 +66,7 @@ const double VALOR_GRANDE     = 1.7976931348623158e+308,
              PROB_BL_MEMETICO = 0.1;
             
 const unsigned MAX_EVALUACIONES      = 100000,
+               MAX_EVAL_MEMETICOS    = 400,
                TAMANIO_POBLACION_GEN = 50,
                TAMANIO_POBLACION_EST = 2,
                TAMANIO_POBLACION_MM  = 10;
@@ -433,7 +434,7 @@ vector<int> Problema::transformacionVectorPueblos(const vector<int> & vector_pob
 vector<int> Problema::transformacionVectorPoblacion(const vector<int> & vector_pueblos)
 {
     unsigned tamanio = vector_pueblos.size();
-    vector<int> resultado(tamanio, 0);
+    vector<int> resultado(matriz.size(), 0);
     
     for(unsigned i=0; i<tamanio; ++i)
         resultado[vector_pueblos[i]] = 1;
@@ -646,7 +647,7 @@ void Problema::reemplazamientoEstacionario(vector<vector<int> > & poblacion, con
 // MÉTODOS PRIVADOS AMs
 //-------------------------------------------------------------------------------------------------
 
-vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio)
+vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigned max_evaluaciones, unsigned & evaluaciones)
 {
     unsigned aleatorio1,
              auxiliar,
@@ -658,18 +659,32 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio)
     vector<int> candidatos,
                 elementos_escogidos,
                 resultado = vector_inicio;
-            
+
+    // generamos el vector de candidatos
+    for(unsigned i=0; i<tamanio_candidatos; ++i)
+        candidatos.push_back(i);
+    for(unsigned i=0; i<tamanio_resultado; ++i)
+        candidatos[resultado[i]] = -1;
+    
     for(unsigned i=0; i<tamanio_resultado; ++i)
     {   
         // escogemos el aleatorio 
         do{
-            aleatorio1 = rand() % (tamanio_candidatos);
-            elementos_escogidos.push_back(aleatorio1);
+            aleatorio1 = rand() % (tamanio_candidatos);          
+            if(!estaEnVector(elementos_escogidos, aleatorio1))
+                elementos_escogidos.push_back(aleatorio1);
+
             coste_anterior = dispersion(resultado);
+            //cerr << "\n\tCoste Anterior : " << coste_anterior;
             coste_nuevo = dispersionIntercambiarElementos(resultado, resultado[i], candidatos[aleatorio1]);
-            num_evaluaciones++;
-        }while( (coste_anterior <= coste_nuevo || estaEnVector(elementos_escogidos, aleatorio1) || candidatos[aleatorio1] == -1 ) && elementos_escogidos.size() < tamanio_candidatos && num_evaluaciones < MAX_EVALUACIONES);
-    
+            //cerr << "\n\tCoste Nuevo    : " << coste_nuevo << endl;
+        }while(
+            ( coste_anterior <= coste_nuevo || estaEnVector(elementos_escogidos, aleatorio1) || candidatos[aleatorio1] == -1 ) 
+            && elementos_escogidos.size() < tamanio_candidatos && num_evaluaciones < max_evaluaciones
+        );
+        cout << "\n\taleatorio : " << aleatorio1;
+        cout << "\n\tresultado antes  : "; mostrarVectorInt(resultado);
+        cout << "\n\tcandidatos antes : "; mostrarVectorInt(candidatos);
         // si aleatorio1 disminuye la dispersion, intercambiamos
         if(coste_nuevo < coste_anterior)
         {
@@ -677,11 +692,16 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio)
             intercambio(resultado, resultado[i], candidatos[aleatorio1]);
             candidatos[aleatorio1] = -1;
             candidatos[auxiliar] = auxiliar;
+            num_evaluaciones++;
         }
+        cout << "\n\tresultado despue : "; mostrarVectorInt(resultado);
+        cout << "\n\tcandidatos despu : "; mostrarVectorInt(candidatos);
 
         elementos_escogidos.clear();
     }        
 
+    evaluaciones += num_evaluaciones;
+    cout << "\n\tResultado : "; mostrarVectorInt(resultado); cout << endl;
     return resultado;
 }
 
@@ -963,22 +983,28 @@ vector<int> Problema::solucionAM1()
     vector<vector<int> > poblacion_hijos,
                          poblacion = creacionPoblacion(TAMANIO_POBLACION_MM);
 
-    while(evaluaciones < MAX_EVALUACIONES)
-    {
+    //while(evaluaciones < MAX_EVALUACIONES)
+    //{
         dispersion_poblacion = dispersionPoblacion(poblacion);
         poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_MM);
 
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_MM, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
         
+        cout << "\nPoblacion : " << endl; mostrarMatrizInt(poblacion_hijos);
         // cada 10 generaciones llamamos a BL
-        /*if(evaluaciones % 10 == 0)
+        //if(evaluaciones % 10 == 0)
             for(unsigned i=0; i<TAMANIO_POBLACION_MM; ++i)
-                poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i])));
-        */
-        reemplazamientoGeneracional(poblacion, poblacion_hijos);
-        evaluaciones++;
-    }
+            {   
+                cout << "\nAntes   de BL : "; mostrarVectorInt(transformacionVectorPueblos(poblacion_hijos[i])); cout << endl;
+                poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i]), MAX_EVAL_MEMETICOS, evaluaciones));
+                cout << "\nDespues de BL : "; mostrarVectorInt(transformacionVectorPueblos(poblacion_hijos[i])); cout << endl;
+            }
+        //else
+        //    evaluaciones++;
+
+        reemplazamientoGeneracional(poblacion, poblacion_hijos);                
+    //}
 
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
