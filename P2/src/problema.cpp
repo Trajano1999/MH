@@ -59,14 +59,16 @@ unsigned numUnos(const vector<int> & vector)
 //-------------------------------------------------------------------------------------------------
 
 // máximo valor de un double en c++
-const double VALOR_GRANDE   = 1.7976931348623158e+308,
-             PROB_CRUCE_AGG = 0.7,
-             PROB_CRUCE_AGE = 1,
-             PROB_MUTACION  = 0.1;
+const double VALOR_GRANDE     = 1.7976931348623158e+308,
+             PROB_CRUCE_AGG   = 0.7,
+             PROB_CRUCE_AGE   = 1.0,
+             PROB_MUTACION    = 0.1,
+             PROB_BL_MEMETICO = 0.1;
             
 const unsigned MAX_EVALUACIONES      = 100000,
                TAMANIO_POBLACION_GEN = 50,
-               TAMANIO_POBLACION_EST = 2;
+               TAMANIO_POBLACION_EST = 2,
+               TAMANIO_POBLACION_MM  = 10;
 
 //-------------------------------------------------------------------------------------------------
 // MÉTODOS PRIVADOS GENERALES
@@ -673,7 +675,6 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio)
         {
             auxiliar = resultado[i];
             intercambio(resultado, resultado[i], candidatos[aleatorio1]);
-
             candidatos[aleatorio1] = -1;
             candidatos[auxiliar] = auxiliar;
         }
@@ -681,7 +682,7 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio)
         elementos_escogidos.clear();
     }        
 
-    return transformacionVectorPueblos(resultado);
+    return resultado;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -874,13 +875,11 @@ vector<int> Problema::solucionAGGUniforme()
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
         reemplazamientoGeneracional(poblacion, poblacion_hijos);
-
         evaluaciones++;
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
-
     return transformacionVectorPueblos(vector_poblacion);
 }
 
@@ -900,13 +899,11 @@ vector<int> Problema::solucionAGGPosicion()
         crucePosicion(poblacion_hijos, TAMANIO_POBLACION_GEN, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
         reemplazamientoGeneracional(poblacion, poblacion_hijos);
-
         evaluaciones++;
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
-
     return transformacionVectorPueblos(vector_poblacion);
 }
 
@@ -926,13 +923,11 @@ vector<int> Problema::solucionAGEUniforme()
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_EST, PROB_CRUCE_AGE);
         mutacionEstacionaria(poblacion_hijos, PROB_MUTACION);
         reemplazamientoEstacionario(poblacion, poblacion_hijos);
-
         evaluaciones++;
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
-
     return transformacionVectorPueblos(vector_poblacion);
 }
 
@@ -952,18 +947,45 @@ vector<int> Problema::solucionAGEPosicion()
         crucePosicion(poblacion_hijos, TAMANIO_POBLACION_EST, PROB_CRUCE_AGE);
         mutacionEstacionaria(poblacion_hijos, PROB_MUTACION);
         reemplazamientoEstacionario(poblacion, poblacion_hijos);
-
         evaluaciones++;
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
-
     return transformacionVectorPueblos(vector_poblacion);
 }
 
-// jjj
 vector<int> Problema::solucionAM1()
+{
+    unsigned evaluaciones = 0;
+    vector<int> vector_poblacion;
+    vector<double> dispersion_poblacion;
+    vector<vector<int> > poblacion_hijos,
+                         poblacion = creacionPoblacion(TAMANIO_POBLACION_MM);
+
+    while(evaluaciones < MAX_EVALUACIONES)
+    {
+        dispersion_poblacion = dispersionPoblacion(poblacion);
+        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_MM);
+
+        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_MM, PROB_CRUCE_AGG);
+        mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
+        
+        // cada 10 generaciones llamamos a BL
+        /*if(evaluaciones % 10 == 0)
+            for(unsigned i=0; i<TAMANIO_POBLACION_MM; ++i)
+                poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i])));
+        */
+        reemplazamientoGeneracional(poblacion, poblacion_hijos);
+        evaluaciones++;
+    }
+
+    // transformamos el vector_poblacion en un vector de pueblos
+    vector_poblacion = mejorVectorPoblacion(poblacion);
+    return transformacionVectorPueblos(vector_poblacion);
+}
+
+/*vector<int> Problema::solucionAM2()
 {
     unsigned evaluaciones = 0;
     vector<int> vector_poblacion;
@@ -979,12 +1001,12 @@ vector<int> Problema::solucionAM1()
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
         
+        // cada 10 generaciones llamamos a BL
         if(evaluaciones % 10 == 0)
-        {
-            // llamamos a BLP2
-        }
+            for(unsigned i=0; i<TAMANIO_POBLACION_GEN; ++i)
+                poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i])));
+        
         reemplazamientoGeneracional(poblacion, poblacion_hijos);
-
         evaluaciones++;
     }
 
@@ -992,4 +1014,4 @@ vector<int> Problema::solucionAM1()
     vector_poblacion = mejorVectorPoblacion(poblacion);
 
     return transformacionVectorPueblos(vector_poblacion);
-}
+}*/

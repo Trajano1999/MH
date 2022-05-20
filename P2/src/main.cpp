@@ -137,6 +137,10 @@ int main(int narg, char * arg[])
         cout << "\n\t" << problema.dispersion(v_AGEU);
         cout << "\n\t" << problema.dispersion(v_AGEP);*/
     }
+    
+    cout << "\nMemetico 1 : ";
+    vector<int> memetico1 = problema.solucionAM1();
+    mostrarVector(memetico1);
 
     return 0;
 }

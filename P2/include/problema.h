@@ -124,7 +124,7 @@ class Problema
 
         // métodos privados para AMs
 
-            // aplicamos BL a un vector de pueblos recibido y el resultado lo damos como un vector de poblacion ({0,1,1})
+            // aplicamos BL a un vector de pueblos recibido y el resultado proporcionado también es un vector de pueblos
             vector<int> busquedaLocalP2(const vector<int> & vector_inicio);
 
     public: 
