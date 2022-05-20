@@ -1042,3 +1042,34 @@ vector<int> Problema::solucionAM2()
     vector_poblacion = mejorVectorPoblacion(poblacion);
     return transformacionVectorPueblos(vector_poblacion);
 }
+
+vector<int> Problema::solucionAM3()
+{
+    unsigned evaluaciones = 0;
+    vector<int> vector_poblacion;
+    vector<double> dispersion_poblacion;
+    vector<vector<int> > poblacion_hijos,
+                         poblacion = creacionPoblacion(TAMANIO_POBLACION_MM);
+
+    while(evaluaciones < MAX_EVALUACIONES)
+    {
+        dispersion_poblacion = dispersionPoblacion(poblacion);
+        poblacion_hijos = seleccion(poblacion, dispersion_poblacion, TAMANIO_POBLACION_MM);
+
+        cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_MM, PROB_CRUCE_AGG);
+        mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
+                
+        // cada 10 generaciones, aplicamos BL a los TAMANIO_POBLACION_MM*PROB_BL_MEMETICO mejores jjj
+        if(evaluaciones % 10 == 0)
+            for(unsigned i=0; i<TAMANIO_POBLACION_MM; ++i)
+                poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i]), MAX_EVAL_MEMETICOS, evaluaciones));
+        else
+            evaluaciones++;
+
+        reemplazamientoGeneracional(poblacion, poblacion_hijos);                
+    }
+
+    // transformamos el vector_poblacion en un vector de pueblos
+    vector_poblacion = mejorVectorPoblacion(poblacion);
+    return transformacionVectorPueblos(vector_poblacion);
+}

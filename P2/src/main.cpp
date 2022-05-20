@@ -146,6 +146,10 @@ int main(int narg, char * arg[])
     vector<int> memetico2 = problema.solucionAM2();
     mostrarVector(memetico2); 
     
+    cout << "\nMemetico 3 : ";
+    vector<int> memetico3 = problema.solucionAM3();
+    mostrarVector(memetico3);
+    
     cout << endl;
     return 0;
 }
