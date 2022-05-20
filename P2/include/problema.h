@@ -93,7 +93,7 @@ class Problema
             vector<int> peorVectorPoblacion(const vector<vector<int> > & poblacion);
 
             // trasnforma un vector_poblacion {0,1,1} en un vector_pueblos {1,2}
-            vector<int> transformacionVectorPoblacion(const vector<int> & vector_poblacion);
+            vector<int> transformacionVectorPueblos(const vector<int> & vector_poblacion);
 
             // genera la población de padres para AG Uniformes (del mismo tamaño que la población genética)
             vector<vector<int> > creacionPoblacion(unsigned tamanio_poblacion);
@@ -121,7 +121,7 @@ class Problema
 
         // métodos privados para AMs
 
-            // aplicamos BL pero recibiendo el primer vector por parámetro
+            // aplicamos BL a un vector de pueblos recibido y el resultado lo damos como un vector de poblacion ({0,1,1})
             vector<int> busquedaLocalP2(const vector<int> & vector_inicio);
 
     public: 
