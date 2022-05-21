@@ -12,8 +12,17 @@
 
 # include "problema.h"
 
-// jjj muestra un vector int
+/*// jjj muestra un vector int
 void mostrarVectorInt(const vector<int> & v)
+{
+    cout << "( ";
+    for(unsigned i=0; i<v.size(); ++i)
+        cout << v[i] << " ";
+    cout << ")"; 
+}
+
+// jjj muestra un vector double
+void mostrarVectorDouble(const vector<double> & v)
 {
     cout << "( ";
     for(unsigned i=0; i<v.size(); ++i)
@@ -33,15 +42,6 @@ void mostrarMatrizInt(const vector<vector<int> > & m)
     }
 }
 
-// jjj muestra un vector double
-void mostrarVector(const vector<double> & v)
-{
-    cout << "( ";
-    for(unsigned i=0; i<v.size(); ++i)
-        cout << v[i] << " ";
-    cout << ")"; 
-}
-
 // jjj num unos
 unsigned numUnos(const vector<int> & vector)
 {
@@ -52,7 +52,7 @@ unsigned numUnos(const vector<int> & vector)
             contador++;
 
     return contador;
-}
+}*/
 
 //-------------------------------------------------------------------------------------------------
 // CONSTANTES GLOBALES

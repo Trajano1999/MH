@@ -25,8 +25,17 @@ const unsigned RAMDOM_SEMILLA = 0,
 // FUNCIONES
 //-------------------------------------------------------------------------------------------------
 
+/*// jjj muestra un vector int
+void mostrarVectorInt(const vector<int> & v)
+{
+    cout << "( ";
+    for(unsigned i=0; i<v.size(); ++i)
+        cout << v[i] << " ";
+    cout << ")"; 
+}
+
 // jjj muestra una matriz int
-/*void mostrarMatrizInt(const vector<vector<int> > & m)
+void mostrarMatrizInt(const vector<vector<int> > & m)
 {
     for(unsigned i=0; i<m.size(); ++i)
     {
@@ -48,15 +57,6 @@ void mostrarMatrizDouble(const vector<vector<double> > & m)
         cout << ")" << endl;
     }
 }*/
-
-// jjj muestra un vector int
-void mostrarVector(const vector<int> & v)
-{
-    cout << "( ";
-    for(unsigned i=0; i<v.size(); ++i)
-        cout << v[i] << " ";
-    cout << ")"; 
-}
 
 //-------------------------------------------------------------------------------------------------
 // MAIN
@@ -85,15 +85,15 @@ int main(int narg, char * arg[])
         nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
 
         // calculamos los tiempos
-        /*tiempo_antes = clock();
-        vector<int> v_Greedy = problema.solucionGreedy();
-        tiempo_despues = clock();*/
-
         tiempo_antes = clock();
-        vector<int> v_BL = problema.solucionBusquedaLocal();
+        vector<int> v_Greedy = problema.solucionGreedy();
         tiempo_despues = clock();
 
         /*tiempo_antes = clock();
+        vector<int> v_BL = problema.solucionBusquedaLocal();
+        tiempo_despues = clock();
+
+        tiempo_antes = clock();
         vector<int> v_AGGU = problema.solucionAGGUniforme();
         tiempo_despues = clock();
 
@@ -107,29 +107,23 @@ int main(int narg, char * arg[])
 
         tiempo_antes = clock();
         vector<int> v_AGEP = problema.solucionAGEPosicion();
+        tiempo_despues = clock();
+
+        tiempo_antes = clock();
+        vector<int> v_AM1 = problema.solucionAM1();
+        tiempo_despues = clock();
+
+        tiempo_antes = clock();
+        vector<int> v_AM2 = problema.solucionAM2();
+        tiempo_despues = clock();
+
+        tiempo_antes = clock();
+        vector<int> v_AM3 = problema.solucionAM3();
         tiempo_despues = clock();*/
 
         // guardamos en el fichero
-        cout << tiempo_despues - tiempo_antes << "\t" << problema.dispersion(v_BL) << endl;
-        
-        /*
-        cout << "\n\t" << tiempo_greedy;
-        cout << "\n\t" << tiempo_BL;
-        cout << "\n\t" << tiempo_AGGU;
-        cout << "\n\t" << tiempo_AGGP;
-        cout << "\n\t" << tiempo_AGEU;
-        cout << "\n\t" << tiempo_AGEP;
-        cout << "\nCostes";
-        cout << "\n\t" << problema.dispersion(v_Greedy)
-        cout << "\n\t" << problema.dispersion(v_BL);
-        cout << "\n\t" << problema.dispersion(v_AGGU);
-        cout << "\n\t" << problema.dispersion(v_AGGP);
-        cout << "\n\t" << problema.dispersion(v_AGEU);
-        cout << "\n\t" << problema.dispersion(v_AGEP);
-        */
+        cout << tiempo_despues - tiempo_antes << "\t" << problema.dispersion(v_Greedy) << endl;
     }
-
-    cout << "AM3 : "; mostrarVector(problema.solucionAM3()); cout << endl;
 
     return 0;
 }
