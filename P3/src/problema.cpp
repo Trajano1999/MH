@@ -408,7 +408,7 @@ vector<int> Problema::transformacionVectorPueblos(const vector<int> & vector_pob
 vector<int> Problema::transformacionVectorPoblacion(const vector<int> & vector_pueblos)
 {
     unsigned tamanio = vector_pueblos.size();
-    vector<int> resultado(matriz.size(), 0);
+    vector<int> resultado(elem_tot, 0);
     
     for(unsigned i=0; i<tamanio; ++i)
         resultado[vector_pueblos[i]] = 1;
@@ -418,11 +418,10 @@ vector<int> Problema::transformacionVectorPoblacion(const vector<int> & vector_p
 
 vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion)
 {
-    unsigned tamanio_vector = matriz.size();
     vector<vector<int> > resultado;
     
     for(unsigned i=0; i<tamanio_poblacion; ++i)
-        resultado.push_back(generarVectorAleatorio(tamanio_vector));
+        resultado.push_back(generarVectorAleatorio(elem_tot));
 
     return resultado;
 }
@@ -452,9 +451,8 @@ vector<vector<int> > Problema::seleccion(const vector<vector<int> > & poblacion,
 
 void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce, double probabilidad)
 {
-    unsigned tamanio_matriz = matriz.size();
     int aleatorio1, aleatorio2, aleatorio3;
-    vector<int> auxiliar(tamanio_matriz, -1);
+    vector<int> auxiliar(elem_tot, -1);
 
     for(unsigned i=0; i<probabilidad*tamanio_cruce; ++i)
     {    
@@ -465,7 +463,7 @@ void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned ta
         }while(aleatorio2 == aleatorio1);
 
         // rellenamos el vector aux con el cruce de los dos aleatorios
-        for(unsigned j=0; j<tamanio_matriz; ++j)
+        for(unsigned j=0; j<elem_tot; ++j)
         {
             aleatorio3 = rand() % 2;
             auxiliar[j] = aleatorio3 > 0 ? poblacion_hijos[aleatorio1][j] : poblacion_hijos[aleatorio2][j];
@@ -479,13 +477,12 @@ void Problema::cruceUniforme(vector<vector<int> > & poblacion_hijos, unsigned ta
 
 void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned tamanio_cruce, double probabilidad)
 {
-    unsigned tamanio_matriz = matriz.size();
     int aleatorio1, aleatorio2, aleatorio3;
     vector<int> restos_padre;
 
     for(unsigned i=0; i<probabilidad*tamanio_cruce; ++i)
     {
-        vector<int> auxiliar(tamanio_matriz, -1);
+        vector<int> auxiliar(elem_tot, -1);
         restos_padre.clear();
 
         // seleccionamos 2 aleatorios distintos
@@ -494,7 +491,7 @@ void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned ta
             aleatorio2 = rand() % (tamanio_cruce);
         }while(aleatorio2 == aleatorio1);
 
-        for(unsigned j=0; j<tamanio_matriz; ++j)
+        for(unsigned j=0; j<elem_tot; ++j)
         {    
             // si tienen el mismo valor, se mantiene en el hijo
             if( poblacion_hijos[aleatorio1][j] == poblacion_hijos[aleatorio2][j] )
@@ -521,16 +518,15 @@ void Problema::crucePosicion(vector<vector<int> > & poblacion_hijos, unsigned ta
 
 void Problema::mutacionGeneracional(vector<vector<int> > & poblacion_hijos, double probabilidad)
 {    
-    unsigned tamanio_poblacion = matriz.size(),
-             aleatorio1, 
+    unsigned aleatorio1, 
              aleatorio2,
              auxiliar;
     
     for(unsigned i=0; i<TAMANIO_POBLACION_GEN*probabilidad; ++i)
     {
-        aleatorio1 = rand() % (tamanio_poblacion);
+        aleatorio1 = rand() % (elem_tot);
         do{
-            aleatorio2 = rand() % (tamanio_poblacion);
+            aleatorio2 = rand() % (elem_tot);
         }while(aleatorio2 == aleatorio1 || poblacion_hijos[i][aleatorio1] == poblacion_hijos[i][aleatorio2]);
 
         auxiliar = poblacion_hijos[i][aleatorio1];
@@ -541,18 +537,17 @@ void Problema::mutacionGeneracional(vector<vector<int> > & poblacion_hijos, doub
 
 void Problema::mutacionEstacionaria(vector<vector<int> > & poblacion_hijos, double probabilidad)
 {
-    unsigned tamanio_poblacion = matriz.size(),
-             vector_elegido,
+    unsigned vector_elegido,
              aleatorio1, 
              aleatorio2,
              auxiliar;
     
-    for(unsigned i=0; i<TAMANIO_POBLACION_EST*probabilidad*tamanio_poblacion; ++i)
+    for(unsigned i=0; i<TAMANIO_POBLACION_EST*probabilidad*elem_tot; ++i)
     {
         vector_elegido = rand() % 2;
-        aleatorio1 = rand() % (tamanio_poblacion);
+        aleatorio1 = rand() % (elem_tot);
         do{
-            aleatorio2 = rand() % (tamanio_poblacion);
+            aleatorio2 = rand() % (elem_tot);
         }while(aleatorio2 == aleatorio1 || poblacion_hijos[vector_elegido][aleatorio1] == poblacion_hijos[vector_elegido][aleatorio2]);
 
         auxiliar = poblacion_hijos[vector_elegido][aleatorio1];
@@ -628,14 +623,13 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigne
              num_evaluaciones = 0,
              coste_anterior,
              coste_nuevo,
-             tamanio_candidatos = matriz.size(),
              tamanio_resultado = vector_inicio.size();
     vector<int> candidatos,
                 elementos_escogidos,
                 resultado = vector_inicio;
 
     // generamos el vector de candidatos
-    for(unsigned i=0; i<tamanio_candidatos; ++i)
+    for(unsigned i=0; i<elem_tot; ++i)
         candidatos.push_back(i);
     for(unsigned i=0; i<tamanio_resultado; ++i)
         candidatos[resultado[i]] = -1;
@@ -644,7 +638,7 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigne
     {   
         // escogemos el aleatorio 
         do{
-            aleatorio1 = rand() % (tamanio_candidatos);          
+            aleatorio1 = rand() % (elem_tot);          
             if(!estaEnVector(elementos_escogidos, aleatorio1))
                 elementos_escogidos.push_back(aleatorio1);
 
@@ -652,7 +646,7 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigne
             coste_nuevo = dispersionIntercambiarElementos(resultado, resultado[i], candidatos[aleatorio1]);
         }while(
             ( coste_anterior <= coste_nuevo || estaEnVector(elementos_escogidos, aleatorio1) || candidatos[aleatorio1] == -1 ) 
-            && elementos_escogidos.size() < tamanio_candidatos && num_evaluaciones < max_evaluaciones
+            && elementos_escogidos.size() < elem_tot && num_evaluaciones < max_evaluaciones
         );
         
         // si aleatorio1 disminuye la dispersion, intercambiamos
@@ -694,6 +688,11 @@ unsigned Problema::getSemilla()
     return semilla;
 }
 
+unsigned Problema::getElementosTotales()
+{
+    return elem_tot;
+}
+
 unsigned Problema::getElementosSeleccionados()
 {
     return elem_sel;
@@ -714,23 +713,21 @@ void Problema::setSemilla(unsigned sem)
 }
 
 void Problema::setMatriz(const char * dir_fich)
-{
-    int elem_totales;
-    
+{   
     // abrimos el fichero
     ifstream fichero(dir_fich);
     if(!fichero.is_open())
         cerr << "Error al abrir " << dir_fich << endl;
 
     // leemos los primeros valores del fichero
-    fichero >> elem_totales;
+    fichero >> elem_tot;
     fichero >> elem_sel;
 
     // redimensionamos la matriz
-    vector<vector<double> > aux(elem_totales, vector<double>(elem_totales)); 
+    vector<vector<double> > aux(elem_tot, vector<double>(elem_tot)); 
     matriz = aux;
 
-    int num_lineas = (elem_totales * (elem_totales-1)) / 2;
+    int num_lineas = (elem_tot * (elem_tot-1)) / 2;
     int pueblo1,
         pueblo2;
     double distancia;
@@ -761,12 +758,11 @@ double Problema::dispersion(const vector<int> & v)
 
 vector<int> Problema::solucionGreedy()
 {
-    int n_pueblos = matriz.size(),
-        mejor_candidato = randomGreedy(semilla, 0, n_pueblos-1);
+    int mejor_candidato = randomGreedy(semilla, 0, elem_tot-1);
     vector<int> sol, candidatos;
     
     // rellenamos el vector de candidatos
-    for(int i=0; i<n_pueblos; ++i)
+    for(unsigned i=0; i<elem_tot; ++i)
         candidatos.push_back(i);
 
     // añadimos el primer valor aleatorio
@@ -787,7 +783,7 @@ vector<int> Problema::solucionGreedy()
 vector<int> Problema::solucionBusquedaLocal()
 {
     unsigned evaluaciones = 0;
-    vector<int> aleatorio = transformacionVectorPueblos(generarVectorAleatorio(matriz.size()));
+    vector<int> aleatorio = transformacionVectorPueblos(generarVectorAleatorio(elem_tot));
     return busquedaLocalP2(aleatorio, MAX_EVALUACIONES, evaluaciones);
 }
 
@@ -998,4 +994,24 @@ vector<int> Problema::solucionAM3()
     // transformamos el vector_poblacion en un vector de pueblos
     vector_poblacion = mejorVectorPoblacion(poblacion);
     return transformacionVectorPueblos(vector_poblacion);
+}
+
+vector<int> Problema::solucionES()
+{
+    unsigned enfriamientos = 0,
+             max_vecinos = 10*elem_tot;
+    vector<int> resultado;
+
+    while(enfriamientos < 100000) // && nº exitos en enfriamiento actual != 0
+    {
+        // intercambio de dos elementos aleatorios
+        // comparamos la solucio vecina con la actual
+
+        // se enfriará la temp si 
+        // se genera num max de vecinos (max_vecinos) o 
+        // se hayan aceptado demasiados vecinos generados (max_exitos)
+        enfriamientos++;
+    }
+
+    return resultado;
 }

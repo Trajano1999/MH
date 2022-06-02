@@ -25,7 +25,9 @@ using namespace std;
 class Problema 
 {
     private:
-        unsigned elem_sel, semilla;
+        unsigned elem_tot, 
+                 elem_sel, 
+                 semilla;
         vector<vector<double> > matriz;
 
         // metodos privados generales
@@ -130,6 +132,7 @@ class Problema
 
         // observadores
         unsigned getSemilla();
+        unsigned getElementosTotales();
         unsigned getElementosSeleccionados();
         vector<vector<double> > getMatriz();
 
@@ -147,6 +150,7 @@ class Problema
             vector<int> solucionBusquedaLocal();
             
             // P2
+
                 // AGGs 
                 vector<int> solucionAGGUniforme();
                 vector<int> solucionAGGPosicion();
@@ -161,6 +165,10 @@ class Problema
                 vector<int> solucionAM3();
             
             // P3
+            vector<int> solucionES();
+            vector<int> solucionBMB();
+            vector<int> solucionBLR();
+            vector<int> solucionILS_ES();
 };
 
 # endif
