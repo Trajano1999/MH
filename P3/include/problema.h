@@ -144,7 +144,7 @@ class Problema
         double dispersion(const vector<int> & v);
 
         // métodos para resolver el problema
-
+        
             // P1
             vector<int> solucionGreedy();
             vector<int> solucionBusquedaLocal();

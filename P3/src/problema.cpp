@@ -999,15 +999,21 @@ vector<int> Problema::solucionAM3()
 vector<int> Problema::solucionES()
 {
     unsigned enfriamientos = 0,
-             max_vecinos = 10*elem_tot;
+             max_vecinos   = 10*elem_tot,
+             num_enfriamientos = MAX_EVALUACIONES / max_vecinos;
+
+    double prob_sol_peor     = 0.3,
+           max_exitos        = 0.1*max_vecinos,
+           temperatura_final = 0.01;
+    
     vector<int> resultado;
 
-    while(enfriamientos < 100000) // && nº exitos en enfriamiento actual != 0
+    while(enfriamientos < MAX_EVALUACIONES) // && nº exitos en enfriamiento actual != 0
     {
         // intercambio de dos elementos aleatorios
         // comparamos la solucio vecina con la actual
 
-        // se enfriará la temp si 
+        // se enfriará la temperatura si 
         // se genera num max de vecinos (max_vecinos) o 
         // se hayan aceptado demasiados vecinos generados (max_exitos)
         enfriamientos++;
