@@ -81,7 +81,7 @@ int main(int narg, char * arg[])
         problema.setMatriz(arg[i]);
         string nombre_fichero = arg[i];
 
-        // eliminamos la ruta de los archivos
+        // escogemos de toda la ruta, solo con el nombre archivos
         nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
 
         // calculamos los tiempos
@@ -89,7 +89,7 @@ int main(int narg, char * arg[])
         vector<int> v_Greedy = problema.solucionGreedy();
         tiempo_despues = clock();
 
-        // guardamos en el fichero
+        // guardamos los datos en el fichero
         cout << tiempo_despues - tiempo_antes << "\t" << problema.dispersion(v_Greedy) << endl;
     }
 
