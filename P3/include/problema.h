@@ -165,6 +165,8 @@ class Problema
                 vector<int> solucionAM1();
                 vector<int> solucionAM2();
                 vector<int> solucionAM3();
+            
+            // P3
 };
 
 # endif
