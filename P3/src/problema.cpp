@@ -41,18 +41,7 @@ void mostrarMatrizInt(const vector<vector<int> > & m)
         cout << ")" << endl;
     }
 }
-
-// jjj num unos
-unsigned numUnos(const vector<int> & vector)
-{
-    unsigned contador = 0;
-
-    for(unsigned i=0; i<vector.size(); ++i)
-        if(vector[i] == 1)
-            contador++;
-
-    return contador;
-}*/
+*/
 
 //-------------------------------------------------------------------------------------------------
 // CONSTANTES GLOBALES
@@ -248,21 +237,6 @@ int Problema::elementoMenorDispersion(const vector<int> & cand, const vector<int
 // MÉTODOS PRIVADOS BL
 //-------------------------------------------------------------------------------------------------
 
-set<int> Problema::randomBL(int min, int max)
-{
-    unsigned la_semilla = semilla;
-    set<int> res;
-    
-    while(res.size() < elem_sel)
-    {
-        res.insert(randomGreedy(la_semilla, min, max));
-        // cambiamos la semilla por un valor random (basado en la semilla anterior)
-        la_semilla = rand();
-    }
-    
-    return res;
-}
-
 double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int elem_eliminar, int elem_aniadir)
 {
     unsigned tamanio_sol = sol.size();
@@ -375,22 +349,6 @@ void Problema::reparacion(vector<int> & hijo)
         hijo[mejor_posicion] = 1;
         contador++;
     }
-}
-
-int Problema::posicionVectorPoblacion(const vector<vector<int> > & poblacion, const vector<int> & vector)
-{
-    bool encontrado = false;
-    unsigned posicion = 0,
-             tamanio = poblacion.size();
-
-    for(unsigned i=0; i<tamanio && !encontrado; ++i)
-        if(poblacion[i] == vector)
-        {
-            posicion = i;
-            encontrado = true;
-        }
-
-    return posicion;
 }
 
 vector<int> Problema::mejorVectorPoblacion(const vector<vector<int> > & poblacion)

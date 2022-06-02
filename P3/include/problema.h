@@ -69,9 +69,6 @@ class Problema
 
         // métodos privados para BL
 
-            // devuelve m valores aleatorios distintos entre los parámetros recibidos (teniendo en cuenta la semilla)
-            set<int> randomBL(int min, int max);
-
             // calcula la dispersion de un vector en el que se intercambian dos valores
             double dispersionIntercambiarElementos(const vector<int> & sol, int elem_eliminar, int elem_aniadir);
 
@@ -85,9 +82,6 @@ class Problema
 
             // ajusta el números de 1s tras aplicar el cruceUniforme
             void reparacion(vector<int> & hijo);
-
-            // calcula la posicion de un vector recibido en una población dada
-            int posicionVectorPoblacion(const vector<vector<int> > & poblacion, const vector<int> & vector);
 
             // calcula el vector con menor dispersión de una población dada
             vector<int> mejorVectorPoblacion(const vector<vector<int> > & poblacion);

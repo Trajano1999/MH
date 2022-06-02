@@ -89,38 +89,6 @@ int main(int narg, char * arg[])
         vector<int> v_Greedy = problema.solucionGreedy();
         tiempo_despues = clock();
 
-        /*tiempo_antes = clock();
-        vector<int> v_BL = problema.solucionBusquedaLocal();
-        tiempo_despues = clock();
-
-        tiempo_antes = clock();
-        vector<int> v_AGGU = problema.solucionAGGUniforme();
-        tiempo_despues = clock();
-
-        tiempo_antes = clock();
-        vector<int> v_AGGP = problema.solucionAGGPosicion();
-        tiempo_despues = clock();
-
-        tiempo_antes = clock();
-        vector<int> v_AGEU = problema.solucionAGEUniforme();
-        tiempo_despues = clock();
-
-        tiempo_antes = clock();
-        vector<int> v_AGEP = problema.solucionAGEPosicion();
-        tiempo_despues = clock();
-
-        tiempo_antes = clock();
-        vector<int> v_AM1 = problema.solucionAM1();
-        tiempo_despues = clock();
-
-        tiempo_antes = clock();
-        vector<int> v_AM2 = problema.solucionAM2();
-        tiempo_despues = clock();
-
-        tiempo_antes = clock();
-        vector<int> v_AM3 = problema.solucionAM3();
-        tiempo_despues = clock();*/
-
         // guardamos en el fichero
         cout << tiempo_despues - tiempo_antes << "\t" << problema.dispersion(v_Greedy) << endl;
     }
