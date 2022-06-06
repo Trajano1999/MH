@@ -300,6 +300,7 @@ vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblac
     return resultado;
 }
 
+// jjj arreglar
 void Problema::reparacion(vector<int> & hijo)
 {
     unsigned contador = 0,
@@ -809,7 +810,7 @@ vector<int> Problema::solucionAGGUniforme()
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_GEN, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
         reemplazamientoGeneracional(poblacion, poblacion_hijos);
-        evaluaciones++;
+        evaluaciones += 50;
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
@@ -833,7 +834,7 @@ vector<int> Problema::solucionAGGPosicion()
         crucePosicion(poblacion_hijos, TAMANIO_POBLACION_GEN, PROB_CRUCE_AGG);
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
         reemplazamientoGeneracional(poblacion, poblacion_hijos);
-        evaluaciones++;
+        evaluaciones += 50;
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
@@ -857,7 +858,7 @@ vector<int> Problema::solucionAGEUniforme()
         cruceUniforme(poblacion_hijos, TAMANIO_POBLACION_EST, PROB_CRUCE_AGE);
         mutacionEstacionaria(poblacion_hijos, PROB_MUTACION);
         reemplazamientoEstacionario(poblacion, poblacion_hijos);
-        evaluaciones++;
+        evaluaciones += 2;
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
@@ -881,7 +882,7 @@ vector<int> Problema::solucionAGEPosicion()
         crucePosicion(poblacion_hijos, TAMANIO_POBLACION_EST, PROB_CRUCE_AGE);
         mutacionEstacionaria(poblacion_hijos, PROB_MUTACION);
         reemplazamientoEstacionario(poblacion, poblacion_hijos);
-        evaluaciones++;
+        evaluaciones += 2;
     }
 
     // transformamos el vector_poblacion en un vector de pueblos
@@ -1065,7 +1066,7 @@ vector<int> Problema::solucionBLReiterada()
 
     for(unsigned i=0; i<9; ++i)
     {
-        //solucion_mutada = mutamos mejor_solucion
+        // jjj solucion_mutada = mutamos mejor_solucion
         dispersion_mutada = dispersion(solucion_mutada);
 
         if( dispersion_mutada < mejor_dispersion)
