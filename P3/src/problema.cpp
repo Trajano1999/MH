@@ -300,7 +300,7 @@ vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblac
     return resultado;
 }
 
-// jjj arreglar
+// jjj arreglar P2
 void Problema::reparacion(vector<int> & hijo)
 {
     unsigned contador = 0,
@@ -1053,12 +1053,13 @@ vector<int> Problema::solucionBusquedaMultiarranque()
     return mejor_solucion;
 }
 
-vector<int> Problema::solucionBLReiterada()
+vector<int> Problema::solucionILS()
 {
     unsigned evaluaciones = 0;
-    double dispersion_mutada,
+    double dispersion_actual,
            mejor_dispersion;
     vector<int> solucion_mutada,
+                solucion_actual,
                 mejor_solucion;
 
     mejor_solucion = busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUCAIONES_BMB, evaluaciones);
@@ -1067,12 +1068,43 @@ vector<int> Problema::solucionBLReiterada()
     for(unsigned i=0; i<9; ++i)
     {
         // jjj solucion_mutada = mutamos mejor_solucion
-        dispersion_mutada = dispersion(solucion_mutada);
+        // jjj intercambiamos t=0.3*m elementos seleccionados distintos
+        // Escoges aleatoriamente t elementos sol y los sustituyes por t elementos no sol
+        solucion_actual = busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUCAIONES_BMB, evaluaciones);
+        dispersion_actual = dispersion(solucion_mutada);
 
-        if( dispersion_mutada < mejor_dispersion)
+        if( dispersion_actual < mejor_dispersion)
         {
-            mejor_dispersion = dispersion_mutada;
-            mejor_solucion = solucion_mutada;
+            mejor_dispersion = dispersion_actual;
+            mejor_solucion = solucion_actual;
+        }
+    }
+
+    return mejor_solucion;
+}
+
+vector<int> Problema::solucionILS_ES()
+{
+    unsigned evaluaciones = 0;
+    double dispersion_actual,
+           mejor_dispersion;
+    vector<int> solucion_mutada,
+                solucion_actual,
+                mejor_solucion;
+
+    mejor_solucion = solucionEnfriamientoSimulado();
+    mejor_dispersion = dispersion(mejor_solucion);
+
+    for(unsigned i=0; i<9; ++i)
+    {
+        // jjj solucion_mutada = mutamos mejor_solucion
+        solucion_actual = busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUCAIONES_BMB, evaluaciones);
+        dispersion_actual = dispersion(solucion_mutada);
+
+        if( dispersion_actual < mejor_dispersion)
+        {
+            mejor_dispersion = dispersion_actual;
+            mejor_solucion = solucion_actual;
         }
     }
 

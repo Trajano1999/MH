@@ -129,6 +129,8 @@ class Problema
             // aplicamos BL a un vector de pueblos recibido y el resultado proporcionado también es un vector de pueblos
             vector<int> busquedaLocalP2(const vector<int> & vector_inicio, unsigned max_evaluaciones, unsigned & evaluaciones);
 
+        // métodos privados para 
+
     public: 
         // constructor
         Problema(unsigned sem, const char * dir_fich);
@@ -170,7 +172,7 @@ class Problema
             // P3
             vector<int> solucionEnfriamientoSimulado();
             vector<int> solucionBusquedaMultiarranque();
-            vector<int> solucionBLReiterada();
+            vector<int> solucionILS();
             vector<int> solucionILS_ES();
 };
 
