@@ -168,9 +168,9 @@ class Problema
                 vector<int> solucionAM3();
             
             // P3
-            vector<int> solucionES();
+            vector<int> solucionEnfriamientoSimulado();
             vector<int> solucionBusquedaMultiarranque();
-            vector<int> solucionBLR();
+            vector<int> solucionBLReiterada();
             vector<int> solucionILS_ES();
 };
 

@@ -1002,7 +1002,7 @@ vector<int> Problema::solucionAM3()
     return transformacionVectorPueblos(vector_poblacion);
 }
 
-vector<int> Problema::solucionES()
+vector<int> Problema::solucionEnfriamientoSimulado()
 {
     vector<int> resultado;
     /* jjj unsigned enfriamientos = 0,
@@ -1031,7 +1031,7 @@ vector<int> Problema::solucionES()
 
 vector<int> Problema::solucionBusquedaMultiarranque()
 {   
-    unsigned evaluaciones=0;
+    unsigned evaluaciones = 0;
     double dispersion_actual,
            mejor_dispersion = VALOR_GRANDE;
     vector<int> solucion_actual, 
@@ -1046,6 +1046,32 @@ vector<int> Problema::solucionBusquedaMultiarranque()
         {
             mejor_dispersion = dispersion_actual;
             mejor_solucion = solucion_actual;
+        }
+    }
+
+    return mejor_solucion;
+}
+
+vector<int> Problema::solucionBLReiterada()
+{
+    unsigned evaluaciones = 0;
+    double dispersion_mutada,
+           mejor_dispersion;
+    vector<int> solucion_mutada,
+                mejor_solucion;
+
+    mejor_solucion = busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUCAIONES_BMB, evaluaciones);
+    mejor_dispersion = dispersion(mejor_solucion);
+
+    for(unsigned i=0; i<9; ++i)
+    {
+        //solucion_mutada = mutamos mejor_solucion
+        dispersion_mutada = dispersion(solucion_mutada);
+
+        if( dispersion_mutada < mejor_dispersion)
+        {
+            mejor_dispersion = dispersion_mutada;
+            mejor_solucion = solucion_mutada;
         }
     }
 
