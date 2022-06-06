@@ -86,11 +86,11 @@ int main(int narg, char * arg[])
 
         // calculamos los tiempos
         tiempo_antes = clock();
-        vector<int> v_Greedy = problema.solucionGreedy();
+        vector<int> v_BMB = problema.solucionBusquedaMultiarranque();
         tiempo_despues = clock();
 
         // guardamos los datos en el fichero
-        cout << tiempo_despues - tiempo_antes << "\t" << problema.dispersion(v_Greedy) << endl;
+        cout << tiempo_despues - tiempo_antes << "\t" << problema.dispersion(v_BMB) << endl;
     }
 
     return 0;

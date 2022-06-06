@@ -58,7 +58,8 @@ const unsigned MAX_EVALUACIONES      = 100000,
                MAX_EVAL_MEMETICOS    = 400,
                TAMANIO_POBLACION_GEN = 50,
                TAMANIO_POBLACION_EST = 2,
-               TAMANIO_POBLACION_MM  = 10;
+               TAMANIO_POBLACION_MM  = 10,
+               MAX_EVALUCAIONES_BMB  = 10000;
 
 //-------------------------------------------------------------------------------------------------
 // MÉTODOS PRIVADOS GENERALES
@@ -128,7 +129,7 @@ int Problema::calcularPosicion(const vector<int> & v, int elem)
     return res;
 }
 
-vector<int> Problema::generarVectorAleatorio(unsigned tamanio_vector)
+vector<int> Problema::generarVectorPoblacionAleatorio(unsigned tamanio_vector)
 {
     unsigned random;
     vector<int> resultado(tamanio_vector, 0);
@@ -144,6 +145,11 @@ vector<int> Problema::generarVectorAleatorio(unsigned tamanio_vector)
     }
 
     return resultado;
+}
+
+vector<int> Problema::generarVectorPueblosAleatorio()
+{
+    return transformacionVectorPueblos(generarVectorPoblacionAleatorio(elem_tot));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -421,7 +427,7 @@ vector<vector<int> > Problema::creacionPoblacion(unsigned tamanio_poblacion)
     vector<vector<int> > resultado;
     
     for(unsigned i=0; i<tamanio_poblacion; ++i)
-        resultado.push_back(generarVectorAleatorio(elem_tot));
+        resultado.push_back(generarVectorPoblacionAleatorio(elem_tot));
 
     return resultado;
 }
@@ -783,7 +789,7 @@ vector<int> Problema::solucionGreedy()
 vector<int> Problema::solucionBusquedaLocal()
 {
     unsigned evaluaciones = 0;
-    vector<int> aleatorio = transformacionVectorPueblos(generarVectorAleatorio(elem_tot));
+    vector<int> aleatorio = transformacionVectorPueblos(generarVectorPoblacionAleatorio(elem_tot));
     return busquedaLocalP2(aleatorio, MAX_EVALUACIONES, evaluaciones);
 }
 
@@ -991,14 +997,15 @@ vector<int> Problema::solucionAM3()
         reemplazamientoGeneracional(poblacion, poblacion_hijos);                
     }
 
-    // transformamos el vector_poblacion en un vector de pueblos
+    // transformamos el vector_poblacion en un vector de pueblosm
     vector_poblacion = mejorVectorPoblacion(poblacion);
     return transformacionVectorPueblos(vector_poblacion);
 }
 
 vector<int> Problema::solucionES()
 {
-    unsigned enfriamientos = 0,
+    vector<int> resultado;
+    /* jjj unsigned enfriamientos = 0,
              max_vecinos   = 10*elem_tot,
              num_enfriamientos = MAX_EVALUACIONES / max_vecinos;
 
@@ -1017,7 +1024,30 @@ vector<int> Problema::solucionES()
         // se genera num max de vecinos (max_vecinos) o 
         // se hayan aceptado demasiados vecinos generados (max_exitos)
         enfriamientos++;
-    }
+    }*/
 
     return resultado;
+}
+
+vector<int> Problema::solucionBusquedaMultiarranque()
+{   
+    unsigned evaluaciones=0;
+    double dispersion_actual,
+           mejor_dispersion = VALOR_GRANDE;
+    vector<int> solucion_actual, 
+                mejor_solucion;
+
+    for(unsigned i=0; i<10; ++i)
+    {
+        solucion_actual = busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUCAIONES_BMB, evaluaciones);
+        dispersion_actual = dispersion(solucion_actual);
+
+        if( dispersion_actual < mejor_dispersion)
+        {
+            mejor_dispersion = dispersion_actual;
+            mejor_solucion = solucion_actual;
+        }
+    }
+
+    return mejor_solucion;
 }

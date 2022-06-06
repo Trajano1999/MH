@@ -50,8 +50,11 @@ class Problema
             // calcula la primera posición de un valor en un vector
             int calcularPosicion(const vector<int> & v, int elem);
 
-            // genera un vector del tamaño indicado, con valores 0 y 1 en posiciones aleatorias, con exactamente m 1s
-            vector<int> generarVectorAleatorio(unsigned tamanio_vector);
+            // genera un vector población del tamaño indicado, con valores 0 y 1 en posiciones aleatorias, con exactamente m 1s
+            vector<int> generarVectorPoblacionAleatorio(unsigned tamanio_vector);
+
+            // genera un vector de pueblos del tamaño indicado, con exactamente m valores naturales
+            vector<int> generarVectorPueblosAleatorio();
 
         // métodos privados para Greedy
 
@@ -166,7 +169,7 @@ class Problema
             
             // P3
             vector<int> solucionES();
-            vector<int> solucionBMB();
+            vector<int> solucionBusquedaMultiarranque();
             vector<int> solucionBLR();
             vector<int> solucionILS_ES();
 };
