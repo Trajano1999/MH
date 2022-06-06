@@ -90,8 +90,14 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         double tiempo_BMB = tiempo_despues - tiempo_antes;
 
+        tiempo_antes = clock();
+        vector<int> v_ILS = problema.solucionILS();
+        tiempo_despues = clock();
+        double tiempo_ILS = tiempo_despues - tiempo_antes;
+
         // guardamos los datos en el fichero
         cout << tiempo_BMB << "\t" << problema.dispersion(v_BMB) << endl;
+        cout << tiempo_ILS << "\t" << problema.dispersion(v_ILS) << endl;
     }
 
     return 0;

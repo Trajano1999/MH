@@ -1003,10 +1003,11 @@ vector<int> Problema::solucionAM3()
     return transformacionVectorPueblos(vector_poblacion);
 }
 
+// jjj
 vector<int> Problema::solucionEnfriamientoSimulado()
 {
     vector<int> resultado;
-    /* jjj unsigned enfriamientos = 0,
+    /* unsigned enfriamientos = 0,
              max_vecinos   = 10*elem_tot,
              num_enfriamientos = MAX_EVALUACIONES / max_vecinos;
 
@@ -1068,8 +1069,8 @@ vector<int> Problema::solucionILS()
     for(unsigned i=0; i<9; ++i)
     {
         // jjj solucion_mutada = mutamos mejor_solucion
-        // jjj intercambiamos t=0.3*m elementos seleccionados distintos
-        // Escoges aleatoriamente t elementos sol y los sustituyes por t elementos no sol
+        // intercambiamos t=0.3*m elementos seleccionados distintos
+        // Escogemos aleatoriamente t elementos sol y los sustituyes por t elementos no sol
         solucion_actual = busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUCAIONES_BMB, evaluaciones);
         dispersion_actual = dispersion(solucion_mutada);
 
