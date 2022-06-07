@@ -173,7 +173,7 @@ class Problema
                 vector<int> solucionAM3();
             
             // P3
-            vector<int> solucionEnfriamientoSimulado();
+            vector<int> solucionEnfriamientoSimulado(const vector<int> & sol_recibida);
             vector<int> solucionBusquedaMultiarranque();
             vector<int> solucionILS();
             vector<int> solucionILS_ES();

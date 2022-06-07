@@ -1036,20 +1036,22 @@ vector<int> Problema::solucionAM3()
 }
 
 // jjj
-vector<int> Problema::solucionEnfriamientoSimulado()
+vector<int> Problema::solucionEnfriamientoSimulado(const vector<int> & sol_recibida)
 {
-    vector<int> resultado;
-    /* unsigned enfriamientos = 0,
-             max_vecinos   = 10*elem_tot,
-             num_enfriamientos = MAX_EVALUACIONES / max_vecinos;
+    unsigned max_vecinos     = 10*elem_tot,
+             max_iteraciones = MAX_EVALUACIONES / max_vecinos,
+             evaluaciones    = 0,
+             num_cambios     = 1;
 
-    double prob_sol_peor     = 0.3,
-           max_exitos        = 0.1*max_vecinos,
-           temperatura_final = 0.01;
+    double max_exitos        = 0.1*max_vecinos,
+           coste_sol_inicial = dispersion(sol_recibida),
+           temp_inicial      = (-0.3*coste_sol_inicial) / log(0.4),
+           temp              = temp_inicial,
+           temp_final        = pow(10,-3); // jjj comprobar que es menor que la inicial (al final)
+
+    vector<int> resultado;
     
-    vector<int> resultado;
-
-    while(enfriamientos < MAX_EVALUACIONES) // && nº exitos en enfriamiento actual != 0
+    while(evaluaciones < MAX_EVALUACIONES && num_cambios > 0)
     {
         // intercambio de dos elementos aleatorios
         // comparamos la solucio vecina con la actual
@@ -1057,8 +1059,8 @@ vector<int> Problema::solucionEnfriamientoSimulado()
         // se enfriará la temperatura si 
         // se genera num max de vecinos (max_vecinos) o 
         // se hayan aceptado demasiados vecinos generados (max_exitos)
-        enfriamientos++;
-    }*/
+        evaluaciones++;
+    }
 
     return resultado;
 }
@@ -1126,14 +1128,14 @@ vector<int> Problema::solucionILS_ES()
                 solucion_actual,
                 mejor_solucion;
 
-    mejor_solucion = solucionEnfriamientoSimulado();
+    // aquí va ES pero con qué parámetro
+    mejor_solucion = busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUCAIONES_BMB, evaluaciones);
     mejor_dispersion = dispersion(mejor_solucion);
 
     for(unsigned i=0; i<9; ++i)
     {
         solucion_mutada = mutacionILS(mejor_solucion, tamanio_mutacion);
-        // aqui no se si es BL o ES
-        solucion_actual = busquedaLocalP2(solucion_mutada, MAX_EVALUCAIONES_BMB, evaluaciones);
+        solucion_actual = solucionEnfriamientoSimulado(solucion_mutada);
         dispersion_actual = dispersion(solucion_actual);
 
         if( dispersion_actual < mejor_dispersion)
