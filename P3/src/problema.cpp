@@ -673,6 +673,38 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigne
     return resultado;
 }
 
+vector<int> Problema::mutacionILS(vector<int> & solucion, unsigned t)
+{
+    unsigned aleatorio,
+             pos_eliminar;
+    vector<int> resultado = solucion,
+                elem_repetidos,
+                pos_repetidas;
+
+    for(unsigned i=0; i<t; ++i)
+    {
+        // buscamos el elem aleatorio
+        do{
+            aleatorio = rand() % (elem_tot);
+        }while(
+            estaEnVector(elem_repetidos,aleatorio) || estaEnVector(solucion,aleatorio)
+        );
+        elem_repetidos.push_back(aleatorio);
+
+        // buscamos la posicion a eliminar
+        do{
+            pos_eliminar = rand() % (elem_sel);
+        }while(
+            estaEnVector(pos_repetidas,pos_eliminar)
+        );
+        pos_repetidas.push_back(pos_eliminar);
+        
+        resultado[pos_eliminar] = aleatorio;
+    }
+
+    return resultado;
+}
+
 //-------------------------------------------------------------------------------------------------
 // CONSTRUCTOR
 //-------------------------------------------------------------------------------------------------
@@ -1056,7 +1088,8 @@ vector<int> Problema::solucionBusquedaMultiarranque()
 
 vector<int> Problema::solucionILS()
 {
-    unsigned evaluaciones = 0;
+    unsigned evaluaciones = 0,
+             tamanio_mutacion = 0.3*elem_sel;
     double dispersion_actual,
            mejor_dispersion;
     vector<int> solucion_mutada,
@@ -1068,11 +1101,9 @@ vector<int> Problema::solucionILS()
 
     for(unsigned i=0; i<9; ++i)
     {
-        // jjj solucion_mutada = mutamos mejor_solucion
-        // intercambiamos t=0.3*m elementos seleccionados distintos
-        // Escogemos aleatoriamente t elementos sol y los sustituyes por t elementos no sol
-        solucion_actual = busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUCAIONES_BMB, evaluaciones);
-        dispersion_actual = dispersion(solucion_mutada);
+        solucion_mutada = mutacionILS(mejor_solucion, tamanio_mutacion);
+        solucion_actual = busquedaLocalP2(solucion_mutada, MAX_EVALUCAIONES_BMB, evaluaciones);
+        dispersion_actual = dispersion(solucion_actual);
 
         if( dispersion_actual < mejor_dispersion)
         {
@@ -1084,7 +1115,7 @@ vector<int> Problema::solucionILS()
     return mejor_solucion;
 }
 
-vector<int> Problema::solucionILS_ES()
+/*vector<int> Problema::solucionILS_ES()
 {
     unsigned evaluaciones = 0;
     double dispersion_actual,
@@ -1110,4 +1141,4 @@ vector<int> Problema::solucionILS_ES()
     }
 
     return mejor_solucion;
-}
+}*/

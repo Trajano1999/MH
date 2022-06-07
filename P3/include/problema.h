@@ -129,7 +129,10 @@ class Problema
             // aplicamos BL a un vector de pueblos recibido y el resultado proporcionado también es un vector de pueblos
             vector<int> busquedaLocalP2(const vector<int> & vector_inicio, unsigned max_evaluaciones, unsigned & evaluaciones);
 
-        // métodos privados para 
+        // métodos privados para ILS
+
+            // aplicamos la mutación : intercambiamos t elementos sol por t que no lo sean
+            vector<int> mutacionILS(vector<int> & solucion, unsigned t);
 
     public: 
         // constructor
