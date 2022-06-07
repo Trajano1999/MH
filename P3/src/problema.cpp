@@ -1115,9 +1115,11 @@ vector<int> Problema::solucionILS()
     return mejor_solucion;
 }
 
-/*vector<int> Problema::solucionILS_ES()
+// jjj
+vector<int> Problema::solucionILS_ES()
 {
-    unsigned evaluaciones = 0;
+    unsigned evaluaciones = 0,
+             tamanio_mutacion = 0.3*elem_sel;
     double dispersion_actual,
            mejor_dispersion;
     vector<int> solucion_mutada,
@@ -1129,9 +1131,10 @@ vector<int> Problema::solucionILS()
 
     for(unsigned i=0; i<9; ++i)
     {
-        // jjj solucion_mutada = mutamos mejor_solucion
-        solucion_actual = busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUCAIONES_BMB, evaluaciones);
-        dispersion_actual = dispersion(solucion_mutada);
+        solucion_mutada = mutacionILS(mejor_solucion, tamanio_mutacion);
+        // aqui no se si es BL o ES
+        solucion_actual = busquedaLocalP2(solucion_mutada, MAX_EVALUCAIONES_BMB, evaluaciones);
+        dispersion_actual = dispersion(solucion_actual);
 
         if( dispersion_actual < mejor_dispersion)
         {
@@ -1141,4 +1144,4 @@ vector<int> Problema::solucionILS()
     }
 
     return mejor_solucion;
-}*/
+}
