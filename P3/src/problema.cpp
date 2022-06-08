@@ -673,6 +673,10 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigne
     return resultado;
 }
 
+//-------------------------------------------------------------------------------------------------
+// MÉTODOS PRIVADOS ILS
+//-------------------------------------------------------------------------------------------------
+
 vector<int> Problema::mutacionILS(vector<int> & solucion, unsigned t)
 {
     unsigned aleatorio,
@@ -703,6 +707,27 @@ vector<int> Problema::mutacionILS(vector<int> & solucion, unsigned t)
     }
 
     return resultado;
+}
+
+//-------------------------------------------------------------------------------------------------
+// MÉTODOS PRIVADOS ES
+//-------------------------------------------------------------------------------------------------
+
+// jjj
+vector<int> Problema::generarNuevoVecino(const vector<int> & original)
+{
+    vector<int> resultado;
+    return resultado;
+}
+
+// jjj
+double Problema::enfriamiento(double temp_inicial)
+{
+    // enfriamiento (hasta que temp < temp_final):
+    // se enfriará la temperatura si se genera num max de vecinos (max_vecinos) 
+    // o se hayan aceptado demasiados vecinos generados (max_exitos)
+
+    return 1.0;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1035,34 +1060,59 @@ vector<int> Problema::solucionAM3()
     return transformacionVectorPueblos(vector_poblacion);
 }
 
-// jjj
 vector<int> Problema::solucionEnfriamientoSimulado(const vector<int> & sol_recibida)
 {
-    unsigned max_vecinos     = 10*elem_tot,
+    unsigned evaluaciones    = 0,
+             max_vecinos     = 10*elem_tot,
+             vecinos         = 0,
+             max_num_cambios = 0.1*max_vecinos,
+             num_cambios     = 1,
              max_iteraciones = MAX_EVALUACIONES / max_vecinos,
-             evaluaciones    = 0,
-             num_cambios     = 1;
+             iteraciones     = 0;
 
-    double max_exitos        = 0.1*max_vecinos,
-           coste_sol_inicial = dispersion(sol_recibida),
-           temp_inicial      = (-0.3*coste_sol_inicial) / log(0.4),
+    double coste_inicial     = dispersion(sol_recibida),
+           coste_vecino      = 0,
+           coste             = 0,
+           mejor_coste       = VALOR_GRANDE,
+           temp_inicial      = (-0.3*coste_inicial) / log(0.4),
            temp              = temp_inicial,
-           temp_final        = pow(10,-3); // jjj comprobar que es menor que la inicial (al final)
+           temp_final        = pow(10,-3);
 
-    vector<int> resultado;
+    vector<int> solucion = sol_recibida,
+                nuevo_vecino,
+                mejor_solucion = solucion;
     
-    while(evaluaciones < MAX_EVALUACIONES && num_cambios > 0)
-    {
-        // intercambio de dos elementos aleatorios
-        // comparamos la solucio vecina con la actual
+    coste = dispersion(solucion);
 
-        // se enfriará la temperatura si 
-        // se genera num max de vecinos (max_vecinos) o 
-        // se hayan aceptado demasiados vecinos generados (max_exitos)
-        evaluaciones++;
+    while(evaluaciones < MAX_EVALUACIONES && num_cambios > 0 && temp <= temp_final)
+    {
+        vecinos = 0;
+        num_cambios = 0;
+        while(vecinos < max_vecinos && num_cambios < max_num_cambios )
+        {
+            nuevo_vecino = generarNuevoVecino(solucion);
+            coste_vecino = dispersion(nuevo_vecino);
+            vecinos++;
+            evaluaciones++;
+
+            if(coste_vecino < coste || (rand() % 2) <= exp(-abs(coste - coste_vecino) / temp ))
+            {
+                solucion = nuevo_vecino;
+                coste = coste_vecino;
+                num_cambios++;
+
+                if(coste < mejor_coste)
+                {
+                    mejor_solucion = solucion;
+                    mejor_coste = coste;
+                }
+            }
+        }
+        
+        temp = enfriamiento(temp);
     }
 
-    return resultado;
+    return mejor_solucion;
 }
 
 vector<int> Problema::solucionBusquedaMultiarranque()

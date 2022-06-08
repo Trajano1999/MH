@@ -134,6 +134,14 @@ class Problema
             // aplicamos la mutación : intercambiamos t elementos sol por t que no lo sean
             vector<int> mutacionILS(vector<int> & solucion, unsigned t);
 
+        // métodos privados para ES
+
+            // generamos un nuevo vecino aplicandole una mutación
+            vector<int> generarNuevoVecino(const vector<int> & original);   
+
+            // enfriamos usando el esquema de Cauchy modificado 
+            double enfriamiento(double temp_inicial);
+
     public: 
         // constructor
         Problema(unsigned sem, const char * dir_fich);
