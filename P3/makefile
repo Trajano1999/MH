@@ -14,11 +14,11 @@ OBJ = obj
 INC = include
 
 # archivos																						   # modificar nombre del ejecutable y archivos de entrada
-EJECUTABLE = practica2
+EJECUTABLE = practica3
 SOURCES = $(wildcard $(SRC)/*.cpp)
 OBJECTS = $(addprefix $(OBJ)/, $(notdir $(SOURCES:.cpp=.o)))
-RUTA_ARCHIVOS_ENTRADA = /home/juanma/GitHub/MH/P2/datos_MDD
-RUTA_ARCHIVO_EJECUCION = /home/juanma/GitHub/MH/P2/ejecucion_completa.sh
+RUTA_ARCHIVOS_ENTRADA = /home/juanma/GitHub/MH/P3/datos_MDD
+RUTA_ARCHIVO_EJECUCION = /home/juanma/GitHub/MH/P3/ejecucion_completa.sh
 
 all: $(BIN)/$(EJECUTABLE)
 
@@ -40,7 +40,7 @@ clear:
 
 # ejecución	de un archivo																		   # alterar opciones de ejecución
 exec: $(BIN)/$(EJECUTABLE)
-	./$< $(RUTA_ARCHIVOS_ENTRADA)/GKD-b_08_n25_m7.txt
+	./$< $(RUTA_ARCHIVOS_ENTRADA)/GKD-b_25_n100_m10.txt
 
 # ejecución completa
 exec_total: $(BIN)/$(EJECUTABLE)

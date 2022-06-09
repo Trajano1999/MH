@@ -22,43 +22,6 @@ const unsigned RAMDOM_SEMILLA = 0,
                EJECUCIONES_POR_PROBLEMA = 5;
 
 //-------------------------------------------------------------------------------------------------
-// FUNCIONES
-//-------------------------------------------------------------------------------------------------
-
-/*// jjj muestra un vector int
-void mostrarVectorInt(const vector<int> & v)
-{
-    cout << "( ";
-    for(unsigned i=0; i<v.size(); ++i)
-        cout << v[i] << " ";
-    cout << ")"; 
-}
-
-// jjj muestra una matriz int
-void mostrarMatrizInt(const vector<vector<int> > & m)
-{
-    for(unsigned i=0; i<m.size(); ++i)
-    {
-        cout << "( ";
-        for(unsigned j=0; j<m[i].size(); ++j)
-            cout << m[i][j] << " ";
-        cout << ")" << endl;
-    }
-}
-
-// jjj muestra una matriz double
-void mostrarMatrizDouble(const vector<vector<double> > & m)
-{
-    for(unsigned i=0; i<m.size(); ++i)
-    {
-        cout << "( ";
-        for(unsigned j=0; j<m[i].size(); ++j)
-            cout << m[i][j] << " ";
-        cout << ")" << endl;
-    }
-}*/
-
-//-------------------------------------------------------------------------------------------------
 // MAIN
 //-------------------------------------------------------------------------------------------------
 
@@ -89,14 +52,14 @@ int main(int narg, char * arg[])
         vector<int> v_Greedy = problema.solucionGreedy();
         tiempo_despues = clock();
         double tiempo_Greedy = tiempo_despues - tiempo_antes;
-        cerr << tiempo_Greedy << "\t" << problema.dispersion(v_Greedy) << endl;
-
+        cout << tiempo_Greedy << "\t" << problema.dispersion(v_Greedy) << endl;
+        
         tiempo_antes = clock();
         vector<int> v_BL = problema.solucionBusquedaLocal();
         tiempo_despues = clock();
         double tiempo_BL = tiempo_despues - tiempo_antes;
-        cerr << tiempo_BL << "\t" << problema.dispersion(v_BL) << endl << endl;
-
+        cout << tiempo_BL << "\t" << problema.dispersion(v_BL) << endl << endl;
+        
         tiempo_antes = clock();
         vector<int> v_AGGU = problema.solucionAGGUniforme();
         tiempo_despues = clock();
@@ -107,8 +70,8 @@ int main(int narg, char * arg[])
         vector<int> v_AGGP = problema.solucionAGGPosicion();
         tiempo_despues = clock();
         double tiempo_AGGP = tiempo_despues - tiempo_antes;
-        cerr << tiempo_AGGP << "\t" << problema.dispersion(v_AGGP) << endl;
-
+        cerr << tiempo_AGGP << "\t" << problema.dispersion(v_AGGP) << endl << endl;
+        /*
         tiempo_antes = clock();
         vector<int> v_AGEU = problema.solucionAGEUniforme();
         tiempo_despues = clock();
@@ -120,7 +83,7 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         double tiempo_AGEP = tiempo_despues - tiempo_antes;
         cerr << tiempo_AGEP << "\t" << problema.dispersion(v_AGEP) << endl << endl;
-        /*
+        */
         tiempo_antes = clock();
         vector<int> v_AM1 = problema.solucionAM1();
         tiempo_despues = clock();
@@ -138,7 +101,7 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         double tiempo_AM3 = tiempo_despues - tiempo_antes;
         cerr << tiempo_AM3 << "\t" << problema.dispersion(v_AM3) << endl << endl;
-        */
+        
         tiempo_antes = clock();
         vector<int> v_ES = problema.solucionEnfriamientoSimulado(problema.generarVectorPueblosAleatorio());
         tiempo_despues = clock();
@@ -162,8 +125,6 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         double tiempo_ILS_ES = tiempo_despues - tiempo_antes;
         cerr << tiempo_ILS_ES << "\t" << problema.dispersion(v_ILS_ES) << endl;
-
-        // jjj guardamos los datos en el fichero
     }
 
     return 0;

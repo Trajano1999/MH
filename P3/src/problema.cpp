@@ -12,7 +12,8 @@
 
 # include "problema.h"
 
-/*// jjj muestra un vector int
+/*
+// jjj muestra un vector int
 void mostrarVectorInt(const vector<int> & v)
 {
     cout << "( ";
@@ -32,6 +33,18 @@ void mostrarVectorDouble(const vector<double> & v)
 
 // jjj muestra una matriz int
 void mostrarMatrizInt(const vector<vector<int> > & m)
+{
+    for(unsigned i=0; i<m.size(); ++i)
+    {
+        cout << "( ";
+        for(unsigned j=0; j<m[i].size(); ++j)
+            cout << m[i][j] << " ";
+        cout << ")" << endl;
+    }
+}
+
+// jjj muestra una matriz double
+void mostrarMatrizDouble(const vector<vector<double> > & m)
 {
     for(unsigned i=0; i<m.size(); ++i)
     {
@@ -65,7 +78,7 @@ const unsigned MAX_EVALUACIONES      = 100000,
 // MÉTODOS PRIVADOS GENERALES
 //-------------------------------------------------------------------------------------------------
 
-double Problema::valorMaximo(const vector<double> & v)
+double Problema::valorMaximoPositivo(const vector<double> & v)
 {
     double valor_max = 0.0;
 
@@ -102,13 +115,6 @@ int Problema::posicionMinimoPositivo(const vector<double> & v)
     return pos_min;
 }
 
-void Problema::intercambio(vector<int> & v, int valor1, int valor2)
-{
-    for(unsigned i=0; i<v.size(); ++i)
-        if(v[i] == valor1)
-            v[i] = valor2;
-}
-
 bool Problema::estaEnVector(vector<int> vector, int valor)
 {
     for(unsigned i=0; i<vector.size(); ++i)
@@ -120,11 +126,15 @@ bool Problema::estaEnVector(vector<int> vector, int valor)
 
 int Problema::calcularPosicion(const vector<int> & v, int elem)
 {
+    bool encontrado = false;
     int res = -1;
 
-    for(unsigned i=0; i<v.size(); ++i)
+    for(unsigned i=0; i<v.size() && !encontrado; ++i)
         if(v[i] == elem)
+        {
             res = i;
+            encontrado = true;
+        }
 
     return res;
 }
@@ -223,7 +233,7 @@ int Problema::elementoMenorDispersion(const vector<int> & cand, const vector<int
             }
 
             // calculamos el max y min entre los sigmas seleccionados y los sigmas actuales
-            max = valorMaximo(sigma);         if(sigma_no_seleccionados[i] > max) max = sigma_no_seleccionados[i];
+            max = valorMaximoPositivo(sigma); if(sigma_no_seleccionados[i] > max) max = sigma_no_seleccionados[i];
             min = valorMinimoPositivo(sigma); if(sigma_no_seleccionados[i] < min && sigma_no_seleccionados[i] > 0) min = sigma_no_seleccionados[i];
             
             // la dispersión es 0 si el tamaño del vector solución es 1
@@ -265,7 +275,7 @@ double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int el
         }
 
     distancias[pos_eliminado] = suma;
-    return tamanio_sol > 2 ? valorMaximo(distancias) - valorMinimoPositivo(distancias) : 0;
+    return tamanio_sol > 2 ? valorMaximoPositivo(distancias) - valorMinimoPositivo(distancias) : 0;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -618,91 +628,56 @@ void Problema::reemplazamientoEstacionario(vector<vector<int> > & poblacion, con
 // MÉTODOS PRIVADOS AMs
 //-------------------------------------------------------------------------------------------------
 
-// jjj tiene que haber un fallo
-vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigned max_evaluaciones, unsigned & evaluaciones)
+vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigned max_evaluaciones, unsigned & num_evaluaciones)
 {
-    unsigned aleatorio1,
-             auxiliar,
-             num_evaluaciones = 0,
-             coste_anterior,
-             coste_nuevo,
-             tamanio_resultado = vector_inicio.size();
-    vector<int> candidatos,
-                elementos_escogidos,
-                resultado = vector_inicio;
-
-    // generamos el vector de candidatos
-    for(unsigned i=0; i<elem_tot; ++i)
-        candidatos.push_back(i);
-    for(unsigned i=0; i<tamanio_resultado; ++i)
-        candidatos[resultado[i]] = -1;
+    bool mejora_encontrada = false;
     
-    for(unsigned i=0; i<tamanio_resultado; ++i)
-    {   
-        // escogemos el aleatorio 
-        do{
-            aleatorio1 = rand() % (elem_tot);          
-            if(!estaEnVector(elementos_escogidos, aleatorio1))
-                elementos_escogidos.push_back(aleatorio1);
-
-            coste_anterior = dispersion(resultado);
-            coste_nuevo = dispersionIntercambiarElementos(resultado, resultado[i], candidatos[aleatorio1]);
-        }while(
-            ( coste_anterior <= coste_nuevo || estaEnVector(elementos_escogidos, aleatorio1) || candidatos[aleatorio1] == -1 ) 
-            && elementos_escogidos.size() < elem_tot && num_evaluaciones < max_evaluaciones
-        );
-        
-        // si aleatorio1 disminuye la dispersion, intercambiamos
-        if(coste_nuevo < coste_anterior)
-        {
-            auxiliar = resultado[i];
-            intercambio(resultado, resultado[i], candidatos[aleatorio1]);
-            candidatos[aleatorio1] = -1;
-            candidatos[auxiliar] = auxiliar;
-            num_evaluaciones++;
-        }
-
-        elementos_escogidos.clear();
-    }        
-
-    evaluaciones += num_evaluaciones;
-    return resultado;
-}
-
-//-------------------------------------------------------------------------------------------------
-// MÉTODOS PRIVADOS ILS
-//-------------------------------------------------------------------------------------------------
-
-vector<int> Problema::mutacionILS(const vector<int> & solucion, unsigned t)
-{
-    unsigned aleatorio,
+    unsigned evaluaciones = 0,
+             elem_aniadir,
              pos_eliminar;
-    vector<int> resultado = solucion,
+
+    double coste_anterior = dispersion(vector_inicio),
+           coste_nuevo;
+
+    vector<int> solucion = vector_inicio,
                 elem_repetidos,
-                pos_repetidas;
+                pos_sustituidas;
 
-    for(unsigned i=0; i<t; ++i)
+    while(evaluaciones < max_evaluaciones && pos_sustituidas.size() < elem_sel)
     {
-        // buscamos el elem aleatorio
-        do{
-            aleatorio = rand() % (elem_tot);
-        }while(
-            estaEnVector(elem_repetidos,aleatorio) || estaEnVector(solucion,aleatorio)
-        );
-        elem_repetidos.push_back(aleatorio);
+        elem_repetidos.clear();
+        mejora_encontrada = false;
 
-        // buscamos la posicion a eliminar
         do{
-            pos_eliminar = rand() % (elem_sel);
+            pos_eliminar = rand() % elem_sel;
         }while(
-            estaEnVector(pos_repetidas,pos_eliminar)
+            estaEnVector(pos_sustituidas, pos_eliminar)
         );
-        pos_repetidas.push_back(pos_eliminar);
-        
-        resultado[pos_eliminar] = aleatorio;
+        pos_sustituidas.push_back(pos_eliminar);
+
+        while(elem_repetidos.size() < elem_tot - elem_sel && !mejora_encontrada)
+        {
+            do{
+                elem_aniadir = rand() % elem_tot;
+            }while(
+                estaEnVector(elem_repetidos, elem_aniadir) || estaEnVector(solucion, elem_aniadir)
+            );
+            elem_repetidos.push_back(elem_aniadir);
+
+            evaluaciones++;
+            coste_nuevo = dispersionIntercambiarElementos(solucion, solucion[pos_eliminar], elem_aniadir);
+
+            if(coste_nuevo < coste_anterior)
+            {                
+                coste_anterior = coste_nuevo;
+                solucion[pos_eliminar] = elem_aniadir;
+                mejora_encontrada = true;
+            }
+        }
     }
 
-    return resultado;
+    num_evaluaciones += evaluaciones;
+    return solucion;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -753,6 +728,42 @@ double Problema::enfriamiento(double temp_inicial, double temperatura, double te
 {
     double beta = (temp_inicial-temp_final) / (iteraciones*temp_inicial*temp_final);  
     return temperatura / (1 + beta*temperatura);
+}
+
+//-------------------------------------------------------------------------------------------------
+// MÉTODOS PRIVADOS ILS
+//-------------------------------------------------------------------------------------------------
+
+vector<int> Problema::mutacion(const vector<int> & solucion, unsigned t)
+{
+    unsigned aleatorio,
+             pos_eliminar;
+    vector<int> resultado = solucion,
+                elem_repetidos,
+                pos_repetidas;
+
+    for(unsigned i=0; i<t; ++i)
+    {
+        // buscamos el elem aleatorio a añadir
+        do{
+            aleatorio = rand() % (elem_tot);
+        }while(
+            estaEnVector(elem_repetidos,aleatorio) || estaEnVector(solucion,aleatorio)
+        );
+        elem_repetidos.push_back(aleatorio);
+
+        // buscamos la posicion aleatoria a eliminar
+        do{
+            pos_eliminar = rand() % (elem_sel);
+        }while(
+            estaEnVector(pos_repetidas,pos_eliminar)
+        );
+        pos_repetidas.push_back(pos_eliminar);
+        
+        resultado[pos_eliminar] = aleatorio;
+    }
+
+    return resultado;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -838,7 +849,7 @@ void Problema::setMatriz(const char * dir_fich)
 double Problema::dispersion(const vector<int> & v)
 {
     vector<double> sigmas_seleccionados = sigmaSeleccionados(v);
-    return v.size() > 2 ? valorMaximo(sigmas_seleccionados) - valorMinimoPositivo(sigmas_seleccionados) : 0;
+    return v.size() > 2 ? valorMaximoPositivo(sigmas_seleccionados) - valorMinimoPositivo(sigmas_seleccionados) : 0;
 }
 
 vector<int> Problema::generarVectorPueblosAleatorio()
@@ -876,9 +887,8 @@ vector<int> Problema::solucionGreedy()
 
 vector<int> Problema::solucionBusquedaLocal()
 {
-    unsigned evaluaciones = 0;
-    vector<int> aleatorio = generarVectorPueblosAleatorio();
-    return busquedaLocalP2(aleatorio, MAX_EVALUACIONES, evaluaciones);
+    unsigned evaluaciones = 0; 
+    return busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUACIONES, evaluaciones);
 }
 
 vector<int> Problema::solucionAGGUniforme()
@@ -1181,7 +1191,7 @@ vector<int> Problema::solucionILS()
 
     for(unsigned i=0; i<9; ++i)
     {
-        solucion_mutada = mutacionILS(mejor_solucion, tamanio_mutacion);
+        solucion_mutada = mutacion(mejor_solucion, tamanio_mutacion);
         solucion_actual = busquedaLocalP2(solucion_mutada, MAX_EVALUCAIONES_BMB, evaluaciones);
         dispersion_actual = dispersion(solucion_actual);
 
@@ -1209,7 +1219,7 @@ vector<int> Problema::solucionILS_ES()
 
     for(unsigned i=0; i<9; ++i)
     {
-        solucion_mutada = mutacionILS(mejor_solucion, tamanio_mutacion);
+        solucion_mutada = mutacion(mejor_solucion, tamanio_mutacion);
         solucion_actual = solucionEnfriamientoSimulado(solucion_mutada);
         dispersion_actual = dispersion(solucion_actual);
 

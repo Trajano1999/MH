@@ -34,16 +34,13 @@ class Problema
         // metodos privados generales
 
             // devuelve el mayor valor de un vector
-            double valorMaximo(const vector<double> & v);
+            double valorMaximoPositivo(const vector<double> & v);
         
             // devuelve el menor valor estrictamente positivo de un vector 
             double valorMinimoPositivo(const vector<double> & v);
         
             // devuelve la posición del menor valor estrictamente positivo de un vector 
             int posicionMinimoPositivo(const vector<double> & v);
-
-            // intercambia los elementos con valor1 de un vector por valor2
-            void intercambio(vector<int> & v, int valor1, int valor2);
 
             // indica si un elemento está en el vector
             bool estaEnVector(vector<int> vector, int valor);
@@ -75,7 +72,7 @@ class Problema
             // calcula la dispersion de un vector en el que se intercambian dos valores
             double dispersionIntercambiarElementos(const vector<int> & sol, int elem_eliminar, int elem_aniadir);
 
-        // métodos privados para AGs
+        // jjj métodos privados para AGs
 
             // calcula la dispersion de un vector poblacion (que es un vector {0,1,1,0})
             double dispersionVectorPoblacion(const vector<int> & vector_poblacion);
@@ -125,12 +122,12 @@ class Problema
         // métodos privados para AMs
 
             // aplicamos BL a un vector de pueblos recibido y el resultado proporcionado también es un vector de pueblos
-            vector<int> busquedaLocalP2(const vector<int> & vector_inicio, unsigned max_evaluaciones, unsigned & evaluaciones);
+            vector<int> busquedaLocalP2(const vector<int> & vector_inicio, unsigned max_evaluaciones, unsigned & num_evaluaciones);
 
         // métodos privados para ILS
 
-            // aplicamos la mutación : intercambiamos t elementos sol por t que no lo sean
-            vector<int> mutacionILS(const vector<int> & solucion, unsigned t);
+            // jjj intercambiamos t elementos de la solución por t elementos que no lo sean
+            vector<int> mutacion(const vector<int> & solucion, unsigned t);
 
         // métodos privados para ES
 
@@ -181,7 +178,7 @@ class Problema
                 vector<int> solucionAGEUniforme();
                 vector<int> solucionAGEPosicion();
 
-                // AMs jjj repasar los 3 algoritmos
+                // AMs
                 vector<int> solucionAM1();
                 vector<int> solucionAM2();
                 vector<int> solucionAM3();
