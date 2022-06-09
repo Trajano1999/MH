@@ -181,7 +181,7 @@ class Problema
                 vector<int> solucionAGEUniforme();
                 vector<int> solucionAGEPosicion();
 
-                // AMs
+                // AMs jjj repasar los 3 algoritmos
                 vector<int> solucionAM1();
                 vector<int> solucionAM2();
                 vector<int> solucionAM3();

@@ -86,30 +86,84 @@ int main(int narg, char * arg[])
 
         // calculamos los tiempos
         tiempo_antes = clock();
+        vector<int> v_Greedy = problema.solucionGreedy();
+        tiempo_despues = clock();
+        double tiempo_Greedy = tiempo_despues - tiempo_antes;
+        cerr << tiempo_Greedy << "\t" << problema.dispersion(v_Greedy) << endl;
+
+        tiempo_antes = clock();
+        vector<int> v_BL = problema.solucionBusquedaLocal();
+        tiempo_despues = clock();
+        double tiempo_BL = tiempo_despues - tiempo_antes;
+        cerr << tiempo_BL << "\t" << problema.dispersion(v_BL) << endl << endl;
+
+        tiempo_antes = clock();
+        vector<int> v_AGGU = problema.solucionAGGUniforme();
+        tiempo_despues = clock();
+        double tiempo_AGGU = tiempo_despues - tiempo_antes;
+        cerr << tiempo_AGGU << "\t" << problema.dispersion(v_AGGU) << endl;        
+
+        tiempo_antes = clock();
+        vector<int> v_AGGP = problema.solucionAGGPosicion();
+        tiempo_despues = clock();
+        double tiempo_AGGP = tiempo_despues - tiempo_antes;
+        cerr << tiempo_AGGP << "\t" << problema.dispersion(v_AGGP) << endl;
+
+        tiempo_antes = clock();
+        vector<int> v_AGEU = problema.solucionAGEUniforme();
+        tiempo_despues = clock();
+        double tiempo_AGEU = tiempo_despues - tiempo_antes;
+        cerr << tiempo_AGEU << "\t" << problema.dispersion(v_AGEU) << endl;
+
+        tiempo_antes = clock();
+        vector<int> v_AGEP = problema.solucionAGEPosicion();
+        tiempo_despues = clock();
+        double tiempo_AGEP = tiempo_despues - tiempo_antes;
+        cerr << tiempo_AGEP << "\t" << problema.dispersion(v_AGEP) << endl << endl;
+        /*
+        tiempo_antes = clock();
+        vector<int> v_AM1 = problema.solucionAM1();
+        tiempo_despues = clock();
+        double tiempo_AM1 = tiempo_despues - tiempo_antes;
+        cerr << tiempo_AM1 << "\t" << problema.dispersion(v_AM1) << endl;
+
+        tiempo_antes = clock();
+        vector<int> v_AM2 = problema.solucionAM2();
+        tiempo_despues = clock();
+        double tiempo_AM2 = tiempo_despues - tiempo_antes;
+        cerr << tiempo_AM2 << "\t" << problema.dispersion(v_AM2) << endl;
+
+        tiempo_antes = clock();
+        vector<int> v_AM3 = problema.solucionAM3();
+        tiempo_despues = clock();
+        double tiempo_AM3 = tiempo_despues - tiempo_antes;
+        cerr << tiempo_AM3 << "\t" << problema.dispersion(v_AM3) << endl << endl;
+        */
+        tiempo_antes = clock();
         vector<int> v_ES = problema.solucionEnfriamientoSimulado(problema.generarVectorPueblosAleatorio());
         tiempo_despues = clock();
         double tiempo_ES = tiempo_despues - tiempo_antes;
+        cerr << tiempo_ES << "\t" << problema.dispersion(v_ES) << endl;
 
         tiempo_antes = clock();
         vector<int> v_BMB = problema.solucionBusquedaMultiarranque();
         tiempo_despues = clock();
         double tiempo_BMB = tiempo_despues - tiempo_antes;
+        cerr << tiempo_BMB << "\t" << problema.dispersion(v_BMB) << endl;
 
         tiempo_antes = clock();
         vector<int> v_ILS = problema.solucionILS();
         tiempo_despues = clock();
         double tiempo_ILS = tiempo_despues - tiempo_antes;
+        cerr << tiempo_ILS << "\t" << problema.dispersion(v_ILS) << endl;
 
         tiempo_antes = clock();
         vector<int> v_ILS_ES = problema.solucionILS_ES();
         tiempo_despues = clock();
         double tiempo_ILS_ES = tiempo_despues - tiempo_antes;
+        cerr << tiempo_ILS_ES << "\t" << problema.dispersion(v_ILS_ES) << endl;
 
-        // guardamos los datos en el fichero
-        cout << tiempo_ES     << "\t" << problema.dispersion(v_ES) << endl;
-        cout << tiempo_BMB    << "\t" << problema.dispersion(v_BMB) << endl;
-        cout << tiempo_ILS    << "\t" << problema.dispersion(v_ILS) << endl;
-        cout << tiempo_ILS_ES << "\t" << problema.dispersion(v_ILS_ES) << endl;
+        // jjj guardamos los datos en el fichero
     }
 
     return 0;

@@ -618,6 +618,7 @@ void Problema::reemplazamientoEstacionario(vector<vector<int> > & poblacion, con
 // MÉTODOS PRIVADOS AMs
 //-------------------------------------------------------------------------------------------------
 
+// jjj tiene que haber un fallo
 vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigned max_evaluaciones, unsigned & evaluaciones)
 {
     unsigned aleatorio1,
@@ -876,7 +877,7 @@ vector<int> Problema::solucionGreedy()
 vector<int> Problema::solucionBusquedaLocal()
 {
     unsigned evaluaciones = 0;
-    vector<int> aleatorio = transformacionVectorPueblos(generarVectorPoblacionAleatorio(elem_tot));
+    vector<int> aleatorio = generarVectorPueblosAleatorio();
     return busquedaLocalP2(aleatorio, MAX_EVALUACIONES, evaluaciones);
 }
 
