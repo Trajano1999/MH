@@ -284,14 +284,7 @@ double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int el
 
 double Problema::dispersionVectorPoblacion(const vector<int> & vector_poblacion)
 {
-    unsigned tamanio_poblacion = vector_poblacion.size();
-    vector<int> vector_pueblos;
-
-    for(unsigned i=0; i<tamanio_poblacion; ++i)
-        if(vector_poblacion[i] == 1)
-            vector_pueblos.push_back(i);
-
-    return dispersion(vector_pueblos);
+    return dispersion(transformacionVectorPueblos(vector_poblacion));
 }
 
 vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblacion)
@@ -547,6 +540,7 @@ void Problema::mutacionGeneracional(vector<vector<int> > & poblacion_hijos, doub
     }
 }
 
+// jjj
 void Problema::mutacionEstacionaria(vector<vector<int> > & poblacion_hijos, double probabilidad)
 {
     unsigned vector_elegido,
@@ -598,6 +592,7 @@ void Problema::reemplazamientoGeneracional(vector<vector<int> > & poblacion, con
     }
 }
 
+// jjj
 void Problema::reemplazamientoEstacionario(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos)
 {
     unsigned peor_posicion = 0,

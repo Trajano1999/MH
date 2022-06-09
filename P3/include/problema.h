@@ -72,7 +72,7 @@ class Problema
             // calcula la dispersion de un vector en el que se intercambian dos valores
             double dispersionIntercambiarElementos(const vector<int> & sol, int elem_eliminar, int elem_aniadir);
 
-        // jjj métodos privados para AGs
+        // métodos privados para AGs
 
             // calcula la dispersion de un vector poblacion (que es un vector {0,1,1,0})
             double dispersionVectorPoblacion(const vector<int> & vector_poblacion);
@@ -126,7 +126,7 @@ class Problema
 
         // métodos privados para ILS
 
-            // jjj intercambiamos t elementos de la solución por t elementos que no lo sean
+            // intercambiamos t elementos de la solución por t elementos que no lo sean
             vector<int> mutacion(const vector<int> & solucion, unsigned t);
 
         // métodos privados para ES
@@ -168,7 +168,7 @@ class Problema
             vector<int> solucionGreedy();
             vector<int> solucionBusquedaLocal();
             
-            // P2
+            // P2 jjj
 
                 // AGGs 
                 vector<int> solucionAGGUniforme();
@@ -183,7 +183,7 @@ class Problema
                 vector<int> solucionAM2();
                 vector<int> solucionAM3();
             
-            // P3
+            // P3 jjj
             vector<int> solucionEnfriamientoSimulado(const vector<int> & sol_recibida);
             vector<int> solucionBusquedaMultiarranque();
             vector<int> solucionILS();
