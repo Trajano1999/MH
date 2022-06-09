@@ -86,6 +86,11 @@ int main(int narg, char * arg[])
 
         // calculamos los tiempos
         tiempo_antes = clock();
+        vector<int> v_ES = problema.solucionEnfriamientoSimulado(problema.generarVectorPueblosAleatorio());
+        tiempo_despues = clock();
+        double tiempo_ES = tiempo_despues - tiempo_antes;
+
+        tiempo_antes = clock();
         vector<int> v_BMB = problema.solucionBusquedaMultiarranque();
         tiempo_despues = clock();
         double tiempo_BMB = tiempo_despues - tiempo_antes;
@@ -95,9 +100,16 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         double tiempo_ILS = tiempo_despues - tiempo_antes;
 
+        tiempo_antes = clock();
+        vector<int> v_ILS_ES = problema.solucionILS_ES();
+        tiempo_despues = clock();
+        double tiempo_ILS_ES = tiempo_despues - tiempo_antes;
+
         // guardamos los datos en el fichero
-        cout << tiempo_BMB << "\t" << problema.dispersion(v_BMB) << endl;
-        cout << tiempo_ILS << "\t" << problema.dispersion(v_ILS) << endl;
+        cout << tiempo_ES     << "\t" << problema.dispersion(v_ES) << endl;
+        cout << tiempo_BMB    << "\t" << problema.dispersion(v_BMB) << endl;
+        cout << tiempo_ILS    << "\t" << problema.dispersion(v_ILS) << endl;
+        cout << tiempo_ILS_ES << "\t" << problema.dispersion(v_ILS_ES) << endl;
     }
 
     return 0;

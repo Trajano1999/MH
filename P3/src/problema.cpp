@@ -147,11 +147,6 @@ vector<int> Problema::generarVectorPoblacionAleatorio(unsigned tamanio_vector)
     return resultado;
 }
 
-vector<int> Problema::generarVectorPueblosAleatorio()
-{
-    return transformacionVectorPueblos(generarVectorPoblacionAleatorio(elem_tot));
-}
-
 //-------------------------------------------------------------------------------------------------
 // MÉTODOS PRIVADOS GREEDY
 //-------------------------------------------------------------------------------------------------
@@ -753,14 +748,10 @@ vector<int> Problema::generarNuevoVecino(const vector<int> & original, double & 
     return resultado;
 }
 
-// jjj
-double Problema::enfriamiento(double temp_inicial)
+double Problema::enfriamiento(double temp_inicial, double temperatura, double temp_final, unsigned iteraciones)
 {
-    // enfriamiento (hasta que temp < temp_final):
-    // se enfriará la temperatura si se genera num max de vecinos (max_vecinos) 
-    // o se hayan aceptado demasiados vecinos generados (max_exitos)
-
-    return 1.0;
+    double beta = (temp_inicial-temp_final) / (iteraciones*temp_inicial*temp_final);  
+    return temperatura / (1 + beta*temperatura);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -847,6 +838,11 @@ double Problema::dispersion(const vector<int> & v)
 {
     vector<double> sigmas_seleccionados = sigmaSeleccionados(v);
     return v.size() > 2 ? valorMaximo(sigmas_seleccionados) - valorMinimoPositivo(sigmas_seleccionados) : 0;
+}
+
+vector<int> Problema::generarVectorPueblosAleatorio()
+{
+    return transformacionVectorPueblos(generarVectorPoblacionAleatorio(elem_tot));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -1100,8 +1096,7 @@ vector<int> Problema::solucionEnfriamientoSimulado(const vector<int> & sol_recib
              vecinos         = 0,
              max_num_cambios = 0.1*max_vecinos,
              num_cambios     = 1,
-             max_iteraciones = MAX_EVALUACIONES / max_vecinos,
-             iteraciones     = 0;
+             max_iteraciones = MAX_EVALUACIONES / max_vecinos;
 
     double coste_inicial     = dispersion(sol_recibida),
            coste_vecino      = 0,
@@ -1141,7 +1136,7 @@ vector<int> Problema::solucionEnfriamientoSimulado(const vector<int> & sol_recib
             }
         }
         
-        temp = enfriamiento(temp);
+        temp = enfriamiento(temp_inicial, temp, temp_final, max_iteraciones);
     }
 
     return mejor_solucion;
@@ -1199,19 +1194,16 @@ vector<int> Problema::solucionILS()
     return mejor_solucion;
 }
 
-// jjj
 vector<int> Problema::solucionILS_ES()
 {
-    unsigned evaluaciones = 0,
-             tamanio_mutacion = 0.3*elem_sel;
+    unsigned tamanio_mutacion = 0.3*elem_sel;
     double dispersion_actual,
            mejor_dispersion;
     vector<int> solucion_mutada,
                 solucion_actual,
                 mejor_solucion;
 
-    // aquí va ES pero con qué parámetro
-    mejor_solucion = busquedaLocalP2(generarVectorPueblosAleatorio(), MAX_EVALUCAIONES_BMB, evaluaciones);
+    mejor_solucion = solucionEnfriamientoSimulado(generarVectorPueblosAleatorio());
     mejor_dispersion = dispersion(mejor_solucion);
 
     for(unsigned i=0; i<9; ++i)

@@ -54,9 +54,6 @@ class Problema
             // genera un vector población del tamaño indicado, con valores 0 y 1 en posiciones aleatorias, con exactamente m 1s
             vector<int> generarVectorPoblacionAleatorio(unsigned tamanio_vector);
 
-            // genera un vector de pueblos del tamaño indicado, con exactamente m valores naturales
-            vector<int> generarVectorPueblosAleatorio();
-
         // métodos privados para Greedy
 
             // devuelve un valor aleatorio entre los parámetros recibidos positivos o cero
@@ -144,7 +141,7 @@ class Problema
             vector<int> generarNuevoVecino(const vector<int> & original, double & coste_vecino);   
 
             // enfriamos usando el esquema de Cauchy modificado 
-            double enfriamiento(double temp_inicial);
+            double enfriamiento(double temp_inicial, double temperatura, double temp_final, unsigned iteraciones);
 
     public: 
         // constructor
@@ -161,7 +158,12 @@ class Problema
         void setMatriz(const char * dir_fich);
 
         // métodos públicos
-        double dispersion(const vector<int> & v);
+            
+            // calcula la dispersion de un vector de pueblos solución
+            double dispersion(const vector<int> & v);
+            
+            // genera un vector de pueblos del tamaño indicado, con exactamente m valores naturales
+            vector<int> generarVectorPueblosAleatorio();
 
         // métodos para resolver el problema
         
