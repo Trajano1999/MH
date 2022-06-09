@@ -677,7 +677,7 @@ vector<int> Problema::busquedaLocalP2(const vector<int> & vector_inicio, unsigne
 // MÉTODOS PRIVADOS ILS
 //-------------------------------------------------------------------------------------------------
 
-vector<int> Problema::mutacionILS(vector<int> & solucion, unsigned t)
+vector<int> Problema::mutacionILS(const vector<int> & solucion, unsigned t)
 {
     unsigned aleatorio,
              pos_eliminar;
@@ -713,10 +713,43 @@ vector<int> Problema::mutacionILS(vector<int> & solucion, unsigned t)
 // MÉTODOS PRIVADOS ES
 //-------------------------------------------------------------------------------------------------
 
-// jjj
-vector<int> Problema::generarNuevoVecino(const vector<int> & original)
+double Problema::generarAleatorioReal(int min, int max)
 {
-    vector<int> resultado;
+    random_device rd;
+    default_random_engine eng(rd());
+    uniform_real_distribution<float> distr(min, max);
+
+    setprecision(6);
+    return distr(eng);
+}
+
+vector<int> Problema::generarNuevoVecino(const vector<int> & original, double & coste_vecino)
+{
+    unsigned aleatorio,
+             pos_eliminar;
+    vector<int> resultado = original,
+                elem_repetidos,
+                pos_repetidas;
+
+    // buscamos el elem aleatorio
+    do{
+        aleatorio = rand() % (elem_tot);
+    }while(
+        estaEnVector(elem_repetidos,aleatorio) || estaEnVector(original,aleatorio)
+    );
+    elem_repetidos.push_back(aleatorio);
+
+    // buscamos la posicion a eliminar
+    do{
+        pos_eliminar = rand() % (elem_sel);
+    }while(
+        estaEnVector(pos_repetidas,pos_eliminar)
+    );
+    pos_repetidas.push_back(pos_eliminar);
+    
+    coste_vecino = dispersionIntercambiarElementos(original, resultado[pos_eliminar], aleatorio);
+    resultado[pos_eliminar] = aleatorio;
+
     return resultado;
 }
 
@@ -1090,12 +1123,11 @@ vector<int> Problema::solucionEnfriamientoSimulado(const vector<int> & sol_recib
         num_cambios = 0;
         while(vecinos < max_vecinos && num_cambios < max_num_cambios )
         {
-            nuevo_vecino = generarNuevoVecino(solucion);
-            coste_vecino = dispersion(nuevo_vecino);
+            nuevo_vecino = generarNuevoVecino(solucion, coste_vecino);
             vecinos++;
             evaluaciones++;
 
-            if(coste_vecino < coste || (rand() % 2) <= exp(-abs(coste - coste_vecino) / temp ))
+            if(coste_vecino < coste || generarAleatorioReal(0,1) <= exp(-abs(coste - coste_vecino) / temp ))
             {
                 solucion = nuevo_vecino;
                 coste = coste_vecino;

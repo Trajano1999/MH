@@ -19,6 +19,7 @@
 # include <set>
 # include <ctime>
 # include <random>
+# include <iomanip>
 
 using namespace std;
 
@@ -132,12 +133,15 @@ class Problema
         // métodos privados para ILS
 
             // aplicamos la mutación : intercambiamos t elementos sol por t que no lo sean
-            vector<int> mutacionILS(vector<int> & solucion, unsigned t);
+            vector<int> mutacionILS(const vector<int> & solucion, unsigned t);
 
         // métodos privados para ES
 
+            // generamos un valor real aleatorio entre 0 y 1
+            double generarAleatorioReal(int min, int max);
+
             // generamos un nuevo vecino aplicandole una mutación
-            vector<int> generarNuevoVecino(const vector<int> & original);   
+            vector<int> generarNuevoVecino(const vector<int> & original, double & coste_vecino);   
 
             // enfriamos usando el esquema de Cauchy modificado 
             double enfriamiento(double temp_inicial);
