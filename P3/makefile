@@ -40,7 +40,7 @@ clear:
 
 # ejecución	de un archivo																		   # alterar opciones de ejecución
 exec: $(BIN)/$(EJECUTABLE)
-	./$< $(RUTA_ARCHIVOS_ENTRADA)/GKD-b_09_n25_m7.txt
+	./$< $(RUTA_ARCHIVOS_ENTRADA)/GKD-b_08_n25_m7.txt
 
 # ejecución completa
 exec_total: $(BIN)/$(EJECUTABLE)

@@ -312,18 +312,13 @@ double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int el
 // MÉTODOS PRIVADOS AGs
 //-------------------------------------------------------------------------------------------------
 
-double Problema::dispersionVectorPoblacion(const vector<int> & vector_poblacion)
-{
-    return dispersion(transformacionVectorPueblos(vector_poblacion));
-}
-
 vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblacion)
 {
     unsigned tamanio_poblacion = poblacion.size();
     vector<double> resultado;
     
     for(unsigned i=0; i<tamanio_poblacion; ++i)
-        resultado.push_back(dispersionVectorPoblacion(poblacion[i]));
+        resultado.push_back(dispersion(transformacionVectorPueblos(poblacion[i])));
     
     return resultado;
 }

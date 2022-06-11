@@ -80,9 +80,6 @@ class Problema
 
         // métodos privados para AGs
 
-            // calcula la dispersion de un vector poblacion (que es un vector {0,1,1,0})
-            double dispersionVectorPoblacion(const vector<int> & vector_poblacion);
-
             // calcula la dispersion de una poblacion (que es un vector de vectores {0,1,1,0})
             vector<double> dispersionPoblacion(const vector<vector<int> > & poblacion);
 
@@ -189,7 +186,7 @@ class Problema
                 vector<int> solucionAM2();
                 vector<int> solucionAM3();
             
-            // P3 jjj
+            // P3
             vector<int> solucionEnfriamientoSimulado(const vector<int> & sol_recibida);
             vector<int> solucionBusquedaMultiarranque();
             vector<int> solucionILS();
