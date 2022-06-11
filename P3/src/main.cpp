@@ -70,20 +70,20 @@ int main(int narg, char * arg[])
         vector<int> v_AGGP = problema.solucionAGGPosicion();
         tiempo_despues = clock();
         double tiempo_AGGP = tiempo_despues - tiempo_antes;
-        cerr << tiempo_AGGP << "\t" << problema.dispersion(v_AGGP) << endl << endl;
-        /* jjj
+        cerr << tiempo_AGGP << "\t" << problema.dispersion(v_AGGP) << endl;
+        
         tiempo_antes = clock();
         vector<int> v_AGEU = problema.solucionAGEUniforme();
         tiempo_despues = clock();
         double tiempo_AGEU = tiempo_despues - tiempo_antes;
         cerr << tiempo_AGEU << "\t" << problema.dispersion(v_AGEU) << endl;
-
+        
         tiempo_antes = clock();
         vector<int> v_AGEP = problema.solucionAGEPosicion();
         tiempo_despues = clock();
         double tiempo_AGEP = tiempo_despues - tiempo_antes;
         cerr << tiempo_AGEP << "\t" << problema.dispersion(v_AGEP) << endl << endl;
-        */
+        
         tiempo_antes = clock();
         vector<int> v_AM1 = problema.solucionAM1();
         tiempo_despues = clock();

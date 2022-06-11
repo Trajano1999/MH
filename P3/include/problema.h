@@ -20,6 +20,8 @@
 # include <ctime>
 # include <random>
 # include <iomanip>
+# include <utility>
+# include <algorithm>
 
 using namespace std;
 

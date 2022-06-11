@@ -11,49 +11,6 @@
 //-------------------------------------------------------------------------------------------------
 
 # include "problema.h"
-/*
-// jjj muestra un vector int
-void mostrarVectorInt(const vector<int> & v)
-{
-    cout << "( ";
-    for(unsigned i=0; i<v.size(); ++i)
-        cout << v[i] << " ";
-    cout << ")"; 
-}
-
-// jjj muestra un vector double
-void mostrarVectorDouble(const vector<double> & v)
-{
-    cout << "( ";
-    for(unsigned i=0; i<v.size(); ++i)
-        cout << v[i] << " ";
-    cout << ")"; 
-}
-
-// jjj muestra una matriz int
-void mostrarMatrizInt(const vector<vector<int> > & m)
-{
-    for(unsigned i=0; i<m.size(); ++i)
-    {
-        cout << "( ";
-        for(unsigned j=0; j<m[i].size(); ++j)
-            cout << m[i][j] << " ";
-        cout << ")" << endl;
-    }
-}
-
-// jjj muestra una matriz double
-void mostrarMatrizDouble(const vector<vector<double> > & m)
-{
-    for(unsigned i=0; i<m.size(); ++i)
-    {
-        cout << "( ";
-        for(unsigned j=0; j<m[i].size(); ++j)
-            cout << m[i][j] << " ";
-        cout << ")" << endl;
-    }
-}
-*/
 
 //-------------------------------------------------------------------------------------------------
 // CONSTANTES GLOBALES
@@ -575,7 +532,6 @@ void Problema::mutacionGeneracional(vector<vector<int> > & poblacion_hijos, doub
     }
 }
 
-// jjj
 void Problema::mutacionEstacionaria(vector<vector<int> > & poblacion_hijos, double probabilidad)
 {
     unsigned vector_elegido,
@@ -627,31 +583,22 @@ void Problema::reemplazamientoGeneracional(vector<vector<int> > & poblacion, con
     }
 }
 
-// jjj
 void Problema::reemplazamientoEstacionario(vector<vector<int> > & poblacion, const vector<vector<int> > & poblacion_hijos)
 {
-    unsigned peor_posicion = 0,
-             tamanio_poblacion = poblacion.size(),
-             tamanio_poblacion_hijos = poblacion_hijos.size();
-    double peor_dispersion;
-    vector<double> dispersiones, 
-                   dispersiones_hijos = dispersionPoblacion(poblacion_hijos);
+    vector<pair<double, vector<int> > > todos;
 
-    for(unsigned i=0; i<tamanio_poblacion_hijos; ++i)
+    for(unsigned i=0; i<TAMANIO_POBLACION_EST; ++i)
     {
-        peor_dispersion = 0;
-        dispersiones = dispersionPoblacion(poblacion);
-        
-        for(unsigned j=0; j<tamanio_poblacion; ++j)
-            if(dispersiones[i] > peor_dispersion)
-            {
-                peor_dispersion = dispersiones[i];
-                peor_posicion = i;
-            }
-        
-        if(dispersiones[peor_posicion] > dispersiones_hijos[i])
-            poblacion[peor_posicion] = poblacion_hijos[i];
+        todos.push_back( make_pair(dispersion(poblacion[i]), poblacion[i]) );
+        todos.push_back( make_pair(dispersion(poblacion_hijos[i]), poblacion_hijos[i]) );
     }
+
+    // ordenamos los vectores por sus dispersiones
+    sort(todos.begin(), todos.end());
+
+    poblacion.clear();
+    poblacion.push_back(todos[0].second);
+    poblacion.push_back(todos[1].second);   
 }
 
 //-------------------------------------------------------------------------------------------------
