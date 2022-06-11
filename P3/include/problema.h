@@ -39,6 +39,9 @@ class Problema
             // devuelve el menor valor estrictamente positivo de un vector 
             double valorMinimoPositivo(const vector<double> & v);
         
+            // devuelve la posición del mayor valor estrictamente positivo de un vector 
+            int posicionMayorPositivo(const vector<double> & v);
+
             // devuelve la posición del menor valor estrictamente positivo de un vector 
             int posicionMinimoPositivo(const vector<double> & v);
 
@@ -50,6 +53,9 @@ class Problema
 
             // genera un vector población del tamaño indicado, con valores 0 y 1 en posiciones aleatorias, con exactamente m 1s
             vector<int> generarVectorPoblacionAleatorio(unsigned tamanio_vector);
+
+            // calcula la media de un vector de distancias
+            double mediaElementosPositivosVector(const vector<double> & distancias);
 
         // métodos privados para Greedy
 

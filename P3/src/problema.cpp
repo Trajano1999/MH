@@ -11,7 +11,6 @@
 //-------------------------------------------------------------------------------------------------
 
 # include "problema.h"
-
 /*
 // jjj muestra un vector int
 void mostrarVectorInt(const vector<int> & v)
@@ -100,6 +99,21 @@ double Problema::valorMinimoPositivo(const vector<double> & v)
     return valor_min;
 }
 
+int Problema::posicionMayorPositivo(const vector<double> & v)
+{
+    int pos_max = 0;
+    double valor_max = 0;
+
+    for(unsigned i=0; i<v.size(); ++i)
+        if(v[i] > valor_max && v[i] > 0)
+        {
+            valor_max = v[i];
+            pos_max = i;
+        }
+        
+    return pos_max;
+}
+
 int Problema::posicionMinimoPositivo(const vector<double> & v)
 {
     int pos_min = 0;
@@ -155,6 +169,22 @@ vector<int> Problema::generarVectorPoblacionAleatorio(unsigned tamanio_vector)
     }
 
     return resultado;
+}
+
+double Problema::mediaElementosPositivosVector(const vector<double> & distancias)
+{
+    unsigned tamanio = distancias.size(),
+             num_ceros = 0;
+    double media = 0.0;
+
+    for(unsigned i=0; i<tamanio; ++i)
+    {
+        media += distancias[i];
+        if(distancias[i] == 0)
+            num_ceros++;
+    }
+        
+    return (media / (tamanio-num_ceros));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -298,61 +328,71 @@ vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblac
     return resultado;
 }
 
-// jjj arreglar P2
 void Problema::reparacion(vector<int> & hijo)
 {
     unsigned contador = 0,
-             mejor_posicion = 0,
-             tamanio = hijo.size();
-    double dispersion, 
-           menor_dispersion = dispersionVectorPoblacion(hijo);
+             tamanio = hijo.size(),
+             pos_eliminar,
+             pos_aniadir,
+             aleatorio;
     
+    double media = 0.0;
+    vector<double> distancias_hijo;
+    vector<int> hijo_pueblo,
+                candidatos;
+
+    // calculamos el num de 1s
     for(unsigned i=0; i<tamanio; ++i)
         if(hijo[i] == 1)
             contador++;
 
+    // en caso de que llegue un vector con menos de dos elementos seleccionados
+    while(contador < 2)
+    {
+        aleatorio = rand() % tamanio;
+        if(hijo[aleatorio] != 1)
+        {
+            hijo[aleatorio] = 1;
+            contador++;    
+        }
+    }
+
     while(contador > elem_sel)
     {
-        menor_dispersion = VALOR_GRANDE;
+        hijo_pueblo = transformacionVectorPueblos(hijo);
+        distancias_hijo = sigmaSeleccionados(hijo_pueblo);
+        media = mediaElementosPositivosVector(distancias_hijo);
 
-        // buscamos el elemento que más dispersión tenga y lo eliminamos
-        for(unsigned i=0; i<tamanio; ++i)
-            if(hijo[i] == 1)
-            {
-                hijo[i] = 0;
-                dispersion = dispersionVectorPoblacion(hijo);
-                if(dispersion < menor_dispersion)
-                {
-                    menor_dispersion = dispersion;
-                    mejor_posicion = i;
-                }
-                hijo[i] = 1;
-            }
-        
-        hijo[mejor_posicion] = 0;
+        for(unsigned i=0; i<contador; ++i)
+            if(distancias_hijo[i] != 0)
+                distancias_hijo[i] = abs(distancias_hijo[i] - media);
+
+        pos_eliminar = posicionMayorPositivo(distancias_hijo);
+        hijo[hijo_pueblo[pos_eliminar]] = 0;
         contador--;
     }
 
     while(contador < elem_sel)
-    {
-        menor_dispersion = VALOR_GRANDE;
+    {        
+        // inicializamos candidatos
+        for(unsigned i=0; i<elem_tot; ++i)
+            if(hijo[i] == 1)
+                candidatos.push_back(-1);
+            else
+                candidatos.push_back(i);
 
-        // buscamos el elemento que menos dispersión sume y lo añadimos
-        for(unsigned i=0; i<tamanio; ++i)
-            if(hijo[i] == 0)
-            {
-                hijo[i] = 1;
-                dispersion = dispersionVectorPoblacion(hijo);
-                if(dispersion < menor_dispersion)
-                {
-                    menor_dispersion = dispersion;
-                    mejor_posicion = i;
-                }
-                hijo[i] = 0;
-            }
-        
-        hijo[mejor_posicion] = 1;
+        hijo_pueblo = transformacionVectorPueblos(hijo); 
+        distancias_hijo = sigmaNoSeleccionados(candidatos, hijo_pueblo);
+        media = mediaElementosPositivosVector(distancias_hijo);
+
+        for(unsigned i=0; i<elem_tot; ++i)
+            if(distancias_hijo[i] != 0)
+                distancias_hijo[i] = abs(distancias_hijo[i] - media);
+
+        pos_aniadir = posicionMinimoPositivo(distancias_hijo);
+        hijo[pos_aniadir] = 1;
         contador++;
+        candidatos.clear();
     }
 }
 

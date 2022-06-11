@@ -71,7 +71,7 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         double tiempo_AGGP = tiempo_despues - tiempo_antes;
         cerr << tiempo_AGGP << "\t" << problema.dispersion(v_AGGP) << endl << endl;
-        /* jjj
+        /*
         tiempo_antes = clock();
         vector<int> v_AGEU = problema.solucionAGEUniforme();
         tiempo_despues = clock();
