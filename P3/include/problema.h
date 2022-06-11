@@ -171,7 +171,7 @@ class Problema
             vector<int> solucionGreedy();
             vector<int> solucionBusquedaLocal();
             
-            // P2 jjj
+            // P2
 
                 // AGGs 
                 vector<int> solucionAGGUniforme();
