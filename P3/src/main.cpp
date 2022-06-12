@@ -48,7 +48,7 @@ int main(int narg, char * arg[])
         nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
 
         // calculamos los tiempos
-        /*
+        
         tiempo_antes = clock();
         vector<int> v_Greedy = problema.solucionGreedy();
         tiempo_despues = clock();
@@ -96,13 +96,13 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         double tiempo_AM2 = tiempo_despues - tiempo_antes;
         cout << tiempo_AM2 << "\t" << problema.dispersion(v_AM2) << endl;
-        */
+        
         tiempo_antes = clock();
         vector<int> v_AM3 = problema.solucionAM3();
         tiempo_despues = clock();
         double tiempo_AM3 = tiempo_despues - tiempo_antes;
         cout << tiempo_AM3 << "\t" << problema.dispersion(v_AM3) << endl;
-        /*
+        
         tiempo_antes = clock();
         vector<int> v_ES = problema.solucionEnfriamientoSimulado(problema.generarVectorPueblosAleatorio());
         tiempo_despues = clock();
@@ -126,7 +126,7 @@ int main(int narg, char * arg[])
         tiempo_despues = clock();
         double tiempo_ILS_ES = tiempo_despues - tiempo_antes;
         cout << tiempo_ILS_ES << "\t" << problema.dispersion(v_ILS_ES) << endl;
-        */
+        
     }
 
     return 0;
