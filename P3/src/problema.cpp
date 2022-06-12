@@ -966,7 +966,8 @@ vector<int> Problema::solucionAGEPosicion()
 
 vector<int> Problema::solucionAM1()
 {
-    unsigned evaluaciones = 0;
+    unsigned evaluaciones = 0,
+             generaciones = 0;
     vector<int> vector_poblacion;
     vector<double> dispersion_poblacion;
     vector<vector<int> > poblacion_hijos,
@@ -981,12 +982,12 @@ vector<int> Problema::solucionAM1()
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
                 
         // cada 10 generaciones, aplicamos BL a toda la población
-        if(evaluaciones % 10 == 0)
+        if(generaciones % 10 == 0)
             for(unsigned i=0; i<TAMANIO_POBLACION_MM; ++i)  
                 poblacion_hijos[i] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[i]), MAX_EVAL_MEMETICOS, evaluaciones));
-        else
-            evaluaciones++;
-
+        
+        evaluaciones += 50;
+        generaciones++;
         reemplazamientoGeneracional(poblacion, poblacion_hijos);                
     }
 
@@ -998,7 +999,8 @@ vector<int> Problema::solucionAM1()
 vector<int> Problema::solucionAM2()
 {
     unsigned aleatorio,
-             evaluaciones = 0;
+             evaluaciones = 0,
+             generaciones = 0;
     vector<int> vector_poblacion,
                 repeticion_aleatorios;
     vector<double> dispersion_poblacion;
@@ -1014,7 +1016,7 @@ vector<int> Problema::solucionAM2()
         mutacionGeneracional(poblacion_hijos, PROB_MUTACION);
                 
         // cada 10 generaciones, aplicamos BL a un subconjunto de la población
-        if(evaluaciones % 10 == 0)
+        if(generaciones % 10 == 0)
         {
             for(unsigned i=0; i<TAMANIO_POBLACION_MM*PROB_BL_MEMETICO; ++i)
             {
@@ -1028,9 +1030,9 @@ vector<int> Problema::solucionAM2()
             }
             repeticion_aleatorios.clear();
         }
-        else
-            evaluaciones++;
 
+        evaluaciones += 50;
+        generaciones++;
         reemplazamientoGeneracional(poblacion, poblacion_hijos);                
     }
 
@@ -1042,7 +1044,8 @@ vector<int> Problema::solucionAM2()
 vector<int> Problema::solucionAM3()
 {
     unsigned mejor_pos,
-             evaluaciones = 0;
+             evaluaciones = 0,
+             generaciones = 0;
     vector<int> mejor_vector,
                 vector_poblacion;
     vector<double> dispersion_poblacion;
@@ -1059,16 +1062,16 @@ vector<int> Problema::solucionAM3()
                 
         dispersion_poblacion = dispersionPoblacion(poblacion_hijos);
         // cada 10 generaciones, aplicamos BL a los mejores
-        if(evaluaciones % 10 == 0)
+        if(generaciones % 10 == 0)
             for(unsigned i=0; i<TAMANIO_POBLACION_MM*PROB_BL_MEMETICO; ++i)
             {
                 mejor_pos = posicionMinimoPositivo(dispersion_poblacion);
                 poblacion_hijos[mejor_pos] = transformacionVectorPoblacion(busquedaLocalP2(transformacionVectorPueblos(poblacion_hijos[mejor_pos]), MAX_EVAL_MEMETICOS, evaluaciones));
                 dispersion_poblacion.erase(dispersion_poblacion.begin() + mejor_pos);
             }
-        else
-            evaluaciones++;
 
+        evaluaciones += 50;
+        generaciones++;
         reemplazamientoGeneracional(poblacion, poblacion_hijos);                
     }
 
