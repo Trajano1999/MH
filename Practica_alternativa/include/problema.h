@@ -145,9 +145,7 @@ class Problema
             // enfriamos usando el esquema de Cauchy modificado 
             double enfriamiento(double temp_inicial, double temperatura, double temp_final, unsigned iteraciones);
 
-        // métodos privados para Práctica Alternativa
-
-            
+        // jjj métodos privados para Práctica Alternativa
 
     public: 
         // constructor
@@ -199,6 +197,8 @@ class Problema
             vector<int> solucionILS_ES();
 
             // Práctica Alternativa
+            vector<int> solucionBB_BC();
+            vector<int> solucionBB_BC_Memetico();
 };
 
 # endif

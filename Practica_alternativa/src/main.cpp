@@ -34,8 +34,8 @@ int main(int narg, char * arg[])
         return 1;
     }
 
-    // jjj recorremos todos los argumentos
-    /*for(int i=1; i<narg; ++i)
+    // recorremos todos los argumentos
+    for(int i=1; i<narg; ++i)
     {
         problema.setMatriz(arg[i]);
         string nombre_fichero = arg[i];
@@ -44,8 +44,8 @@ int main(int narg, char * arg[])
         nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
 
         // calculamos los tiempos
-        
-    }*/
+        problema.solucionBB_BC();
+    }
 
     return 0;
 }

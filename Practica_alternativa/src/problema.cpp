@@ -1212,3 +1212,26 @@ vector<int> Problema::solucionILS_ES()
 
     return mejor_solucion;
 }
+
+// jjj 
+void mostrarMatriz(vector<vector<int> > matriz)
+{
+    for(unsigned i=0; i<matriz.size(); ++i)
+    {
+        cout << "( ";
+        for(unsigned j=0; j<matriz[i].size(); ++j)
+        {
+            cout << matriz[i][j] << " ";
+        }
+        cout << ")" << endl;
+    }
+}
+
+vector<int> Problema::solucionBB_BC()
+{
+    vector<int> resultado;
+
+    vector<vector<int> > poblacion = creacionPoblacion(5);
+
+    return resultado;
+}
