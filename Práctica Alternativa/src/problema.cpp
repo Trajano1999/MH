@@ -1,11 +1,10 @@
 //-------------------------------------------------------------------------------------------------
 //  Universidad de Granada
-//  Escuela Superior de Inegeniería Informática y Telecomunicaciones 
+//  Escuela Superior de Ingeniería Informática y Telecomunicaciones 
 //  Curso 2021/2022 
 //  
 //  Metaheurísticas
-//  Práctica 1:
-//  Técnicas de Búsqueda Local y Algoritmos Greedy para el Problema de la Mínima Dispersión Diferencial
+//  Práctica Alternativa: ALGORITMO BIG BANG-BIG CRUNCH
 //
 //  Juan Manuel Mateos Pérez
 //-------------------------------------------------------------------------------------------------
