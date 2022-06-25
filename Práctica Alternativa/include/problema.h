@@ -192,6 +192,10 @@ class Problema
             vector<int> solucionBusquedaMultiarranque();
             vector<int> solucionILS();
             vector<int> solucionILS_ES();
+
+            // Práctica Alternativa
+            vector<int> solucionBB_BC();
+            vector<int> solucionBB_BC_Memético();
 };
 
 # endif

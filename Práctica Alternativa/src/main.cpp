@@ -26,8 +26,6 @@ const unsigned RAMDOM_SEMILLA = 0;
 int main(int narg, char * arg[])
 {
     Problema problema(RAMDOM_SEMILLA, arg[1]);
-    double tiempo_antes,
-           tiempo_despues;
 
     // comprobamos que el número de argumentos es correcto
     if(narg <= 1)
