@@ -17,8 +17,8 @@ INC = include
 EJECUTABLE = practica_alternativa
 SOURCES = $(wildcard $(SRC)/*.cpp)
 OBJECTS = $(addprefix $(OBJ)/, $(notdir $(SOURCES:.cpp=.o)))
-RUTA_ARCHIVOS_ENTRADA = /home/juanma/GitHub/MH/Práctica Alternativa/datos_MDD
-RUTA_ARCHIVO_EJECUCION = /home/juanma/GitHub/MH/Práctica Alternativa/ejecucion_completa.sh
+RUTA_ARCHIVOS_ENTRADA = /home/juanma/GitHub/MH/Practica_alternativa/datos_MDD
+RUTA_ARCHIVO_EJECUCION = /home/juanma/GitHub/MH/Practica_alternativa/ejecucion_completa.sh
 
 all: $(BIN)/$(EJECUTABLE)
 

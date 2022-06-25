@@ -144,6 +144,11 @@ class Problema
             // enfriamos usando el esquema de Cauchy modificado 
             double enfriamiento(double temp_inicial, double temperatura, double temp_final, unsigned iteraciones);
 
+        // métodos privados para la Práctica Alternativa
+
+            // generamos los elementos candidatos
+            vector<vector<int> > generarCandidatos();
+
     public: 
         // constructor
         Problema(unsigned sem, const char * dir_fich);
@@ -194,8 +199,8 @@ class Problema
             vector<int> solucionILS_ES();
 
             // Práctica Alternativa
-            vector<int> solucionBB_BC();
-            vector<int> solucionBB_BC_Memético();
+            vector<int> solucionBB_BC(unsigned dimension);
+            vector<int> solucionBB_BC_Memetico();
 };
 
 # endif

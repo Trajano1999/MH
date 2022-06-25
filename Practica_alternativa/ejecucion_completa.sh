@@ -1,8 +1,8 @@
 #!/bin/bash
 
 RUTA_EJECUTABLE="./bin/practica_alternativa"
-RUTA_ARCHIVOS_ENTRADA="/home/juanma/GitHub/MH/Práctica Alternativa/datos_MDD"
-RUTA_ARCHIVO_SALIDA="/home/juanma/Escritorio/Uni/Segundo_Cuatri/MH/Práctica Alternativa/datos.txt"
+RUTA_ARCHIVOS_ENTRADA="/home/juanma/GitHub/MH/Practica_alternativa/datos_MDD"
+RUTA_ARCHIVO_SALIDA="/home/juanma/Escritorio/Uni/Segundo_Cuatri/MH/Practica_alternativa/datos.txt"
 
 iteraciones=0
 total_iteraciones=50

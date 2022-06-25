@@ -743,6 +743,15 @@ vector<int> Problema::mutacion(const vector<int> & solucion, unsigned t)
 }
 
 //-------------------------------------------------------------------------------------------------
+// MÉTODOS PRIVADOS PRÁCTICA ALTERNATIVA
+//-------------------------------------------------------------------------------------------------
+
+vector<vector<int> > Problema::generarCandidatos()
+{
+    
+}
+
+//-------------------------------------------------------------------------------------------------
 // CONSTRUCTOR
 //-------------------------------------------------------------------------------------------------
 
@@ -1211,3 +1220,34 @@ vector<int> Problema::solucionILS_ES()
 
     return mejor_solucion;
 }
+
+// jjj
+void mostrarMatriz(vector<vector<int> > matriz)
+{
+    for(unsigned i=0; i<matriz.size(); ++i)
+    {
+        cout << "( ";
+        for(unsigned j=0; j<matriz.size(); j++)
+        {
+            cout << matriz[i][j] << " ";
+        }
+        cout << ")" << endl;
+    }
+}
+
+// jjj
+vector<int> Problema::solucionBB_BC(unsigned dimension)
+{
+    vector<vector<int> > candidatos = generarCandidatos(dimension);
+    mostrarMatriz(candidatos);
+
+    vector<int> resultado;
+    return resultado;
+}
+
+// jjj
+vector<int> Problema::solucionBB_BC_Memetico()
+{
+    vector<int> resultado;
+    return resultado;
+}   

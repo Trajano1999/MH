@@ -43,8 +43,9 @@ int main(int narg, char * arg[])
         // escogemos de toda la ruta, solo con el nombre archivos
         nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
 
-        // calculamos los tiempos
-        // jjj
+        // jjj ejecutamos los algoritmos
+        vector<int> BB_BC = problema.solucionBB_BC(20);
+        //problema.solucionBB_BC_Memetico();
     }
 
     return 0;
