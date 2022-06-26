@@ -85,6 +85,9 @@ class Problema
             // calcula la dispersion de una poblacion (que es un vector de vectores {0,1,1,0})
             vector<double> dispersionPoblacion(const vector<vector<int> > & poblacion);
 
+            // calcula la dispersion de una poblacion de vectores pueblo (que son vectores {2,3,5})
+            vector<double> dispersionPoblacionPueblo(const vector<vector<int> > & poblacion);
+
             // ajusta el números de 1s tras aplicar el cruceUniforme
             void reparacion(vector<int> & hijo);
 
@@ -145,7 +148,10 @@ class Problema
             // enfriamos usando el esquema de Cauchy modificado 
             double enfriamiento(double temp_inicial, double temperatura, double temp_final, unsigned iteraciones);
 
-        // jjj métodos privados para Práctica Alternativa
+        // métodos privados para Práctica Alternativa
+
+            // genera nuevos candidatos
+            vector<vector<int> > generarNuevosCandidatos(const vector<int> & mejor_sol, unsigned eval);
 
     public: 
         // constructor
@@ -199,6 +205,8 @@ class Problema
             // Práctica Alternativa
             vector<int> solucionBB_BC();
             vector<int> solucionBB_BC_Memetico();
+
+            void mostrarMatriz(vector<vector<int> > matriz);
 };
 
 # endif

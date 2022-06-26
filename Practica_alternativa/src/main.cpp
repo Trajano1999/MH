@@ -44,7 +44,7 @@ int main(int narg, char * arg[])
         nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
 
         // calculamos los tiempos
-        problema.solucionBB_BC();
+        vector<int> BB_BC = problema.solucionBB_BC();
     }
 
     return 0;

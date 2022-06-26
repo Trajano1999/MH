@@ -21,14 +21,17 @@ const double VALOR_GRANDE     = 1.7976931348623158e+308,
              PROB_CRUCE_AGG   = 0.7,
              PROB_CRUCE_AGE   = 1.0,
              PROB_MUTACION    = 0.1,
-             PROB_BL_MEMETICO = 0.1;
+             PROB_BL_MEMETICO = 0.1,
+             ALFA             = 0.75;
             
 const unsigned MAX_EVALUACIONES      = 100000,
                MAX_EVAL_MEMETICOS    = 400,
                TAMANIO_POBLACION_GEN = 50,
                TAMANIO_POBLACION_EST = 2,
                TAMANIO_POBLACION_MM  = 10,
-               MAX_EVALUCAIONES_BMB  = 10000;
+               MAX_EVALUCAIONES_BMB  = 10000,
+               POBLACION_PA          = 50,
+               MAX_EVAL_PA           = 100000;
 
 //-------------------------------------------------------------------------------------------------
 // MÉTODOS PRIVADOS GENERALES
@@ -278,6 +281,16 @@ vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblac
         resultado.push_back(dispersion(transformacionVectorPueblos(poblacion[i])));
     
     return resultado;
+}
+
+vector<double> Problema::dispersionPoblacionPueblo(const vector<vector<int> > & poblacion)
+{
+    vector<vector<int> > auxiliar = poblacion;
+
+    for(unsigned i=0; i<auxiliar.size(); ++i)
+        auxiliar[i] = transformacionVectorPoblacion(auxiliar[i]);
+
+    return dispersionPoblacion(auxiliar);
 }
 
 void Problema::reparacion(vector<int> & hijo)
@@ -738,6 +751,30 @@ vector<int> Problema::mutacion(const vector<int> & solucion, unsigned t)
         pos_repetidas.push_back(pos_eliminar);
         
         resultado[pos_eliminar] = aleatorio;
+    }
+
+    return resultado;
+}
+
+//-------------------------------------------------------------------------------------------------
+// MÉTODOS PRIVADOS PRÁCTICA ALTERNATIVA
+//-------------------------------------------------------------------------------------------------
+
+vector<vector<int> > Problema::generarNuevosCandidatos(const vector<int> & mejor_sol, unsigned eval)
+{
+    unsigned aleatorio;
+    vector<int> auxiliar;
+    vector<vector<int> > resultado;
+
+    for(unsigned i=0; i<POBLACION_PA; ++i)
+    {
+        auxiliar = mejor_sol;
+        for(unsigned j=0; j<elem_sel; ++j)
+        {
+            aleatorio = rand() % 2 == 0 ? -1 : 1;
+            // jjj auxiliar[j] += ALFA*200*aleatorio/eval;
+        }
+        resultado.push_back(auxiliar);
     }
 
     return resultado;
@@ -1213,25 +1250,80 @@ vector<int> Problema::solucionILS_ES()
     return mejor_solucion;
 }
 
+// jjj
+void mostrarVectorI(const vector<int> & vector)
+{
+    cerr << "( ";
+    for(unsigned i=0; i<vector.size(); ++i)
+        cerr << vector[i] << " ";
+    cerr << ")";
+}
+
+void mostrarVectorD(const vector<double> & vector)
+{
+    cerr << "( ";
+    for(unsigned i=0; i<vector.size(); ++i)
+        cerr << vector[i] << " ";
+    cerr << ")";
+}
+
 // jjj 
-void mostrarMatriz(vector<vector<int> > matriz)
+void Problema::mostrarMatriz(vector<vector<int> > matriz)
 {
     for(unsigned i=0; i<matriz.size(); ++i)
     {
-        cout << "( ";
+        cerr << "( ";
         for(unsigned j=0; j<matriz[i].size(); ++j)
         {
-            cout << matriz[i][j] << " ";
+            cerr << matriz[i][j] << " ";
         }
-        cout << ")" << endl;
+        cerr << ") ";
+        cerr << dispersion(matriz[i]);
+        cerr << endl;
     }
 }
 
 vector<int> Problema::solucionBB_BC()
 {
-    vector<int> resultado;
+    unsigned eval = 0;
+    double mejor_dispersion,
+           nueva_dispersion;
+    vector<int> mejor_sol,
+                nueva_sol;
+    vector<double> dispersion_poblacion;
+    vector<vector<int> > poblacion = creacionPoblacion(POBLACION_PA);
 
-    vector<vector<int> > poblacion = creacionPoblacion(5);
+    // calculamos la dispersión de la población
+    dispersion_poblacion = dispersionPoblacion(poblacion);
 
-    return resultado;
+    // trasnformamos la población de vectores población ({0,1,1}) a vectores pueblo ({2,3})
+    for(unsigned i=0; i<POBLACION_PA; ++i)
+        poblacion[i] = transformacionVectorPueblos(poblacion[i]);
+
+    mejor_sol = poblacion[posicionMinimoPositivo(dispersion_poblacion)];
+    mejor_dispersion = valorMinimoPositivo(dispersion_poblacion);
+
+    while(eval < MAX_EVAL_PA)
+    {
+        cerr << "\n\tmejor sol :"; mostrarVectorI(mejor_sol);
+        poblacion = generarNuevosCandidatos(mejor_sol, eval+1);
+        cerr << "\n\tpoblacion : " << endl;
+        mostrarMatriz(poblacion);
+        cerr << endl;
+
+        dispersion_poblacion = dispersionPoblacionPueblo(poblacion);
+
+        nueva_sol = poblacion[posicionMinimoPositivo(dispersion_poblacion)];
+        nueva_dispersion = valorMinimoPositivo(dispersion_poblacion);
+
+        if(nueva_dispersion < mejor_dispersion)
+        {
+            mejor_sol = nueva_sol;
+            mejor_dispersion = nueva_dispersion;
+        }
+        
+        eval += POBLACION_PA;
+    }
+
+    return mejor_sol;
 }
