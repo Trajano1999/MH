@@ -47,12 +47,6 @@ int main(int narg, char * arg[])
 
         // ejecución de los algoritmos
         tiempo_antes = clock();
-        vector<int> BL = problema.solucionBusquedaLocal();
-        tiempo_despues = clock();
-        double tiempoBL = tiempo_despues - tiempo_antes;
-        cout << "\n" << problema.dispersion(BL) << endl << tiempoBL << endl;
-
-        tiempo_antes = clock();
         vector<int> BB_BC = problema.solucionBB_BC();
         tiempo_despues = clock();
         double tiempoBB_BC = tiempo_despues - tiempo_antes;

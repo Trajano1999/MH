@@ -9,7 +9,6 @@
 //  Juan Manuel Mateos Pérez
 //-------------------------------------------------------------------------------------------------
 
-
 # ifndef _PROBLEMA_H_
 # define _PROBLEMA_H_
 
@@ -208,8 +207,6 @@ class Problema
             // Práctica Alternativa
             vector<int> solucionBB_BC();
             vector<int> solucionBB_BC_Memetico();
-
-            void mostrarMatriz(vector<vector<int> > matriz);
 };
 
 # endif
