@@ -22,7 +22,7 @@ const double VALOR_GRANDE     = 1.7976931348623158e+308,
              PROB_CRUCE_AGE   = 1.0,
              PROB_MUTACION    = 0.1,
              PROB_BL_MEMETICO = 0.1,
-             ALFA             = 0.75;
+             ALFA             = 0.5;
             
 const unsigned MAX_EVALUACIONES      = 100000,
                MAX_EVAL_MEMETICOS    = 400,
@@ -1256,39 +1256,6 @@ vector<int> Problema::solucionILS_ES()
     return mejor_solucion;
 }
 
-// jjj
-void mostrarVectorI(const vector<int> & vector)
-{
-    cerr << "( ";
-    for(unsigned i=0; i<vector.size(); ++i)
-        cerr << vector[i] << " ";
-    cerr << ")";
-}
-
-void mostrarVectorD(const vector<double> & vector)
-{
-    cerr << "( ";
-    for(unsigned i=0; i<vector.size(); ++i)
-        cerr << vector[i] << " ";
-    cerr << ")";
-}
-
-// jjj 
-void Problema::mostrarMatriz(vector<vector<int> > matriz)
-{
-    for(unsigned i=0; i<matriz.size(); ++i)
-    {
-        cerr << "( ";
-        for(unsigned j=0; j<matriz[i].size(); ++j)
-        {
-            cerr << matriz[i][j] << " ";
-        }
-        cerr << ") ";
-        cerr << dispersion(matriz[i]);
-        cerr << endl;
-    }
-}
-
 vector<int> Problema::solucionBB_BC()
 {
     unsigned eval = 0;
@@ -1316,6 +1283,53 @@ vector<int> Problema::solucionBB_BC()
     {
         // calculamos nuevos candidatos
         poblacion = generarNuevosCandidatos(mejor_sol, eval+1);
+        dispersion_poblacion = dispersionPoblacionPueblo(poblacion);
+        
+        // encontramos el nuevo centro de masa
+        nueva_sol = poblacion[posicionMinimoPositivo(dispersion_poblacion)];
+        nueva_dispersion = valorMinimoPositivo(dispersion_poblacion);
+
+        eval += POBLACION_PA;
+
+        // escogemos la mejor solución que encontremos
+        if(nueva_dispersion < mejor_dispersion)
+        {
+            mejor_sol = nueva_sol;
+            mejor_dispersion = nueva_dispersion;
+        }
+    }
+
+    return mejor_sol;
+}
+
+vector<int> Problema::solucionBB_BC_Memetico()
+{
+    unsigned eval = 0;
+    double mejor_dispersion,
+           nueva_dispersion;
+    vector<int> mejor_sol,
+                nueva_sol;
+    vector<double> dispersion_poblacion;
+    
+    // creamos una población aleatoria
+    vector<vector<int> > poblacion = creacionPoblacion(POBLACION_PA);
+
+    // calculamos la dispersión de la población
+    dispersion_poblacion = dispersionPoblacion(poblacion);
+    
+    // trasnformamos la población de vectores población ({0,1,1}) a vectores pueblo ({2,3})
+    for(unsigned i=0; i<POBLACION_PA; ++i)
+        poblacion[i] = transformacionVectorPueblos(poblacion[i]);
+
+    // encontramos el centro de masa
+    mejor_sol = poblacion[posicionMinimoPositivo(dispersion_poblacion)];
+    mejor_dispersion = valorMinimoPositivo(dispersion_poblacion);
+
+    while(eval < MAX_EVAL_PA)
+    {
+        // calculamos nuevos candidatos usando BL
+        nueva_sol = busquedaLocalP2(mejor_sol, MAX_EVAL_PA, eval);
+        poblacion = generarNuevosCandidatos(nueva_sol, eval);
         dispersion_poblacion = dispersionPoblacionPueblo(poblacion);
         
         // encontramos el nuevo centro de masa

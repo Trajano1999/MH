@@ -26,6 +26,8 @@ const unsigned RAMDOM_SEMILLA = 0;
 int main(int narg, char * arg[])
 {
     Problema problema(RAMDOM_SEMILLA, arg[1]);
+    double tiempo_antes,
+           tiempo_despues;
 
     // comprobamos que el número de argumentos es correcto
     if(narg <= 1)
@@ -44,11 +46,23 @@ int main(int narg, char * arg[])
         nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
 
         // ejecución de los algoritmos
+        tiempo_antes = clock();
         vector<int> BL = problema.solucionBusquedaLocal();
-        cout << "\n" << problema.dispersion(BL) << endl;
+        tiempo_despues = clock();
+        double tiempoBL = tiempo_despues - tiempo_antes;
+        cout << "\n" << problema.dispersion(BL) << endl << tiempoBL << endl;
 
+        tiempo_antes = clock();
         vector<int> BB_BC = problema.solucionBB_BC();
-        cout << "\n" << problema.dispersion(BB_BC) << endl;
+        tiempo_despues = clock();
+        double tiempoBB_BC = tiempo_despues - tiempo_antes;
+        cout << "\n" << problema.dispersion(BB_BC) << endl << tiempoBB_BC << endl;
+
+        tiempo_antes = clock();
+        vector<int> BB_BC_M = problema.solucionBB_BC_Memetico();
+        tiempo_despues = clock();
+        double tiempoBB_BC_M = tiempo_despues - tiempo_antes;
+        cout << "\n" << problema.dispersion(BB_BC_M) << endl << tiempoBB_BC_M << endl;
     }
 
     return 0;
