@@ -22,7 +22,7 @@ const double VALOR_GRANDE     = 1.7976931348623158e+308,
              PROB_CRUCE_AGE   = 1.0,
              PROB_MUTACION    = 0.1,
              PROB_BL_MEMETICO = 0.1,
-             ALFA             = 0.75;
+             ALFA             = 0.5;
             
 const unsigned MAX_EVALUACIONES      = 100000,
                MAX_EVAL_MEMETICOS    = 400,
@@ -274,23 +274,22 @@ double Problema::dispersionIntercambiarElementos(const vector<int> & sol, int el
 
 vector<double> Problema::dispersionPoblacion(const vector<vector<int> > & poblacion)
 {
-    unsigned tamanio_poblacion = poblacion.size();
-    vector<double> resultado;
+    vector<vector<int> > auxiliar = poblacion;
     
-    for(unsigned i=0; i<tamanio_poblacion; ++i)
-        resultado.push_back(dispersion(transformacionVectorPueblos(poblacion[i])));
+    for(unsigned i=0; i<auxiliar.size(); ++i)
+        auxiliar[i] = transformacionVectorPueblos(auxiliar[i]);
     
-    return resultado;
+    return dispersionPoblacionPueblo(auxiliar);
 }
 
 vector<double> Problema::dispersionPoblacionPueblo(const vector<vector<int> > & poblacion)
 {
-    vector<vector<int> > auxiliar = poblacion;
+    vector<double> resultado;
 
-    for(unsigned i=0; i<auxiliar.size(); ++i)
-        auxiliar[i] = transformacionVectorPoblacion(auxiliar[i]);
+    for(unsigned i=0; i<poblacion.size(); ++i)
+        resultado.push_back(dispersion(poblacion[i]));
 
-    return dispersionPoblacion(auxiliar);
+    return resultado;
 }
 
 void Problema::reparacion(vector<int> & hijo)
@@ -760,9 +759,16 @@ vector<int> Problema::mutacion(const vector<int> & solucion, unsigned t)
 // MÉTODOS PRIVADOS PRÁCTICA ALTERNATIVA
 //-------------------------------------------------------------------------------------------------
 
+double Problema::generarValorRealUniforme(int min, int max)
+{
+    random_device                  rand_dev;
+    mt19937                        generator(rand_dev());
+    uniform_int_distribution<int>  distr(min, max);
+    return distr(generator);
+}
+
 vector<vector<int> > Problema::generarNuevosCandidatos(const vector<int> & mejor_sol, unsigned eval)
 {
-    unsigned aleatorio;
     vector<int> auxiliar;
     vector<vector<int> > resultado;
 
@@ -771,8 +777,8 @@ vector<vector<int> > Problema::generarNuevosCandidatos(const vector<int> & mejor
         auxiliar = mejor_sol;
         for(unsigned j=0; j<elem_sel; ++j)
         {
-            aleatorio = rand() % 2 == 0 ? -1 : 1;
-            // jjj auxiliar[j] += ALFA*200*aleatorio/eval;
+            auxiliar[j] += ALFA*elem_tot*generarValorRealUniforme(-1,1)/eval;
+            auxiliar[j] = auxiliar[j] % elem_tot;
         }
         resultado.push_back(auxiliar);
     }
@@ -1295,24 +1301,22 @@ vector<int> Problema::solucionBB_BC()
 
     // calculamos la dispersión de la población
     dispersion_poblacion = dispersionPoblacion(poblacion);
-
+    
     // trasnformamos la población de vectores población ({0,1,1}) a vectores pueblo ({2,3})
     for(unsigned i=0; i<POBLACION_PA; ++i)
         poblacion[i] = transformacionVectorPueblos(poblacion[i]);
 
+    // encontramos el centro de masa
     mejor_sol = poblacion[posicionMinimoPositivo(dispersion_poblacion)];
     mejor_dispersion = valorMinimoPositivo(dispersion_poblacion);
 
     while(eval < MAX_EVAL_PA)
     {
-        cerr << "\n\tmejor sol :"; mostrarVectorI(mejor_sol);
+        // calculamos nuevos candidatos
         poblacion = generarNuevosCandidatos(mejor_sol, eval+1);
-        cerr << "\n\tpoblacion : " << endl;
-        mostrarMatriz(poblacion);
-        cerr << endl;
-
         dispersion_poblacion = dispersionPoblacionPueblo(poblacion);
-
+        
+        // encontramos el nuevo centro de masa
         nueva_sol = poblacion[posicionMinimoPositivo(dispersion_poblacion)];
         nueva_dispersion = valorMinimoPositivo(dispersion_poblacion);
 
@@ -1322,8 +1326,9 @@ vector<int> Problema::solucionBB_BC()
             mejor_dispersion = nueva_dispersion;
         }
         
+        cerr << "\n\t" << mejor_dispersion;
         eval += POBLACION_PA;
     }
-
+    
     return mejor_sol;
 }

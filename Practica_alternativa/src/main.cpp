@@ -45,6 +45,7 @@ int main(int narg, char * arg[])
 
         // calculamos los tiempos
         vector<int> BB_BC = problema.solucionBB_BC();
+        cout << "\n" << problema.dispersion(BB_BC) << endl;
     }
 
     return 0;

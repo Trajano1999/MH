@@ -139,7 +139,7 @@ class Problema
 
         // métodos privados para ES
 
-            // generamos un valor real aleatorio entre 0 y 1
+            // generamos un valor real aleatorio entre min y max
             double generarAleatorioReal(int min, int max);
 
             // generamos un nuevo vecino aplicandole una mutación
@@ -149,6 +149,9 @@ class Problema
             double enfriamiento(double temp_inicial, double temperatura, double temp_final, unsigned iteraciones);
 
         // métodos privados para Práctica Alternativa
+
+            // generamos un valor real aleatorio uniforme entre min y max
+            double generarValorRealUniforme(int min, int max);
 
             // genera nuevos candidatos
             vector<vector<int> > generarNuevosCandidatos(const vector<int> & mejor_sol, unsigned eval);
