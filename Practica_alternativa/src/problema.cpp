@@ -22,7 +22,7 @@ const double VALOR_GRANDE     = 1.7976931348623158e+308,
              PROB_CRUCE_AGE   = 1.0,
              PROB_MUTACION    = 0.1,
              PROB_BL_MEMETICO = 0.1,
-             ALFA             = 0.5;
+             ALFA             = 0.75;
             
 const unsigned MAX_EVALUACIONES      = 100000,
                MAX_EVAL_MEMETICOS    = 400,
@@ -1297,6 +1297,8 @@ vector<int> Problema::solucionBB_BC()
     vector<int> mejor_sol,
                 nueva_sol;
     vector<double> dispersion_poblacion;
+    
+    // creamos una población aleatoria
     vector<vector<int> > poblacion = creacionPoblacion(POBLACION_PA);
 
     // calculamos la dispersión de la población
@@ -1320,15 +1322,15 @@ vector<int> Problema::solucionBB_BC()
         nueva_sol = poblacion[posicionMinimoPositivo(dispersion_poblacion)];
         nueva_dispersion = valorMinimoPositivo(dispersion_poblacion);
 
+        eval += POBLACION_PA;
+
+        // escogemos la mejor solución que encontremos
         if(nueva_dispersion < mejor_dispersion)
         {
             mejor_sol = nueva_sol;
             mejor_dispersion = nueva_dispersion;
         }
-        
-        cerr << "\n\t" << mejor_dispersion;
-        eval += POBLACION_PA;
     }
-    
+
     return mejor_sol;
 }

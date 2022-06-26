@@ -43,7 +43,10 @@ int main(int narg, char * arg[])
         // escogemos de toda la ruta, solo con el nombre archivos
         nombre_fichero.erase(nombre_fichero.begin(), nombre_fichero.begin()+36);
 
-        // calculamos los tiempos
+        // ejecución de los algoritmos
+        vector<int> BL = problema.solucionBusquedaLocal();
+        cout << "\n" << problema.dispersion(BL) << endl;
+
         vector<int> BB_BC = problema.solucionBB_BC();
         cout << "\n" << problema.dispersion(BB_BC) << endl;
     }
