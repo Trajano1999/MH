@@ -50,13 +50,13 @@ int main(int narg, char * arg[])
         vector<int> BB_BC = problema.solucionBB_BC();
         tiempo_despues = clock();
         double tiempoBB_BC = tiempo_despues - tiempo_antes;
-        cout << "\n" << problema.dispersion(BB_BC) << endl << tiempoBB_BC << endl;
-
-        tiempo_antes = clock();
+        cout << tiempoBB_BC << "\t" << problema.dispersion(BB_BC) << endl;
+        
+        /*tiempo_antes = clock();
         vector<int> BB_BC_M = problema.solucionBB_BC_Memetico();
         tiempo_despues = clock();
         double tiempoBB_BC_M = tiempo_despues - tiempo_antes;
-        cout << "\n" << problema.dispersion(BB_BC_M) << endl << tiempoBB_BC_M << endl;
+        cout << tiempoBB_BC_M << "\t" << problema.dispersion(BB_BC_M) << endl;*/
     }
 
     return 0;

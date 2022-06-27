@@ -14,6 +14,6 @@ echo "TIEMPOS - DESVIACIONES" >> $RUTA_ARCHIVO_SALIDA
 for FILE in $(ls $RUTA_ARCHIVOS_ENTRADA)
 do	
 	iteraciones=$((iteraciones+1))
-	echo "Comienza la ionteraci" $iteraciones "de" $total_iteraciones
+	echo "Comienza la iteración" $iteraciones "de" $total_iteraciones
 	$RUTA_EJECUTABLE $RUTA_ARCHIVOS_ENTRADA/$FILE >> $RUTA_ARCHIVO_SALIDA
 done
